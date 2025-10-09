@@ -13,6 +13,10 @@ struct ChildDashboardView: View {
     @FetchRequest private var pendingCompletions: FetchedResults<ChoreCompletion>
     @FetchRequest private var thisWeekApprovedBonuses: FetchedResults<ChoreCompletion>
     
+    // Add state for selected tab and refresh trigger
+    @State private var selectedTab = 0
+    @State private var refreshID = UUID()
+    
     init(child: Child, isAuthenticated: Binding<Bool>, userRole: Binding<UserRole?>) {
         self.child = child
         self._isAuthenticated = isAuthenticated
@@ -75,6 +79,26 @@ struct ChildDashboardView: View {
     }
     
     var body: some View {
+        TabView(selection: $selectedTab) {
+            // Dashboard Tab
+            dashboardContent
+                .tabItem {
+                    Image(systemName: "house.fill")
+                    Text("Dashboard")
+                }
+                .tag(0)
+            
+            // Chores Tab
+            ChildChoreListView(child: child, refreshTrigger: $refreshID)
+                .tabItem {
+                    Image(systemName: "list.bullet.clipboard.fill")
+                    Text("Chores")
+                }
+                .tag(1)
+        }
+    }
+    
+    private var dashboardContent: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
@@ -286,6 +310,246 @@ struct ChildDashboardView: View {
     }
 }
 
+// New Child Chore List View with Pending Status
+struct ChildChoreListView: View {
+    @Environment(\.managedObjectContext) private var viewContext
+    let child: Child
+    @Binding var refreshTrigger: UUID
+    
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Chore.name, ascending: true)],
+        predicate: NSPredicate(format: "isActive == YES"),
+        animation: .default)
+    private var chores: FetchedResults<Chore>
+    
+    @FetchRequest private var pendingCompletions: FetchedResults<ChoreCompletion>
+    
+    @State private var selectedChore: Chore?
+    @State private var showCapReachedAlert = false
+    @State private var pendingChoreIDs: Set<UUID> = []
+    
+    init(child: Child, refreshTrigger: Binding<UUID>) {
+        self.child = child
+        self._refreshTrigger = refreshTrigger
+        
+        let childId = child.id?.uuidString ?? ""
+        let weekStart = Self.getStartOfWeek()
+        _pendingCompletions = FetchRequest(
+            sortDescriptors: [NSSortDescriptor(keyPath: \ChoreCompletion.completedAt, ascending: false)],
+            predicate: NSPredicate(format: "child.id == %@ AND status == %@ AND weekStartDate == %@ AND isBonus == NO",
+                                 childId as CVarArg, "pending", weekStart as CVarArg),
+            animation: .default
+        )
+    }
+    
+    static func getStartOfWeek() -> Date {
+        let calendar = Calendar.current
+        let now = Date()
+        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now)
+        return calendar.date(from: components) ?? now
+    }
+    
+    var thisWeekEarnings: Double {
+        pendingCompletions.reduce(0) { $0 + ($1.chore?.amount ?? 0) }
+    }
+    
+    var remainingCapacity: Double {
+        max(0, child.weeklyCap - thisWeekEarnings)
+    }
+    
+    // Check if a chore is pending
+    func isPending(chore: Chore) -> Bool {
+        guard let choreId = chore.id else { return false }
+        
+        // Check our local state first
+        if pendingChoreIDs.contains(choreId) {
+            return true
+        }
+        
+        // Check the database
+        return pendingCompletions.contains { $0.chore?.id == choreId }
+    }
+    
+    var body: some View {
+        NavigationView {
+            VStack {
+                if chores.isEmpty {
+                    VStack(spacing: 20) {
+                        Image(systemName: "list.clipboard")
+                            .font(.system(size: 60))
+                            .foregroundColor(.gray)
+                        Text("No chores available")
+                            .font(.headline)
+                            .foregroundColor(.gray)
+                        Text("Ask a parent to add chores to the library")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding()
+                } else {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("This week: $\(thisWeekEarnings, specifier: "%.2f") of $\(child.weeklyCap, specifier: "%.2f")")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                            .padding(.horizontal)
+                        
+                        ProgressView(value: thisWeekEarnings, total: child.weeklyCap)
+                            .padding(.horizontal)
+                    }
+                    .padding(.top)
+                    
+                    List(chores) { chore in
+                        ChoreRowWithStatus(
+                            chore: chore,
+                            isPending: isPending(chore: chore),
+                            wouldExceedCap: wouldExceedCap(chore),
+                            onTap: {
+                                handleChoreSelection(chore)
+                            }
+                        )
+                        .listRowSeparator(.hidden)
+                    }
+                    .listStyle(.plain)
+                }
+            }
+            .navigationTitle("Complete Chore")
+            .alert("Weekly Cap Reached", isPresented: $showCapReachedAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("You've reached your weekly earning cap of $\(child.weeklyCap, specifier: "%.2f"). Ask a parent for a bonus or wait until next week!")
+            }
+        }
+    }
+    
+    private func wouldExceedCap(_ chore: Chore) -> Bool {
+        return (thisWeekEarnings + chore.amount) > child.weeklyCap
+    }
+    
+    private func handleChoreSelection(_ chore: Chore) {
+        if isPending(chore: chore) {
+            // Do nothing if already pending
+            return
+        }
+        
+        if wouldExceedCap(chore) {
+            showCapReachedAlert = true
+        } else {
+            // Complete immediately without confirmation
+            completeChore(chore)
+        }
+    }
+    
+    private func completeChore(_ chore: Chore) {
+        print("🔵 Starting to complete chore: \(chore.name ?? "unknown")")
+        
+        // Immediately mark as pending in local state
+        if let choreId = chore.id {
+            pendingChoreIDs.insert(choreId)
+        }
+        
+        let completion = ChoreCompletion(context: viewContext)
+        completion.id = UUID()
+        completion.status = "pending"
+        completion.completedAt = Date()
+        completion.weekStartDate = Self.getStartOfWeek()
+        completion.isBonus = false
+        
+        let total = chore.amount
+        completion.spendingAmount = total * 0.8
+        completion.savingsAmount = total * 0.1
+        completion.givingAmount = total * 0.1
+        
+        completion.child = child
+        completion.chore = chore
+        
+        print("🔵 Created completion with status: \(completion.status ?? "nil")")
+        print("🔵 Child: \(child.name ?? "unknown")")
+        print("🔵 Chore: \(chore.name ?? "unknown")")
+        
+        do {
+            try viewContext.save()
+            print("✅ Successfully saved to Core Data")
+            
+            // UI will refresh automatically due to @FetchRequest
+        } catch {
+            print("❌ Error completing chore: \(error)")
+            // Remove from pending if save failed
+            if let choreId = chore.id {
+                pendingChoreIDs.remove(choreId)
+            }
+        }
+    }
+}
+
+// Custom row that shows pending status
+struct ChoreRowWithStatus: View {
+    let chore: Chore
+    let isPending: Bool
+    let wouldExceedCap: Bool
+    let onTap: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack(alignment: .top, spacing: 12) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(chore.name ?? "Unknown")
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                    
+                    if let description = chore.choreDescription, !description.isEmpty {
+                        Text(description)
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                            .lineLimit(2)
+                    }
+                }
+                
+                Spacer()
+                
+                // Show amount
+                Text("$\(chore.amount, specifier: "%.2f")")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .foregroundColor(wouldExceedCap ? .red : .green)
+            }
+            .padding(.vertical, 8)
+            
+            // Button at the bottom
+            Button(action: {
+                print("🟣 BUTTON TAPPED for chore: \(chore.name ?? "unknown")")
+                print("🟣 isPending: \(isPending)")
+                print("🟣 wouldExceedCap: \(wouldExceedCap)")
+                onTap()
+            }) {
+                HStack(spacing: 8) {
+                    if isPending {
+                        Image(systemName: "clock.fill")
+                            .font(.system(size: 14))
+                        Text("Pending")
+                            .fontWeight(.semibold)
+                    } else {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 14))
+                        Text("I Did It!")
+                            .fontWeight(.semibold)
+                    }
+                }
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(isPending ? Color.gray : (wouldExceedCap ? Color.red.opacity(0.5) : Color.purple))
+                .cornerRadius(10)
+            }
+            .buttonStyle(PlainButtonStyle())
+            .disabled(isPending || wouldExceedCap)
+            .padding(.top, 8)
+        }
+        .padding(.vertical, 8)
+        .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+    }
+}
+
 struct MoneyJarCard: View {
     let title: String
     let subtitle: String
@@ -451,89 +715,6 @@ struct TransactionLedgerRow: View {
         .contentShape(Rectangle()) // Makes entire row tappable area
         .onTapGesture {
             // Do nothing - transactions shouldn't be clickable
-        }
-    }
-}
-
-struct TransactionRow: View {
-    let completion: ChoreCompletion
-    
-    var body: some View {
-        HStack(spacing: 12) {
-            Circle()
-                .fill(completion.isBonus ? Color.green.opacity(0.2) : Color.orange.opacity(0.2))
-                .frame(width: 40, height: 40)
-                .overlay(
-                    Image(systemName: completion.isBonus ? "gift.fill" : "list.bullet.clipboard.fill")
-                        .foregroundColor(completion.isBonus ? .green : .orange)
-                        .font(.system(size: 16))
-                )
-            
-            VStack(alignment: .leading, spacing: 2) {
-                if completion.isBonus {
-                    Text("Bonus")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                    
-                    // Show which jar the bonus went to
-                    if completion.spendingAmount > 0 {
-                        Text("Spending jar")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                    } else if completion.savingsAmount > 0 {
-                        Text("Savings jar")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                    } else if completion.givingAmount > 0 {
-                        Text("Giving jar")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                    }
-                } else {
-                    Text(completion.chore?.name ?? "Unknown Chore")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                    
-                    if let date = completion.completedAt {
-                        Text(date, style: .date)
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                    }
-                }
-            }
-            
-            Spacer()
-            
-            TransactionAmountView(completion: completion)
-        }
-        .padding()
-    }
-}
-
-struct TransactionAmountView: View {
-    let completion: ChoreCompletion
-    
-    var transactionAmount: Double {
-        if completion.isBonus {
-            return completion.spendingAmount + completion.savingsAmount + completion.givingAmount
-        } else {
-            return completion.chore?.amount ?? 0
-        }
-    }
-    
-    var body: some View {
-        VStack(alignment: .trailing, spacing: 2) {
-            Text(String(format: "+$%.2f", transactionAmount))
-                .font(.subheadline)
-                .fontWeight(.semibold)
-                .foregroundColor(.green)
-            
-            if let child = completion.child {
-                let total = child.spendingBalance + child.savingsBalance + child.givingBalance
-                Text(String(format: "Balance: $%.2f", total))
-                    .font(.caption)
-                    .foregroundColor(.gray)
-            }
         }
     }
 }
