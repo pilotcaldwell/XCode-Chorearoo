@@ -5,10 +5,16 @@ struct ChildDashboardView: View {
     @Environment(\.managedObjectContext) private var viewContext
     let child: Child
     
+    // Add these two bindings to control authentication
+    @Binding var isAuthenticated: Bool
+    @Binding var userRole: UserRole?
+    
     @FetchRequest private var approvedCompletions: FetchedResults<ChoreCompletion>
     
-    init(child: Child) {
+    init(child: Child, isAuthenticated: Binding<Bool>, userRole: Binding<UserRole?>) {
         self.child = child
+        self._isAuthenticated = isAuthenticated
+        self._userRole = userRole
         
         let childId = child.id?.uuidString ?? ""
         _approvedCompletions = FetchRequest(
@@ -33,25 +39,40 @@ struct ChildDashboardView: View {
     }
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                // Total Balance Card
-                totalBalanceCard
-                
-                // Money Jars Section
-                moneyJarsSection
-                
-                // Stats Cards
-                statsCardsSection
-                
-                // Recent Transactions
-                recentTransactionsSection
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 20) {
+                    // Total Balance Card
+                    totalBalanceCard
+                    
+                    // Money Jars Section
+                    moneyJarsSection
+                    
+                    // Stats Cards
+                    statsCardsSection
+                    
+                    // Recent Transactions
+                    recentTransactionsSection
+                    
+                    // Logout Button at Bottom
+                    Button(action: {
+                        isAuthenticated = false
+                        userRole = nil
+                    }) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "xmark")
+                            Text("Logout")
+                        }
+                        .foregroundColor(.red)
+                        .padding(.vertical, 16)
+                    }
+                }
+                .padding(.vertical)
             }
-            .padding(.vertical)
+            .background(Color.gray.opacity(0.05))
+            .navigationTitle(child.name ?? "Dashboard")
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .background(Color.gray.opacity(0.05))
-        .navigationTitle(child.name ?? "Dashboard")
-        .navigationBarTitleDisplayMode(.inline)
     }
     
     private var totalBalanceCard: some View {
@@ -313,8 +334,10 @@ struct TransactionAmountView: View {
     child.savingsBalance = 1.60
     child.givingBalance = 1.60
     
-    return NavigationView {
-        ChildDashboardView(child: child)
-    }
+    return ChildDashboardView(
+        child: child,
+        isAuthenticated: .constant(true),
+        userRole: .constant(.child(child))
+    )
     .environment(\.managedObjectContext, context)
 }

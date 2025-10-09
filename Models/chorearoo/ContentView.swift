@@ -13,15 +13,11 @@ struct ContentView: View {
                     case .parent:
                         MainTabView(isAuthenticated: $isAuthenticated)
                     case .child(let child):
-                        ChildDashboardView(child: child)
-                            .toolbar {
-                                ToolbarItem(placement: .navigationBarTrailing) {
-                                    Button("Logout") {
-                                        isAuthenticated = false
-                                        userRole = nil
-                                    }
-                                }
-                            }
+                        ChildDashboardView(
+                            child: child,
+                            isAuthenticated: $isAuthenticated,
+                            userRole: $userRole
+                        )
                     }
                 }
             } else {
