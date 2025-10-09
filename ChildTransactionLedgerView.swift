@@ -160,7 +160,8 @@ struct ChildTransactionLedgerView: View {
             ForEach(Array(allCompletions.enumerated()), id: \.element.id) { index, completion in
                 ParentTransactionRow(
                     completion: completion,
-                    child: child
+                    child: child,
+                    runningBalance: calculateRunningBalance(upToIndex: index)
                 )
                 
                 if completion.id != allCompletions.last?.id {
@@ -175,7 +176,23 @@ struct ChildTransactionLedgerView: View {
         .padding(.horizontal)
     }
     
-
+    // Calculate running balance at a specific transaction index
+    private func calculateRunningBalance(upToIndex: Int) -> Double {
+        // Start with current total balance
+        var balance = totalBalance
+        
+        // Subtract all transactions that came AFTER this one (going backwards in time)
+        // Since transactions are sorted newest first, we subtract transactions at indices 0 to upToIndex-1
+        for i in 0..<upToIndex {
+            let completion = Array(allCompletions)[i]
+            if completion.status == "approved" {
+                let amount = completion.spendingAmount + completion.savingsAmount + completion.givingAmount
+                balance -= amount
+            }
+        }
+        
+        return balance
+    }
     
     private func resetStats() {
         // Reset balances
@@ -199,6 +216,7 @@ struct ChildTransactionLedgerView: View {
 struct ParentTransactionRow: View {
     let completion: ChoreCompletion
     let child: Child
+    let runningBalance: Double
     
     var transactionAmount: Double {
         if completion.isBonus {
@@ -286,10 +304,9 @@ struct ParentTransactionRow: View {
                     .fontWeight(.semibold)
                     .foregroundColor(isPending ? .orange : .green)
                 
-                // Current balance (only for approved)
+                // Running balance (only for approved)
                 if !isPending {
-                    let total = child.spendingBalance + child.savingsBalance + child.givingBalance
-                    Text("Balance: $\(total, specifier: "%.2f")")
+                    Text("Balance: $\(runningBalance, specifier: "%.2f")")
                         .font(.caption)
                         .foregroundColor(.gray)
                 }
