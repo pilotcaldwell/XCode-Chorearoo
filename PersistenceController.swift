@@ -16,9 +16,14 @@ struct PersistenceController {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
         
-        container.loadPersistentStores { description, error in
+        container.loadPersistentStores { [container] description, error in
             if let error = error {
                 fatalError("Core Data failed to load: \(error.localizedDescription)")
+            }
+            
+            // Run data migration after stores are loaded
+            if !inMemory {
+                DataMigrationHelper.migrateExistingData(context: container.viewContext)
             }
         }
         

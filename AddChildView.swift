@@ -54,6 +54,7 @@ struct AddChildView: View {
         newChild.spendingBalance = 0.0
         newChild.savingsBalance = 0.0
         newChild.givingBalance = 0.0
+        newChild.weeklyCap = 10.0  // Set default weekly cap
         newChild.createdAt = Date()
         
         // Save to the database

@@ -10,6 +10,8 @@ struct ChildDashboardView: View {
     @Binding var userRole: UserRole?
     
     @FetchRequest private var approvedCompletions: FetchedResults<ChoreCompletion>
+    @FetchRequest private var pendingCompletions: FetchedResults<ChoreCompletion>
+    @FetchRequest private var thisWeekApprovedBonuses: FetchedResults<ChoreCompletion>
     
     init(child: Child, isAuthenticated: Binding<Bool>, userRole: Binding<UserRole?>) {
         self.child = child
@@ -22,6 +24,40 @@ struct ChildDashboardView: View {
             predicate: NSPredicate(format: "child.id == %@ AND status == %@", childId as CVarArg, "approved"),
             animation: .default
         )
+        
+        // Fetch pending chore completions for this week (not bonuses)
+        let weekStart = Self.getStartOfWeek()
+        _pendingCompletions = FetchRequest(
+            sortDescriptors: [NSSortDescriptor(keyPath: \ChoreCompletion.completedAt, ascending: false)],
+            predicate: NSPredicate(format: "child.id == %@ AND status == %@ AND weekStartDate == %@ AND isBonus == NO",
+                                 childId as CVarArg, "pending", weekStart as CVarArg),
+            animation: .default
+        )
+        
+        // Fetch approved bonuses for this week
+        _thisWeekApprovedBonuses = FetchRequest(
+            sortDescriptors: [NSSortDescriptor(keyPath: \ChoreCompletion.completedAt, ascending: false)],
+            predicate: NSPredicate(format: "child.id == %@ AND status == %@ AND weekStartDate == %@ AND isBonus == YES",
+                                 childId as CVarArg, "approved", weekStart as CVarArg),
+            animation: .default
+        )
+    }
+    
+    static func getStartOfWeek() -> Date {
+        let calendar = Calendar.current
+        let now = Date()
+        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now)
+        return calendar.date(from: components) ?? now
+    }
+    
+    var thisWeekChoreEarnings: Double {
+        pendingCompletions
+            .reduce(0) { $0 + ($1.chore?.amount ?? 0) }
+    }
+    
+    var thisWeekBonusEarnings: Double {
+        thisWeekApprovedBonuses
+            .reduce(0) { $0 + $1.spendingAmount + $1.savingsAmount + $1.givingAmount }
     }
     
     var totalBalance: Double {
@@ -42,17 +78,25 @@ struct ChildDashboardView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 20) {
-                    // Total Balance Card
+                    // Total Balance Card (FIRST - biggest)
                     totalBalanceCard
                     
-                    // Money Jars Section
+                    // Money Jars Section (SECOND)
                     moneyJarsSection
+                    
+                    // Weekly Progress Card (THIRD)
+                    WeeklyProgressCard(
+                        child: child,
+                        choreEarnings: thisWeekChoreEarnings,
+                        bonusEarnings: thisWeekBonusEarnings,
+                        weeklyCap: child.weeklyCap > 0 ? child.weeklyCap : 10.0
+                    )
                     
                     // Stats Cards
                     statsCardsSection
                     
-                    // Recent Transactions
-                    recentTransactionsSection
+                    // Transaction Ledger (replacing Recent Transactions)
+                    transactionLedgerSection
                     
                     // Logout Button at Bottom
                     Button(action: {
@@ -162,18 +206,18 @@ struct ChildDashboardView: View {
         .padding(.horizontal)
     }
     
-    private var recentTransactionsSection: some View {
+    private var transactionLedgerSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Image(systemName: "book.fill")
                     .foregroundColor(.purple)
-                Text("Recent Transactions")
+                Text("Transactions")
                     .font(.title3)
                     .fontWeight(.bold)
             }
             .padding(.horizontal)
             
-            if approvedCompletions.isEmpty {
+            if allTransactions.isEmpty {
                 VStack(spacing: 12) {
                     Image(systemName: "tray")
                         .font(.system(size: 40))
@@ -188,10 +232,14 @@ struct ChildDashboardView: View {
                 .padding(.vertical, 40)
             } else {
                 VStack(spacing: 0) {
-                    ForEach(Array(approvedCompletions.prefix(5))) { completion in
-                        TransactionRow(completion: completion)
+                    ForEach(Array(allTransactions.enumerated()), id: \.element.id) { index, completion in
+                        TransactionLedgerRow(
+                            completion: completion,
+                            child: child,
+                            runningBalance: calculateRunningBalance(upToIndex: index)
+                        )
                         
-                        if completion.id != approvedCompletions.prefix(5).last?.id {
+                        if completion.id != allTransactions.last?.id {
                             Divider()
                                 .padding(.leading, 60)
                         }
@@ -204,6 +252,37 @@ struct ChildDashboardView: View {
             }
         }
         .padding(.vertical)
+    }
+    
+    // Get all transactions (pending + approved), sorted by date
+    var allTransactions: [ChoreCompletion] {
+        let pending = Array(pendingCompletions)
+        let approved = approvedCompletions.filter { completion in
+            // Only show recent approved transactions (last 30 days)
+            guard let completedAt = completion.completedAt else { return false }
+            let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: Date()) ?? Date()
+            return completedAt >= thirtyDaysAgo
+        }
+        
+        return (pending + approved).sorted { ($0.completedAt ?? Date()) > ($1.completedAt ?? Date()) }
+    }
+    
+    // Calculate running balance at a specific transaction index
+    private func calculateRunningBalance(upToIndex: Int) -> Double {
+        // Start with current total balance
+        var balance = totalBalance
+        
+        // Subtract all transactions that came AFTER this one (going backwards in time)
+        // Since transactions are sorted newest first, we subtract transactions at indices 0 to upToIndex-1
+        for i in 0..<upToIndex {
+            let completion = allTransactions[i]
+            if completion.status == "approved" {
+                let amount = completion.spendingAmount + completion.savingsAmount + completion.givingAmount
+                balance -= amount
+            }
+        }
+        
+        return balance
     }
 }
 
@@ -219,7 +298,7 @@ struct MoneyJarCard: View {
                 Text(title)
                     .font(.subheadline)
                     .foregroundColor(.gray)
-                Text("$\(amount, format: .currency(code: "USD"))")
+                Text(String(format: "$%.2f", amount))
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(color)
@@ -269,29 +348,157 @@ struct StatCard: View {
     }
 }
 
+struct TransactionLedgerRow: View {
+    let completion: ChoreCompletion
+    let child: Child
+    let runningBalance: Double
+    
+    var transactionAmount: Double {
+        if completion.isBonus {
+            return completion.spendingAmount + completion.savingsAmount + completion.givingAmount
+        } else {
+            return completion.chore?.amount ?? 0
+        }
+    }
+    
+    var isPending: Bool {
+        completion.status == "pending"
+    }
+    
+    var body: some View {
+        HStack(spacing: 12) {
+            // Icon
+            Circle()
+                .fill(completion.isBonus ? Color.green.opacity(0.2) : Color.orange.opacity(0.2))
+                .frame(width: 40, height: 40)
+                .overlay(
+                    Image(systemName: completion.isBonus ? "gift.fill" : "list.bullet.clipboard.fill")
+                        .foregroundColor(completion.isBonus ? .green : .orange)
+                        .font(.system(size: 16))
+                )
+            
+            // Transaction Details
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(spacing: 8) {
+                    if completion.isBonus {
+                        Text("Bonus")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                        
+                        if isPending {
+                            Text("(Pending)")
+                                .font(.caption)
+                                .foregroundColor(.orange)
+                        }
+                    } else {
+                        Text(completion.chore?.name ?? "Unknown Chore")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                        
+                        if isPending {
+                            Text("(Pending)")
+                                .font(.caption)
+                                .foregroundColor(.orange)
+                        }
+                    }
+                }
+                
+                if let date = completion.completedAt {
+                    Text(date, style: .date)
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+                
+                // Show jar breakdown with color coding (no emojis)
+                HStack(spacing: 12) {
+                    if completion.spendingAmount > 0 {
+                        Text("Spending: $\(completion.spendingAmount, specifier: "%.2f")")
+                            .font(.caption2)
+                            .foregroundColor(.purple)
+                    }
+                    if completion.savingsAmount > 0 {
+                        Text("Savings: $\(completion.savingsAmount, specifier: "%.2f")")
+                            .font(.caption2)
+                            .foregroundColor(.green)
+                    }
+                    if completion.givingAmount > 0 {
+                        Text("Giving: $\(completion.givingAmount, specifier: "%.2f")")
+                            .font(.caption2)
+                            .foregroundColor(.orange)
+                    }
+                }
+            }
+            
+            Spacer()
+            
+            // Amount and Balance
+            VStack(alignment: .trailing, spacing: 4) {
+                // Transaction amount
+                Text(isPending ? "+$\(transactionAmount, specifier: "%.2f")" : "+$\(transactionAmount, specifier: "%.2f")")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(isPending ? .orange : .green)
+                
+                // Running balance (only for approved transactions)
+                if !isPending {
+                    Text("Balance: $\(runningBalance, specifier: "%.2f")")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+            }
+        }
+        .padding()
+        .contentShape(Rectangle()) // Makes entire row tappable area
+        .onTapGesture {
+            // Do nothing - transactions shouldn't be clickable
+        }
+    }
+}
+
 struct TransactionRow: View {
     let completion: ChoreCompletion
     
     var body: some View {
         HStack(spacing: 12) {
             Circle()
-                .fill(Color.orange.opacity(0.2))
+                .fill(completion.isBonus ? Color.green.opacity(0.2) : Color.orange.opacity(0.2))
                 .frame(width: 40, height: 40)
                 .overlay(
-                    Image(systemName: "list.bullet.clipboard.fill")
-                        .foregroundColor(.orange)
+                    Image(systemName: completion.isBonus ? "gift.fill" : "list.bullet.clipboard.fill")
+                        .foregroundColor(completion.isBonus ? .green : .orange)
                         .font(.system(size: 16))
                 )
             
             VStack(alignment: .leading, spacing: 2) {
-                Text(completion.chore?.name ?? "Unknown Chore")
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                
-                if let date = completion.completedAt {
-                    Text(date, style: .date)
-                        .font(.caption)
-                        .foregroundColor(.gray)
+                if completion.isBonus {
+                    Text("Bonus")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                    
+                    // Show which jar the bonus went to
+                    if completion.spendingAmount > 0 {
+                        Text("Spending jar")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    } else if completion.savingsAmount > 0 {
+                        Text("Savings jar")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    } else if completion.givingAmount > 0 {
+                        Text("Giving jar")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
+                } else {
+                    Text(completion.chore?.name ?? "Unknown Chore")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                    
+                    if let date = completion.completedAt {
+                        Text(date, style: .date)
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
                 }
             }
             
@@ -306,14 +513,20 @@ struct TransactionRow: View {
 struct TransactionAmountView: View {
     let completion: ChoreCompletion
     
+    var transactionAmount: Double {
+        if completion.isBonus {
+            return completion.spendingAmount + completion.savingsAmount + completion.givingAmount
+        } else {
+            return completion.chore?.amount ?? 0
+        }
+    }
+    
     var body: some View {
         VStack(alignment: .trailing, spacing: 2) {
-            if let amount = completion.chore?.amount {
-                Text(String(format: "+$%.2f", amount))
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.green)
-            }
+            Text(String(format: "+$%.2f", transactionAmount))
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundColor(.green)
             
             if let child = completion.child {
                 let total = child.spendingBalance + child.savingsBalance + child.givingBalance

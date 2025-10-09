@@ -4,7 +4,6 @@
 //
 //  Created by Chase Caldwell on 10/8/25.
 //
-//
 
 public import Foundation
 public import CoreData
@@ -26,6 +25,7 @@ extension ChoreCompletion {
     @NSManaged public var spendingAmount: Double
     @NSManaged public var status: String?
     @NSManaged public var weekStartDate: Date?
+    @NSManaged public var isBonus: Bool
     @NSManaged public var approvedBy: Parent?
     @NSManaged public var child: Child?
     @NSManaged public var chore: Chore?

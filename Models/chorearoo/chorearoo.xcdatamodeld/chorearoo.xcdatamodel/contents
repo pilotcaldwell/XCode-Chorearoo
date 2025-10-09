@@ -4,12 +4,14 @@
         <attribute name="age" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="avatarColor" optional="YES" attributeType="String"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="currentWeekStart" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="givingBalance" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="pin" optional="YES" attributeType="String"/>
         <attribute name="savingsBalance" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="spendingBalance" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="weeklyCap" attributeType="Double" defaultValueString="10" usesScalarValueType="YES"/>
         <relationship name="choreCompletions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChoreCompletion" inverseName="child" inverseEntity="ChoreCompletion"/>
         <relationship name="parents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Parent" inverseName="children" inverseEntity="Parent"/>
     </entity>
@@ -27,6 +29,7 @@
         <attribute name="completedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="givingAmount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isBonus" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="savingsAmount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="spendingAmount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="status" optional="YES" attributeType="String"/>

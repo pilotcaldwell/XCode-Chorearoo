@@ -7,14 +7,44 @@ struct CompleteChoreView: View {
     
     let child: Child
     
-    // Fetch only active chores
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Chore.name, ascending: true)],
         predicate: NSPredicate(format: "isActive == YES"),
         animation: .default)
     private var chores: FetchedResults<Chore>
     
+    @FetchRequest private var pendingCompletions: FetchedResults<ChoreCompletion>
+    
     @State private var selectedChore: Chore?
+    @State private var showCapReachedAlert = false
+    
+    init(child: Child) {
+        self.child = child
+        
+        let childId = child.id?.uuidString ?? ""
+        let weekStart = Self.getStartOfWeek()
+        _pendingCompletions = FetchRequest(
+            sortDescriptors: [NSSortDescriptor(keyPath: \ChoreCompletion.completedAt, ascending: false)],
+            predicate: NSPredicate(format: "child.id == %@ AND status == %@ AND weekStartDate == %@ AND isBonus == NO",
+                                 childId as CVarArg, "pending", weekStart as CVarArg),
+            animation: .default
+        )
+    }
+    
+    static func getStartOfWeek() -> Date {
+        let calendar = Calendar.current
+        let now = Date()
+        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now)
+        return calendar.date(from: components) ?? now
+    }
+    
+    var thisWeekEarnings: Double {
+        pendingCompletions.reduce(0) { $0 + ($1.chore?.amount ?? 0) }
+    }
+    
+    var remainingCapacity: Double {
+        max(0, child.weeklyCap - thisWeekEarnings)
+    }
     
     var body: some View {
         NavigationView {
@@ -34,9 +64,20 @@ struct CompleteChoreView: View {
                     }
                     .padding()
                 } else {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("This week: $\(thisWeekEarnings, specifier: "%.2f") of $\(child.weeklyCap, specifier: "%.2f")")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                            .padding(.horizontal)
+                        
+                        ProgressView(value: thisWeekEarnings, total: child.weeklyCap)
+                            .padding(.horizontal)
+                    }
+                    .padding(.top)
+                    
                     List(chores) { chore in
                         Button(action: {
-                            selectedChore = chore
+                            handleChoreSelection(chore)
                         }) {
                             HStack {
                                 VStack(alignment: .leading, spacing: 4) {
@@ -56,13 +97,15 @@ struct CompleteChoreView: View {
                                 
                                 Text("$\(chore.amount, specifier: "%.2f")")
                                     .font(.headline)
-                                    .foregroundColor(.green)
+                                    .foregroundColor(wouldExceedCap(chore) ? .red : .green)
                                 
                                 Image(systemName: "chevron.right")
                                     .foregroundColor(.gray)
                             }
                             .padding(.vertical, 4)
                         }
+                        .disabled(wouldExceedCap(chore))
+                        .opacity(wouldExceedCap(chore) ? 0.5 : 1.0)
                     }
                 }
             }
@@ -87,24 +130,39 @@ struct CompleteChoreView: View {
                     Text("Mark \"\(chore.name ?? "")\" as complete for $\(chore.amount, specifier: "%.2f")?")
                 }
             }
+            .alert("Weekly Cap Reached", isPresented: $showCapReachedAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("You've reached your weekly earning cap of $\(child.weeklyCap, specifier: "%.2f"). Ask a parent for a bonus or wait until next week!")
+            }
+        }
+    }
+    
+    private func wouldExceedCap(_ chore: Chore) -> Bool {
+        return (thisWeekEarnings + chore.amount) > child.weeklyCap
+    }
+    
+    private func handleChoreSelection(_ chore: Chore) {
+        if wouldExceedCap(chore) {
+            showCapReachedAlert = true
+        } else {
+            selectedChore = chore
         }
     }
     
     private func completeChore(_ chore: Chore) {
-        // Create a new chore completion
         let completion = ChoreCompletion(context: viewContext)
         completion.id = UUID()
         completion.status = "pending"
         completion.completedAt = Date()
-        completion.weekStartDate = getStartOfWeek()
+        completion.weekStartDate = Self.getStartOfWeek()
+        completion.isBonus = false
         
-        // Calculate the fund splits (80/10/10)
         let total = chore.amount
         completion.spendingAmount = total * 0.8
         completion.savingsAmount = total * 0.1
         completion.givingAmount = total * 0.1
         
-        // Link to child and chore
         completion.child = child
         completion.chore = chore
         
@@ -115,20 +173,13 @@ struct CompleteChoreView: View {
             print("Error completing chore: \(error)")
         }
     }
-    
-    // Helper to get the start of the current week (Sunday)
-    private func getStartOfWeek() -> Date {
-        let calendar = Calendar.current
-        let now = Date()
-        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now)
-        return calendar.date(from: components) ?? now
-    }
 }
 
 #Preview {
     let context = PersistenceController.preview.container.viewContext
     let child = Child(context: context)
     child.name = "Sample Child"
+    child.weeklyCap = 10.0
     
     return CompleteChoreView(child: child)
         .environment(\.managedObjectContext, context)
