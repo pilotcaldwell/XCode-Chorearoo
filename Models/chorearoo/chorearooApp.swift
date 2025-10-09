@@ -11,7 +11,7 @@ import CoreData
 @main
 struct chorearooApp: App {
     let persistenceController = PersistenceController.shared
-
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
