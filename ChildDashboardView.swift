@@ -121,23 +121,15 @@ struct ChildDashboardView: View {
         fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ChoreCompletion.completedAt, ascending: false)]
         
         if let childId = child.id?.uuidString {
-            fetchRequest.predicate = NSPredicate(format: "child.id == %@", childId as CVarArg)
+            // ONLY fetch approved transactions (no pending ones)
+            fetchRequest.predicate = NSPredicate(format: "child.id == %@ AND status == %@",
+                                                childId as CVarArg,
+                                                "approved")
         }
         
         do {
-            let all = try viewContext.fetch(fetchRequest)
-            
-            // Filter to only recent approved and all pending
-            let pending = all.filter { $0.status == "pending" }
-            let approved = all.filter { completion in
-                guard completion.status == "approved" else { return false }
-                guard let completedAt = completion.completedAt else { return false }
-                let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: Date()) ?? Date()
-                return completedAt >= thirtyDaysAgo
-            }
-            
-            allTransactions = (pending + approved).sorted { ($0.completedAt ?? Date()) > ($1.completedAt ?? Date()) }
-            print("✅ Child dashboard fetched \(allTransactions.count) transactions")
+            allTransactions = try viewContext.fetch(fetchRequest)
+            print("✅ Child dashboard fetched \(allTransactions.count) approved transactions")
         } catch {
             print("❌ Error fetching transactions: \(error)")
             allTransactions = []
@@ -189,159 +181,165 @@ struct ChildDashboardView: View {
         }
     }
     
-    private var totalBalanceCard: some View {
-        VStack(spacing: 8) {
-            Text("My Cash Balance")
-                .font(.headline)
-                .foregroundColor(.gray)
-            
-            Text(String(format: "$%.2f", totalBalance))
-                .font(.system(size: 48, weight: .bold))
-                .foregroundColor(.purple)
-            
-            Text("Total across all three money jars")
-                .font(.caption)
-                .foregroundColor(.gray)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 30)
-        .background(Color.white)
-        .cornerRadius(16)
-        .shadow(color: .black.opacity(0.05), radius: 10)
-        .padding(.horizontal)
-    }
-    
-    private var moneyJarsSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Image(systemName: "dollarsign.circle.fill")
+    // ... [Continue in Part 2]
+    // ... [Continued from Part 1]
+        
+        private var totalBalanceCard: some View {
+            VStack(spacing: 8) {
+                Text("My Cash Balance")
+                    .font(.headline)
+                    .foregroundColor(.gray)
+                
+                Text(String(format: "$%.2f", totalBalance))
+                    .font(.system(size: 48, weight: .bold))
                     .foregroundColor(.purple)
-                Text("My Money Jars")
-                    .font(.title3)
-                    .fontWeight(.bold)
+                
+                Text("Total across all three money jars")
+                    .font(.caption)
+                    .foregroundColor(.gray)
             }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 30)
+            .background(Color.white)
+            .cornerRadius(16)
+            .shadow(color: .black.opacity(0.05), radius: 10)
             .padding(.horizontal)
-            
-            VStack(spacing: 12) {
-                MoneyJarCard(
-                    title: "Spending (80%)",
-                    subtitle: "For things I want",
-                    amount: child.spendingBalance,
-                    color: .purple
-                )
+        }
+        
+        private var moneyJarsSection: some View {
+            VStack(alignment: .leading, spacing: 16) {
+                HStack {
+                    Image(systemName: "dollarsign.circle.fill")
+                        .foregroundColor(.purple)
+                    Text("My Money Jars")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                }
+                .padding(.horizontal)
                 
-                MoneyJarCard(
-                    title: "Savings (10%)",
-                    subtitle: "For my future",
-                    amount: child.savingsBalance,
-                    color: .green
-                )
+                VStack(spacing: 12) {
+                    MoneyJarCard(
+                        title: "Spending (80%)",
+                        subtitle: "For things I want",
+                        amount: child.spendingBalance,
+                        color: .purple
+                    )
+                    
+                    MoneyJarCard(
+                        title: "Savings (10%)",
+                        subtitle: "For my future",
+                        amount: child.savingsBalance,
+                        color: .green
+                    )
+                    
+                    MoneyJarCard(
+                        title: "Giving (10%)",
+                        subtitle: "To help others",
+                        amount: child.givingBalance,
+                        color: .orange
+                    )
+                }
+                .padding(.horizontal)
                 
-                MoneyJarCard(
-                    title: "Giving (10%)",
-                    subtitle: "To help others",
-                    amount: child.givingBalance,
+                Text("Every time you earn money, it's automatically split into these three jars!")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+            }
+            .padding(.vertical)
+        }
+        
+        private var statsCardsSection: some View {
+            HStack(spacing: 12) {
+                StatCard(
+                    icon: "trophy.fill",
+                    title: "Total Earned",
+                    value: String(format: "$%.2f", totalBalance),
+                    subtitle: "Since you started",
                     color: .orange
                 )
+                
+                StatCard(
+                    icon: "checkmark.circle.fill",
+                    title: "Today",
+                    value: "\(todayCompletionCount)",
+                    subtitle: "Chores completed",
+                    color: .green
+                )
             }
             .padding(.horizontal)
-            
-            Text("Every time you earn money, it's automatically split into these three jars!")
-                .font(.caption)
-                .foregroundColor(.gray)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
         }
-        .padding(.vertical)
-    }
-    
-    private var statsCardsSection: some View {
-        HStack(spacing: 12) {
-            StatCard(
-                icon: "trophy.fill",
-                title: "Total Earned",
-                value: String(format: "$%.2f", totalBalance),
-                subtitle: "Since you started",
-                color: .orange
-            )
-            
-            StatCard(
-                icon: "checkmark.circle.fill",
-                title: "Today",
-                value: "\(todayCompletionCount)",
-                subtitle: "Chores completed",
-                color: .green
-            )
-        }
-        .padding(.horizontal)
-    }
-    
-    private var transactionLedgerSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Image(systemName: "book.fill")
-                    .foregroundColor(.purple)
-                Text("Transactions")
-                    .font(.title3)
-                    .fontWeight(.bold)
-            }
-            .padding(.horizontal)
-            
-            if allTransactions.isEmpty {
-                VStack(spacing: 12) {
-                    Image(systemName: "tray")
-                        .font(.system(size: 40))
-                        .foregroundColor(.gray.opacity(0.5))
-                    Text("No transactions yet")
-                        .foregroundColor(.gray)
-                    Text("Complete some chores to get started!")
-                        .font(.caption)
-                        .foregroundColor(.gray)
+        
+        private var transactionLedgerSection: some View {
+            VStack(alignment: .leading, spacing: 16) {
+                HStack {
+                    Image(systemName: "book.fill")
+                        .foregroundColor(.purple)
+                    Text("Transactions")
+                        .font(.title3)
+                        .fontWeight(.bold)
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 40)
-            } else {
-                VStack(spacing: 0) {
-                    ForEach(Array(allTransactions.enumerated()), id: \.element.id) { index, completion in
-                        TransactionLedgerRow(
-                            completion: completion,
-                            child: child,
-                            runningBalance: calculateRunningBalance(upToIndex: index)
-                        )
-                        
-                        if completion.id != allTransactions.last?.id {
-                            Divider()
-                                .padding(.leading, 60)
+                .padding(.horizontal)
+                
+                if allTransactions.isEmpty {
+                    VStack(spacing: 12) {
+                        Image(systemName: "tray")
+                            .font(.system(size: 40))
+                            .foregroundColor(.gray.opacity(0.5))
+                        Text("No transactions yet")
+                            .foregroundColor(.gray)
+                        Text("Complete some chores to get started!")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 40)
+                } else {
+                    VStack(spacing: 0) {
+                        ForEach(Array(allTransactions.enumerated()), id: \.element.id) { index, completion in
+                            TransactionLedgerRow(
+                                completion: completion,
+                                child: child,
+                                runningBalance: calculateRunningBalance(upToIndex: index)
+                            )
+                            
+                            if completion.id != allTransactions.last?.id {
+                                Divider()
+                                    .padding(.leading, 60)
+                            }
                         }
                     }
+                    .background(Color.white)
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.05), radius: 5)
+                    .padding(.horizontal)
                 }
-                .background(Color.white)
-                .cornerRadius(12)
-                .shadow(color: .black.opacity(0.05), radius: 5)
-                .padding(.horizontal)
             }
-        }
-        .padding(.vertical)
-    }
-    
-    // Calculate running balance at a specific transaction index
-    private func calculateRunningBalance(upToIndex: Int) -> Double {
-        // Start with current total balance
-        var balance = totalBalance
-        
-        // Subtract all transactions that came AFTER this one (going backwards in time)
-        // Since transactions are sorted newest first, we subtract transactions at indices 0 to upToIndex-1
-        for i in 0..<upToIndex {
-            let completion = allTransactions[i]
-            if completion.status == "approved" {
-                let amount = completion.spendingAmount + completion.savingsAmount + completion.givingAmount
-                balance -= amount
-            }
+            .padding(.vertical)
         }
         
-        return balance
+        // Calculate running balance at a specific transaction index
+        private func calculateRunningBalance(upToIndex: Int) -> Double {
+            // Start with current total balance
+            var balance = totalBalance
+            
+            // Subtract all transactions that came AFTER this one (going backwards in time)
+            // Since transactions are sorted newest first, we subtract transactions at indices 0 to upToIndex-1
+            for i in 0..<upToIndex {
+                let completion = allTransactions[i]
+                if completion.status == "approved" {
+                    let amount = completion.spendingAmount + completion.savingsAmount + completion.givingAmount
+                    balance -= amount
+                }
+            }
+            
+            return balance
+        }
     }
-}
+
+    // ... [Continue in Part 3 for helper views]
+// ... [Continued - Helper Views and Components]
 
 // New Child Chore List View with Pending Status
 struct ChildChoreListView: View {
@@ -582,6 +580,9 @@ struct ChoreRowWithStatus: View {
         .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
     }
 }
+
+// ... [Continue in Part 4 for remaining helper views]
+// ... [Final helper views and components]
 
 struct MoneyJarCard: View {
     let title: String

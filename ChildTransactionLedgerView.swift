@@ -74,12 +74,15 @@ struct ChildTransactionLedgerView: View {
         fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ChoreCompletion.completedAt, ascending: false)]
         
         if let childId = child.id?.uuidString {
-            fetchRequest.predicate = NSPredicate(format: "child.id == %@", childId as CVarArg)
+            // ONLY fetch approved transactions (no pending ones)
+            fetchRequest.predicate = NSPredicate(format: "child.id == %@ AND status == %@",
+                                                childId as CVarArg,
+                                                "approved")
         }
         
         do {
             allCompletions = try viewContext.fetch(fetchRequest)
-            print("✅ Fetched \(allCompletions.count) transactions")
+            print("✅ Parent ledger fetched \(allCompletions.count) approved transactions")
         } catch {
             print("❌ Error fetching transactions: \(error)")
             allCompletions = []
