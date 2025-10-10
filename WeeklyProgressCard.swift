@@ -25,19 +25,19 @@ struct WeeklyProgressCard: View {
             HStack {
                 Image(systemName: "clock.badge.checkmark.fill")
                     .font(.title2)
-                    .foregroundColor(.orange)
+                    .foregroundColor(.green)
                 Text("This Week")
                     .font(.title2)
                     .fontWeight(.bold)
                 
                 Spacer()
                 
-                Text("Pending")
+                Text("Approved")
                     .font(.subheadline)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
-                    .background(Color.orange.opacity(0.2))
-                    .foregroundColor(.orange)
+                    .background(Color.green.opacity(0.2))
+                    .foregroundColor(.green)
                     .cornerRadius(20)
             }
             

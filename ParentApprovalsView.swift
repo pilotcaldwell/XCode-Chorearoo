@@ -99,32 +99,80 @@ struct ParentApprovalsView: View {
     }
     
     private func approveCompletion(_ completion: ChoreCompletion) {
+        // Safety check - only approve if status is pending
+        guard completion.status == "pending" else {
+            print("⚠️ Attempted to approve a chore that is not pending (status: \(completion.status ?? "nil"))")
+            return
+        }
+        
+        print("✅ Approving chore: \(completion.chore?.name ?? "unknown")")
+        
         // Update completion status
         completion.status = "approved"
         completion.approvedAt = Date()
         
-        // Add money to child's balances
+        // Add money to child's balances ONLY when approving
         if let child = completion.child {
+            print("💰 Adding money to child: \(child.name ?? "unknown")")
+            print("   Spending: $\(completion.spendingAmount)")
+            print("   Savings: $\(completion.savingsAmount)")
+            print("   Giving: $\(completion.givingAmount)")
+            
             child.spendingBalance += completion.spendingAmount
             child.savingsBalance += completion.savingsAmount
             child.givingBalance += completion.givingAmount
+            
+            print("   New balances:")
+            print("   Spending: $\(child.spendingBalance)")
+            print("   Savings: $\(child.savingsBalance)")
+            print("   Giving: $\(child.givingBalance)")
         }
         
         do {
             try viewContext.save()
+            print("✅ Successfully approved and saved")
         } catch {
-            print("Error approving completion: \(error)")
+            print("❌ Error approving completion: \(error)")
         }
     }
     
     private func rejectCompletion(_ completion: ChoreCompletion) {
-        // Update completion status
+        // Safety check - only reject if status is pending
+        guard completion.status == "pending" else {
+            print("⚠️ Attempted to reject a chore that is not pending (status: \(completion.status ?? "nil"))")
+            return
+        }
+        
+        print("❌ Rejecting chore: \(completion.chore?.name ?? "unknown") for child: \(completion.child?.name ?? "unknown")")
+        
+        // Get child info for logging
+        if let child = completion.child {
+            print("   Child's current balances BEFORE rejection:")
+            print("   Spending: $\(child.spendingBalance)")
+            print("   Savings: $\(child.savingsBalance)")
+            print("   Giving: $\(child.givingBalance)")
+        }
+        
+        // Simply change status to rejected
+        // ABSOLUTELY DO NOT add any money to child's account
+        // ABSOLUTELY DO NOT modify child.spendingBalance
+        // ABSOLUTELY DO NOT modify child.savingsBalance
+        // ABSOLUTELY DO NOT modify child.givingBalance
         completion.status = "rejected"
+        
+        // Verify child balances haven't changed
+        if let child = completion.child {
+            print("   Child's balances AFTER rejection (should be same):")
+            print("   Spending: $\(child.spendingBalance)")
+            print("   Savings: $\(child.savingsBalance)")
+            print("   Giving: $\(child.givingBalance)")
+        }
         
         do {
             try viewContext.save()
+            print("✅ Successfully rejected and saved - NO MONEY WAS ADDED")
         } catch {
-            print("Error rejecting completion: \(error)")
+            print("❌ Error rejecting completion: \(error)")
         }
     }
 }
