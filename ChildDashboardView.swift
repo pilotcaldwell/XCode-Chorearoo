@@ -56,8 +56,16 @@ struct ChildDashboardView: View {
     }
     
     var thisWeekChoreEarnings: Double {
-        pendingCompletions
-            .reduce(0) { $0 + ($1.chore?.amount ?? 0) }
+        print("🟡 Calculating thisWeekChoreEarnings")
+        print("🟡 Number of pending completions: \(pendingCompletions.count)")
+        for completion in pendingCompletions {
+            print("🟡 Found pending: \(completion.chore?.name ?? "unknown") - $\(completion.chore?.amount ?? 0)")
+            print("🟡   Week start: \(completion.weekStartDate ?? Date())")
+            print("🟡   Status: \(completion.status ?? "no status")")
+        }
+        let total = pendingCompletions.reduce(0) { $0 + ($1.chore?.amount ?? 0) }
+        print("🟡 Total thisWeekChoreEarnings: $\(total)")
+        return total
     }
     
     var thisWeekBonusEarnings: Double {
@@ -109,7 +117,7 @@ struct ChildDashboardView: View {
             fetchTransactions()
         }
         .onChange(of: selectedTab) {
-            // Refresh transactions when switching back to dashboard
+            // Refresh transactions when switching back to dashboardf
             if selectedTab == 0 {
                 fetchTransactions()
             }
@@ -153,6 +161,7 @@ struct ChildDashboardView: View {
                         bonusEarnings: thisWeekBonusEarnings,
                         weeklyCap: child.weeklyCap > 0 ? child.weeklyCap : 10.0
                     )
+                    .id(refreshID)
                     
                     // Stats Cards
                     statsCardsSection
@@ -486,6 +495,10 @@ struct ChildChoreListView: View {
         completion.weekStartDate = Self.getStartOfWeek()
         completion.isBonus = false
         
+        // DEBUG: Print what we're setting
+        print("🔵 Week start date: \(Self.getStartOfWeek())")
+        print("🔵 Chore amount: $\(chore.amount)")
+        
         let total = chore.amount
         completion.spendingAmount = total * 0.8
         completion.savingsAmount = total * 0.1
@@ -503,12 +516,18 @@ struct ChildChoreListView: View {
             print("✅ Successfully saved to Core Data")
             
             // UI will refresh automatically due to @FetchRequest
+            
+            // Trigger refresh of dashboard
+            refreshTrigger = UUID()
         } catch {
             print("❌ Error completing chore: \(error)")
             // Remove from pending if save failed
             if let choreId = chore.id {
                 pendingChoreIDs.remove(choreId)
             }
+            
+            // Trigger refresh of dashboard
+            refreshTrigger = UUID()
         }
     }
 }
