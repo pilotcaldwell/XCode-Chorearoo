@@ -617,9 +617,17 @@ struct TransactionLedgerRow: View {
     let child: Child
     let runningBalance: Double
     
+    // Check if this is an expense (negative amounts)
+    var isExpense: Bool {
+        let totalAmount = completion.spendingAmount + completion.savingsAmount + completion.givingAmount
+        return totalAmount < 0
+    }
+    
     var transactionAmount: Double {
         if completion.isBonus {
             return completion.spendingAmount + completion.savingsAmount + completion.givingAmount
+        } else if isExpense {
+            return abs(completion.spendingAmount + completion.savingsAmount + completion.givingAmount)
         } else {
             return completion.chore?.amount ?? 0
         }
@@ -633,18 +641,22 @@ struct TransactionLedgerRow: View {
         HStack(spacing: 12) {
             // Icon
             Circle()
-                .fill(completion.isBonus ? Color.green.opacity(0.2) : Color.orange.opacity(0.2))
+                .fill(isExpense ? Color.red.opacity(0.2) : (completion.isBonus ? Color.green.opacity(0.2) : Color.orange.opacity(0.2)))
                 .frame(width: 40, height: 40)
                 .overlay(
-                    Image(systemName: completion.isBonus ? "gift.fill" : "list.bullet.clipboard.fill")
-                        .foregroundColor(completion.isBonus ? .green : .orange)
+                    Image(systemName: isExpense ? "minus.circle.fill" : (completion.isBonus ? "gift.fill" : "list.bullet.clipboard.fill"))
+                        .foregroundColor(isExpense ? .red : (completion.isBonus ? .green : .orange))
                         .font(.system(size: 16))
                 )
             
             // Transaction Details
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 8) {
-                    if completion.isBonus {
+                    if isExpense {
+                        Text(completion.chore?.name?.replacingOccurrences(of: "Expense: ", with: "") ?? "Expense")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                    } else if completion.isBonus {
                         Text("Bonus")
                             .font(.subheadline)
                             .fontWeight(.medium)
@@ -675,18 +687,18 @@ struct TransactionLedgerRow: View {
                 
                 // Show jar breakdown with color coding (no emojis)
                 HStack(spacing: 12) {
-                    if completion.spendingAmount > 0 {
-                        Text("Spending: $\(completion.spendingAmount, specifier: "%.2f")")
+                    if completion.spendingAmount != 0 {
+                        Text("Spending: $\(abs(completion.spendingAmount), specifier: "%.2f")")
                             .font(.caption2)
                             .foregroundColor(.purple)
                     }
-                    if completion.savingsAmount > 0 {
-                        Text("Savings: $\(completion.savingsAmount, specifier: "%.2f")")
+                    if completion.savingsAmount != 0 {
+                        Text("Savings: $\(abs(completion.savingsAmount), specifier: "%.2f")")
                             .font(.caption2)
                             .foregroundColor(.green)
                     }
-                    if completion.givingAmount > 0 {
-                        Text("Giving: $\(completion.givingAmount, specifier: "%.2f")")
+                    if completion.givingAmount != 0 {
+                        Text("Giving: $\(abs(completion.givingAmount), specifier: "%.2f")")
                             .font(.caption2)
                             .foregroundColor(.orange)
                     }
@@ -697,11 +709,11 @@ struct TransactionLedgerRow: View {
             
             // Amount and Balance
             VStack(alignment: .trailing, spacing: 4) {
-                // Transaction amount
-                Text(isPending ? "+$\(transactionAmount, specifier: "%.2f")" : "+$\(transactionAmount, specifier: "%.2f")")
+                // Transaction amount - show + for income, - for expense
+                Text("\(isExpense ? "-" : "+")$\(transactionAmount, specifier: "%.2f")")
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundColor(isPending ? .orange : .green)
+                    .foregroundColor(isExpense ? .red : (isPending ? .orange : .green))
                 
                 // Running balance (only for approved transactions)
                 if !isPending {
@@ -712,7 +724,7 @@ struct TransactionLedgerRow: View {
             }
         }
         .padding()
-        .contentShape(Rectangle()) // Makes entire row tappable area
+        .contentShape(Rectangle())
         .onTapGesture {
             // Do nothing - transactions shouldn't be clickable
         }

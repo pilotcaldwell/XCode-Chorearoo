@@ -6,6 +6,7 @@ struct AddBonusView: View {
     @Environment(\.dismiss) private var dismiss
     
     let child: Child
+    let onBonusAdded: () -> Void  // Callback when bonus is successfully added
     
     @State private var amount: String = ""
     @State private var reason: String = ""
@@ -71,6 +72,10 @@ struct AddBonusView: View {
     private func giveBonus() {
         guard let bonusAmount = Double(amount), bonusAmount > 0 else { return }
         
+        print("🟢 Starting to give bonus")
+        print("🟢 Amount: $\(bonusAmount)")
+        print("🟢 Jar: \(selectedJar.rawValue)")
+        
         // Add money directly to child's balance (no ChoreCompletion needed for tracking)
         switch selectedJar {
         case .spending:
@@ -84,7 +89,7 @@ struct AddBonusView: View {
         // Create a completion record for transaction history only
         let bonus = ChoreCompletion(context: viewContext)
         bonus.id = UUID()
-        bonus.status = "approved"
+        bonus.status = "approved" // Immediately approved since parent is doing it
         bonus.completedAt = Date()
         bonus.approvedAt = Date()
         bonus.weekStartDate = getStartOfWeek()
@@ -110,9 +115,17 @@ struct AddBonusView: View {
         
         do {
             try viewContext.save()
+            print("✅ Successfully saved bonus to Core Data")
+            
+            // Dismiss first
             dismiss()
+            
+            // Then trigger callback after a short delay to ensure UI updates
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                onBonusAdded()
+            }
         } catch {
-            print("Error giving bonus: \(error)")
+            print("❌ Error giving bonus: \(error)")
         }
     }
     
@@ -129,6 +142,6 @@ struct AddBonusView: View {
     let child = Child(context: context)
     child.name = "Sample Child"
     
-    return AddBonusView(child: child)
+    return AddBonusView(child: child, onBonusAdded: {})
         .environment(\.managedObjectContext, context)
 }

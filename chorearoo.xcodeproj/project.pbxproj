@@ -53,6 +53,8 @@
 		1303EBDA2E977AFC00A727C4 /* DataMigrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBD82E977AFC00A727C4 /* DataMigrationHelper.swift */; };
 		1303EBDC2E97821600A727C4 /* ChildTransactionLedgerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBDB2E97821600A727C4 /* ChildTransactionLedgerView.swift */; };
 		1303EBDD2E97821600A727C4 /* ChildTransactionLedgerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBDB2E97821600A727C4 /* ChildTransactionLedgerView.swift */; };
+		1303EBF12E988EFE00A727C4 /* AddExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBF02E988EFE00A727C4 /* AddExpenseView.swift */; };
+		1303EBF22E988EFE00A727C4 /* AddExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBF02E988EFE00A727C4 /* AddExpenseView.swift */; };
 		13070EC82E973F7F000D2F69 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13070EC72E973F7F000D2F69 /* PersistenceController.swift */; };
 		13070EC92E973F7F000D2F69 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13070EC72E973F7F000D2F69 /* PersistenceController.swift */; };
 /* End PBXBuildFile section */
@@ -98,6 +100,7 @@
 		1303EBD52E97784A00A727C4 /* AddBonusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBonusView.swift; sourceTree = "<group>"; };
 		1303EBD82E977AFC00A727C4 /* DataMigrationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrationHelper.swift; sourceTree = "<group>"; };
 		1303EBDB2E97821600A727C4 /* ChildTransactionLedgerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildTransactionLedgerView.swift; sourceTree = "<group>"; };
+		1303EBF02E988EFE00A727C4 /* AddExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseView.swift; sourceTree = "<group>"; };
 		13070E632E9714E0000D2F69 /* chorearoo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chorearoo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13070E772E9714E1000D2F69 /* chorearooTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chorearooTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		13070E812E9714E1000D2F69 /* chorearooUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chorearooUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -163,6 +166,7 @@
 		13070E5A2E9714E0000D2F69 = {
 			isa = PBXGroup;
 			children = (
+				1303EBF02E988EFE00A727C4 /* AddExpenseView.swift */,
 				1303EBDB2E97821600A727C4 /* ChildTransactionLedgerView.swift */,
 				1303EBD82E977AFC00A727C4 /* DataMigrationHelper.swift */,
 				1303EBD52E97784A00A727C4 /* AddBonusView.swift */,
@@ -404,6 +408,7 @@
 				1303EBBE2E976C0F00A727C4 /* ChildDashboardView.swift in Sources */,
 				1303EBD72E97784A00A727C4 /* AddBonusView.swift in Sources */,
 				1303EBAA2E9758E200A727C4 /* ChoreLibraryView.swift in Sources */,
+				1303EBF22E988EFE00A727C4 /* AddExpenseView.swift in Sources */,
 				1303EBB02E975B4200A727C4 /* CompleteChoreView.swift in Sources */,
 				1303EB892E974F6300A727C4 /* Child+CoreDataClass.swift in Sources */,
 				1303EBA32E97570400A727C4 /* ChildrenListView.swift in Sources */,
@@ -439,6 +444,7 @@
 				1303EBBF2E976C0F00A727C4 /* ChildDashboardView.swift in Sources */,
 				1303EBA42E97570400A727C4 /* ChildrenListView.swift in Sources */,
 				1303EBAF2E975B4200A727C4 /* CompleteChoreView.swift in Sources */,
+				1303EBF12E988EFE00A727C4 /* AddExpenseView.swift in Sources */,
 				1303EB922E974F6300A727C4 /* Chore+CoreDataClass.swift in Sources */,
 				1303EB932E974F6300A727C4 /* Child+CoreDataProperties.swift in Sources */,
 				1303EBD62E97784A00A727C4 /* AddBonusView.swift in Sources */,

@@ -10,64 +10,49 @@ struct ChildrenListView: View {
     private var children: FetchedResults<Child>
     
     @State private var showingAddChild = false
-    @State private var selectedChildForBonus: Child?
     
     var body: some View {
         NavigationView {
             List {
                 ForEach(children) { child in
-                    HStack {
-                        // Navigate to child's transaction ledger
-                        NavigationLink {
-                            ChildTransactionLedgerView(child: child)
-                        } label: {
-                            HStack {
-                                // Avatar circle with first letter of name
-                                Circle()
-                                    .fill(Color(hex: child.avatarColor ?? "#3b82f6"))
-                                    .frame(width: 50, height: 50)
-                                    .overlay(
-                                        Text(String(child.name?.prefix(1) ?? "?"))
-                                            .foregroundColor(.white)
-                                            .font(.title2)
-                                            .bold()
-                                    )
-                                
-                                VStack(alignment: .leading) {
-                                    Text(child.name ?? "Unknown")
-                                        .font(.headline)
-                                    if child.age > 0 {
-                                        Text("Age: \(child.age)")
-                                            .font(.subheadline)
-                                            .foregroundColor(.gray)
-                                    }
-                                }
-                                
-                                Spacer()
-                                
-                                // Show total balance
-                                VStack(alignment: .trailing) {
-                                    Text("$\(child.spendingBalance + child.savingsBalance + child.givingBalance, specifier: "%.2f")")
-                                        .font(.headline)
-                                    Text("Total")
-                                        .font(.caption)
+                    NavigationLink {
+                        ChildTransactionLedgerView(child: child)
+                    } label: {
+                        HStack {
+                            // Avatar circle with first letter of name
+                            Circle()
+                                .fill(Color(hex: child.avatarColor ?? "#3b82f6"))
+                                .frame(width: 50, height: 50)
+                                .overlay(
+                                    Text(String(child.name?.prefix(1) ?? "?"))
+                                        .foregroundColor(.white)
+                                        .font(.title2)
+                                        .bold()
+                                )
+                            
+                            VStack(alignment: .leading) {
+                                Text(child.name ?? "Unknown")
+                                    .font(.headline)
+                                if child.age > 0 {
+                                    Text("Age: \(child.age)")
+                                        .font(.subheadline)
                                         .foregroundColor(.gray)
                                 }
                             }
+                            
+                            Spacer()
+                            
+                            // Show total balance
+                            VStack(alignment: .trailing) {
+                                Text("$\(child.spendingBalance + child.savingsBalance + child.givingBalance, specifier: "%.2f")")
+                                    .font(.headline)
+                                Text("Total")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            }
                         }
-                        
-                        // Bonus button
-                        Button(action: {
-                            selectedChildForBonus = child
-                        }) {
-                            Image(systemName: "gift.fill")
-                                .foregroundColor(.green)
-                                .font(.title3)
-                                .padding(8)
-                        }
-                        .buttonStyle(BorderlessButtonStyle())
+                        .padding(.vertical, 4)
                     }
-                    .padding(.vertical, 4)
                 }
             }
             .navigationTitle("Children")
@@ -80,9 +65,6 @@ struct ChildrenListView: View {
             }
             .sheet(isPresented: $showingAddChild) {
                 AddChildView()
-            }
-            .sheet(item: $selectedChildForBonus) { child in
-                AddBonusView(child: child)
             }
         }
     }
