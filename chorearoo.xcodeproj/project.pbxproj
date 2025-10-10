@@ -55,6 +55,16 @@
 		1303EBDD2E97821600A727C4 /* ChildTransactionLedgerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBDB2E97821600A727C4 /* ChildTransactionLedgerView.swift */; };
 		1303EBF12E988EFE00A727C4 /* AddExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBF02E988EFE00A727C4 /* AddExpenseView.swift */; };
 		1303EBF22E988EFE00A727C4 /* AddExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBF02E988EFE00A727C4 /* AddExpenseView.swift */; };
+		1303EBF52E98989300A727C4 /* StoreItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBF42E98989300A727C4 /* StoreItem+CoreDataProperties.swift */; };
+		1303EBF62E98989300A727C4 /* StoreItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBF32E98989300A727C4 /* StoreItem+CoreDataClass.swift */; };
+		1303EBF72E98989300A727C4 /* StoreItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBF42E98989300A727C4 /* StoreItem+CoreDataProperties.swift */; };
+		1303EBF82E98989300A727C4 /* StoreItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBF32E98989300A727C4 /* StoreItem+CoreDataClass.swift */; };
+		1303EBFA2E9898CD00A727C4 /* AddStoreItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBF92E9898CD00A727C4 /* AddStoreItemView.swift */; };
+		1303EBFB2E9898CD00A727C4 /* AddStoreItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBF92E9898CD00A727C4 /* AddStoreItemView.swift */; };
+		1303EBFD2E9898ED00A727C4 /* ParentStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBFC2E9898ED00A727C4 /* ParentStoreView.swift */; };
+		1303EBFE2E9898ED00A727C4 /* ParentStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBFC2E9898ED00A727C4 /* ParentStoreView.swift */; };
+		1303EC002E98990E00A727C4 /* ChildStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBFF2E98990E00A727C4 /* ChildStoreView.swift */; };
+		1303EC012E98990E00A727C4 /* ChildStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBFF2E98990E00A727C4 /* ChildStoreView.swift */; };
 		13070EC82E973F7F000D2F69 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13070EC72E973F7F000D2F69 /* PersistenceController.swift */; };
 		13070EC92E973F7F000D2F69 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13070EC72E973F7F000D2F69 /* PersistenceController.swift */; };
 /* End PBXBuildFile section */
@@ -101,6 +111,11 @@
 		1303EBD82E977AFC00A727C4 /* DataMigrationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataMigrationHelper.swift; sourceTree = "<group>"; };
 		1303EBDB2E97821600A727C4 /* ChildTransactionLedgerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildTransactionLedgerView.swift; sourceTree = "<group>"; };
 		1303EBF02E988EFE00A727C4 /* AddExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseView.swift; sourceTree = "<group>"; };
+		1303EBF32E98989300A727C4 /* StoreItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StoreItem+CoreDataClass.swift"; sourceTree = "<group>"; };
+		1303EBF42E98989300A727C4 /* StoreItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StoreItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		1303EBF92E9898CD00A727C4 /* AddStoreItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStoreItemView.swift; sourceTree = "<group>"; };
+		1303EBFC2E9898ED00A727C4 /* ParentStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentStoreView.swift; sourceTree = "<group>"; };
+		1303EBFF2E98990E00A727C4 /* ChildStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildStoreView.swift; sourceTree = "<group>"; };
 		13070E632E9714E0000D2F69 /* chorearoo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chorearoo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13070E772E9714E1000D2F69 /* chorearooTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chorearooTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		13070E812E9714E1000D2F69 /* chorearooUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chorearooUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -166,6 +181,11 @@
 		13070E5A2E9714E0000D2F69 = {
 			isa = PBXGroup;
 			children = (
+				1303EBFF2E98990E00A727C4 /* ChildStoreView.swift */,
+				1303EBFC2E9898ED00A727C4 /* ParentStoreView.swift */,
+				1303EBF92E9898CD00A727C4 /* AddStoreItemView.swift */,
+				1303EBF32E98989300A727C4 /* StoreItem+CoreDataClass.swift */,
+				1303EBF42E98989300A727C4 /* StoreItem+CoreDataProperties.swift */,
 				1303EBF02E988EFE00A727C4 /* AddExpenseView.swift */,
 				1303EBDB2E97821600A727C4 /* ChildTransactionLedgerView.swift */,
 				1303EBD82E977AFC00A727C4 /* DataMigrationHelper.swift */,
@@ -402,6 +422,8 @@
 			files = (
 				1303EBDC2E97821600A727C4 /* ChildTransactionLedgerView.swift in Sources */,
 				1303EBA12E9756C200A727C4 /* AddChildView.swift in Sources */,
+				1303EBFE2E9898ED00A727C4 /* ParentStoreView.swift in Sources */,
+				1303EC012E98990E00A727C4 /* ChildStoreView.swift in Sources */,
 				1303EBB32E975D7100A727C4 /* ParentApprovalsView.swift in Sources */,
 				1303EB882E974F6300A727C4 /* ChoreCompletion+CoreDataClass.swift in Sources */,
 				1303EBD32E9777E000A727C4 /* WeeklyProgressCard.swift in Sources */,
@@ -414,6 +436,7 @@
 				1303EBA32E97570400A727C4 /* ChildrenListView.swift in Sources */,
 				1303EB8A2E974F6300A727C4 /* Chore+CoreDataClass.swift in Sources */,
 				1303EB8B2E974F6300A727C4 /* Child+CoreDataProperties.swift in Sources */,
+				1303EBFA2E9898CD00A727C4 /* AddStoreItemView.swift in Sources */,
 				1303EB8C2E974F6300A727C4 /* Chore+CoreDataProperties.swift in Sources */,
 				1303EB8D2E974F6300A727C4 /* ChoreCompletion+CoreDataProperties.swift in Sources */,
 				1303EBAD2E97590800A727C4 /* MainTabView.swift in Sources */,
@@ -422,6 +445,8 @@
 				1303EBD92E977AFC00A727C4 /* DataMigrationHelper.swift in Sources */,
 				1303EBB82E975E9D00A727C4 /* LoginView.swift in Sources */,
 				1303EBA72E9758B400A727C4 /* AddChoreView.swift in Sources */,
+				1303EBF52E98989300A727C4 /* StoreItem+CoreDataProperties.swift in Sources */,
+				1303EBF62E98989300A727C4 /* StoreItem+CoreDataClass.swift in Sources */,
 				1303EBB52E975E7B00A727C4 /* PINEntryView.swift in Sources */,
 				13070EC92E973F7F000D2F69 /* PersistenceController.swift in Sources */,
 				1303EBBC2E975FA400A727C4 /* SettingsView.swift in Sources */,
@@ -437,6 +462,7 @@
 				1303EBB22E975D7100A727C4 /* ParentApprovalsView.swift in Sources */,
 				1303EBDD2E97821600A727C4 /* ChildTransactionLedgerView.swift in Sources */,
 				1303EBA02E9756C200A727C4 /* AddChildView.swift in Sources */,
+				1303EBFB2E9898CD00A727C4 /* AddStoreItemView.swift in Sources */,
 				13070EC82E973F7F000D2F69 /* PersistenceController.swift in Sources */,
 				1303EBBB2E975FA400A727C4 /* SettingsView.swift in Sources */,
 				1303EB902E974F6300A727C4 /* ChoreCompletion+CoreDataClass.swift in Sources */,
@@ -444,16 +470,20 @@
 				1303EBBF2E976C0F00A727C4 /* ChildDashboardView.swift in Sources */,
 				1303EBA42E97570400A727C4 /* ChildrenListView.swift in Sources */,
 				1303EBAF2E975B4200A727C4 /* CompleteChoreView.swift in Sources */,
+				1303EC002E98990E00A727C4 /* ChildStoreView.swift in Sources */,
 				1303EBF12E988EFE00A727C4 /* AddExpenseView.swift in Sources */,
 				1303EB922E974F6300A727C4 /* Chore+CoreDataClass.swift in Sources */,
 				1303EB932E974F6300A727C4 /* Child+CoreDataProperties.swift in Sources */,
 				1303EBD62E97784A00A727C4 /* AddBonusView.swift in Sources */,
+				1303EBFD2E9898ED00A727C4 /* ParentStoreView.swift in Sources */,
 				1303EB942E974F6300A727C4 /* Chore+CoreDataProperties.swift in Sources */,
 				1303EB952E974F6300A727C4 /* ChoreCompletion+CoreDataProperties.swift in Sources */,
 				1303EBA62E9758B400A727C4 /* AddChoreView.swift in Sources */,
 				1303EB962E974F6300A727C4 /* Parent+CoreDataClass.swift in Sources */,
 				1303EB972E974F6300A727C4 /* Parent+CoreDataProperties.swift in Sources */,
 				1303EBB92E975E9D00A727C4 /* LoginView.swift in Sources */,
+				1303EBF72E98989300A727C4 /* StoreItem+CoreDataProperties.swift in Sources */,
+				1303EBF82E98989300A727C4 /* StoreItem+CoreDataClass.swift in Sources */,
 				1303EBAC2E97590800A727C4 /* MainTabView.swift in Sources */,
 				1303EBB62E975E7B00A727C4 /* PINEntryView.swift in Sources */,
 				1303EBD42E9777E000A727C4 /* WeeklyProgressCard.swift in Sources */,

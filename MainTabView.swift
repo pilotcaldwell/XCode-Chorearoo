@@ -18,6 +18,12 @@ struct MainTabView: View {
                     Text("Chores")
                 }
             
+            ParentStoreView()
+                .tabItem {
+                    Image(systemName: "cart.fill")
+                    Text("Store")
+                }
+            
             ParentApprovalsView()
                 .tabItem {
                     Image(systemName: "checkmark.circle.fill")

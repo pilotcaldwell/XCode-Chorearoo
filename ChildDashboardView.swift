@@ -16,6 +16,7 @@ struct ChildDashboardView: View {
     // Add state for selected tab and refresh trigger
     @State private var selectedTab = 0
     @State private var refreshID = UUID()
+    @State private var allTransactions: [ChoreCompletion] = []
     
     init(child: Child, isAuthenticated: Binding<Bool>, userRole: Binding<UserRole?>) {
         self.child = child
@@ -95,6 +96,51 @@ struct ChildDashboardView: View {
                     Text("Chores")
                 }
                 .tag(1)
+            
+            // Store Tab
+            ChildStoreView(child: child)
+                .tabItem {
+                    Image(systemName: "cart.fill")
+                    Text("Store")
+                }
+                .tag(2)
+        }
+        .onAppear {
+            fetchTransactions()
+        }
+        .onChange(of: selectedTab) {
+            // Refresh transactions when switching back to dashboard
+            if selectedTab == 0 {
+                fetchTransactions()
+            }
+        }
+    }
+    
+    private func fetchTransactions() {
+        let fetchRequest: NSFetchRequest<ChoreCompletion> = ChoreCompletion.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ChoreCompletion.completedAt, ascending: false)]
+        
+        if let childId = child.id?.uuidString {
+            fetchRequest.predicate = NSPredicate(format: "child.id == %@", childId as CVarArg)
+        }
+        
+        do {
+            let all = try viewContext.fetch(fetchRequest)
+            
+            // Filter to only recent approved and all pending
+            let pending = all.filter { $0.status == "pending" }
+            let approved = all.filter { completion in
+                guard completion.status == "approved" else { return false }
+                guard let completedAt = completion.completedAt else { return false }
+                let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: Date()) ?? Date()
+                return completedAt >= thirtyDaysAgo
+            }
+            
+            allTransactions = (pending + approved).sorted { ($0.completedAt ?? Date()) > ($1.completedAt ?? Date()) }
+            print("✅ Child dashboard fetched \(allTransactions.count) transactions")
+        } catch {
+            print("❌ Error fetching transactions: \(error)")
+            allTransactions = []
         }
     }
     
@@ -276,19 +322,6 @@ struct ChildDashboardView: View {
             }
         }
         .padding(.vertical)
-    }
-    
-    // Get all transactions (pending + approved), sorted by date
-    var allTransactions: [ChoreCompletion] {
-        let pending = Array(pendingCompletions)
-        let approved = approvedCompletions.filter { completion in
-            // Only show recent approved transactions (last 30 days)
-            guard let completedAt = completion.completedAt else { return false }
-            let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: Date()) ?? Date()
-            return completedAt >= thirtyDaysAgo
-        }
-        
-        return (pending + approved).sorted { ($0.completedAt ?? Date()) > ($1.completedAt ?? Date()) }
     }
     
     // Calculate running balance at a specific transaction index
@@ -617,10 +650,14 @@ struct TransactionLedgerRow: View {
     let child: Child
     let runningBalance: Double
     
-    // Check if this is an expense (negative amounts)
+    // Check if this is an expense (negative amounts) or purchase
     var isExpense: Bool {
         let totalAmount = completion.spendingAmount + completion.savingsAmount + completion.givingAmount
         return totalAmount < 0
+    }
+    
+    var isPurchase: Bool {
+        return isExpense && (completion.chore?.name?.hasPrefix("Purchase:") ?? false)
     }
     
     var transactionAmount: Double {
@@ -637,22 +674,50 @@ struct TransactionLedgerRow: View {
         completion.status == "pending"
     }
     
+    var displayIcon: String {
+        if isPurchase {
+            return "cart.fill"
+        } else if isExpense {
+            return "minus.circle.fill"
+        } else if completion.isBonus {
+            return "gift.fill"
+        } else {
+            return "list.bullet.clipboard.fill"
+        }
+    }
+    
+    var displayColor: Color {
+        if isPurchase {
+            return .blue
+        } else if isExpense {
+            return .red
+        } else if completion.isBonus {
+            return .green
+        } else {
+            return .orange
+        }
+    }
+    
     var body: some View {
         HStack(spacing: 12) {
             // Icon
             Circle()
-                .fill(isExpense ? Color.red.opacity(0.2) : (completion.isBonus ? Color.green.opacity(0.2) : Color.orange.opacity(0.2)))
+                .fill(displayColor.opacity(0.2))
                 .frame(width: 40, height: 40)
                 .overlay(
-                    Image(systemName: isExpense ? "minus.circle.fill" : (completion.isBonus ? "gift.fill" : "list.bullet.clipboard.fill"))
-                        .foregroundColor(isExpense ? .red : (completion.isBonus ? .green : .orange))
+                    Image(systemName: displayIcon)
+                        .foregroundColor(displayColor)
                         .font(.system(size: 16))
                 )
             
             // Transaction Details
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 8) {
-                    if isExpense {
+                    if isPurchase {
+                        Text(completion.chore?.name?.replacingOccurrences(of: "Purchase: ", with: "") ?? "Purchase")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                    } else if isExpense {
                         Text(completion.chore?.name?.replacingOccurrences(of: "Expense: ", with: "") ?? "Expense")
                             .font(.subheadline)
                             .fontWeight(.medium)
