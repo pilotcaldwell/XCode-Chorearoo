@@ -93,6 +93,8 @@
 		135550772EA86D0F00E1ADCD /* AppTheme 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550752EA86D0F00E1ADCD /* AppTheme 2.swift */; };
 		135550792EA86DAD00E1ADCD /* README_THEME_FIX.txt in Resources */ = {isa = PBXBuildFile; fileRef = 135550782EA86DAD00E1ADCD /* README_THEME_FIX.txt */; };
 		1355507A2EA86DAD00E1ADCD /* README_THEME_FIX.txt in Resources */ = {isa = PBXBuildFile; fileRef = 135550782EA86DAD00E1ADCD /* README_THEME_FIX.txt */; };
+		1355507C2EA8732200E1ADCD /* AppTheme 3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1355507B2EA8732200E1ADCD /* AppTheme 3.swift */; };
+		1355507D2EA8732200E1ADCD /* AppTheme 3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1355507B2EA8732200E1ADCD /* AppTheme 3.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -159,6 +161,7 @@
 		1355506F2EA86D0400E1ADCD /* KidTheme 20.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KidTheme 20.swift"; sourceTree = "<group>"; };
 		135550752EA86D0F00E1ADCD /* AppTheme 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppTheme 2.swift"; sourceTree = "<group>"; };
 		135550782EA86DAD00E1ADCD /* README_THEME_FIX.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README_THEME_FIX.txt; sourceTree = "<group>"; };
+		1355507B2EA8732200E1ADCD /* AppTheme 3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppTheme 3.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -272,6 +275,7 @@
 				1355506F2EA86D0400E1ADCD /* KidTheme 20.swift */,
 				135550752EA86D0F00E1ADCD /* AppTheme 2.swift */,
 				135550782EA86DAD00E1ADCD /* README_THEME_FIX.txt */,
+				1355507B2EA8732200E1ADCD /* AppTheme 3.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -500,6 +504,7 @@
 				1303EB8A2E974F6300A727C4 /* Chore+CoreDataClass.swift in Sources */,
 				1303EB8B2E974F6300A727C4 /* Child+CoreDataProperties.swift in Sources */,
 				1303EBFA2E9898CD00A727C4 /* AddStoreItemView.swift in Sources */,
+				1355507D2EA8732200E1ADCD /* AppTheme 3.swift in Sources */,
 				1303EB8C2E974F6300A727C4 /* Chore+CoreDataProperties.swift in Sources */,
 				1303EB8D2E974F6300A727C4 /* ChoreCompletion+CoreDataProperties.swift in Sources */,
 				135550342EA8645D00E1ADCD /* KidTheme.swift in Sources */,
@@ -561,6 +566,7 @@
 				1303EBB92E975E9D00A727C4 /* LoginView.swift in Sources */,
 				1303EBF72E98989300A727C4 /* StoreItem+CoreDataProperties.swift in Sources */,
 				1303EBF82E98989300A727C4 /* StoreItem+CoreDataClass.swift in Sources */,
+				1355507C2EA8732200E1ADCD /* AppTheme 3.swift in Sources */,
 				1303EBAC2E97590800A727C4 /* MainTabView.swift in Sources */,
 				135550672EA86CF900E1ADCD /* KidTheme 17.swift in Sources */,
 				1303EBB62E975E7B00A727C4 /* PINEntryView.swift in Sources */,

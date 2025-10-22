@@ -1,5 +1,4 @@
 import SwiftUI
-import SwiftUI
 import UIKit
 import CoreData
 
@@ -140,125 +139,134 @@ struct ChildDashboardView: View {
     
     private var dashboardContent: some View {
         NavigationView {
-            ZStack {
-                KidTheme.mainGradient // Dashboard background with colorful gradient for lively look
-                
-                ScrollView {
-                    VStack(spacing: 20) {
-                        // Total Balance Card (FIRST - biggest)
-                        totalBalanceCard
-                        
-                        // Money Jars Section (SECOND)
-                        moneyJarsSection
-                        
-                        // Weekly Progress Card (THIRD)
-                        WeeklyProgressCard(
-                            child: child,
-                            choreEarnings: thisWeekChoreEarnings,
-                            bonusEarnings: thisWeekBonusEarnings,
-                            weeklyCap: child.weeklyCap > 0 ? child.weeklyCap : 10.0
-                        )
-                        .background(KidTheme.cardGradient) // Card gradient for consistent card style
-                        .cornerRadius(16)
-                        .shadow(color: .black.opacity(0.05), radius: 5)
-                        .padding(.horizontal)
-                        
-                        // Stats Cards
-                        statsCardsSection
-                        
-                        // Transaction Ledger (replacing Recent Transactions)
-                        transactionLedgerSection
-                        
-                        // Logout Button at Bottom
-                        Button(action: {
-                            isAuthenticated = false
-                            userRole = nil
-                        }) {
-                            HStack(spacing: 8) {
-                                Image(systemName: "xmark")
-                                Text("Logout")
-                                    .fontWeight(.semibold)
-                            }
-                            .foregroundColor(.white)
-                            .padding(.vertical, 16)
-                            .frame(maxWidth: .infinity)
-                            .background(KidTheme.orange) // Playful orange background for logout button
-                            .cornerRadius(12)
-                            .padding(.horizontal)
-                            .shadow(color: KidTheme.orange.opacity(0.6), radius: 10, x: 0, y: 5)
+            ScrollView {
+                VStack(spacing: 20) {
+                    // Total Balance Card (FIRST - biggest)
+                    totalBalanceCard
+                    
+                    // Money Jars Section (SECOND)
+                    moneyJarsSection
+                    
+                    // Weekly Progress Card (THIRD)
+                    WeeklyProgressCard(
+                        child: child,
+                        choreEarnings: thisWeekChoreEarnings,
+                        bonusEarnings: thisWeekBonusEarnings,
+                        weeklyCap: child.weeklyCap > 0 ? child.weeklyCap : 10.0
+                    )
+                    .background(KidTheme.cardBackground)
+                    .cornerRadius(16)
+                    .shadow(color: .black.opacity(0.05), radius: 5)
+                    .padding(.horizontal)
+                    
+                    // Stats Cards
+                    statsCardsSection
+                    
+                    // Transaction Ledger
+                    transactionLedgerSection
+                    
+                    // Logout Button at Bottom
+                    Button(action: {
+                        isAuthenticated = false
+                        userRole = nil
+                    }) {
+                        HStack(spacing: 12) {
+                            Text("👋")
+                                .font(.title2)
+                            Text("Logout")
+                                .fontWeight(.bold)
+                                .font(.title3)
                         }
+                        .foregroundColor(KidTheme.textOnColor)
+                        .padding(.vertical, 20)
+                        .frame(maxWidth: .infinity)
+                        .background(KidTheme.orange)
+                        .cornerRadius(16)
+                        .padding(.horizontal)
+                        .shadow(color: KidTheme.orange.opacity(0.3), radius: 8, x: 0, y: 4)
                     }
-                    .padding(.vertical)
                 }
+                .padding(.vertical)
             }
-            .navigationTitle(child.name ?? "Dashboard")
-            .navigationBarTitleDisplayMode(.inline)
+            .background(KidTheme.backgroundSecondary)
+            .navigationTitle("\(child.name ?? "My") Dashboard 🏠")
+            .navigationBarTitleDisplayMode(.large)
         }
     }
     
     private var totalBalanceCard: some View {
-        VStack(spacing: 8) {
-            Text("My Cash Balance")
-                .font(.headline)
-                .foregroundColor(.gray)
+        VStack(spacing: 12) {
+            HStack(spacing: 8) {
+                Text("💰")
+                    .font(.largeTitle)
+                Text("Total Balance")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(KidTheme.textPrimary)
+            }
             
             Text(String(format: "$%.2f", totalBalance))
-                .font(.system(size: 48, weight: .bold))
-                .foregroundColor(KidTheme.purple) // Use KidTheme purple for the main number
+                .font(.system(size: 56, weight: .bold, design: .rounded))
+                .foregroundColor(KidTheme.green)
                 
-            Text("Total across all three money jars")
-                .font(.caption)
-                .foregroundColor(.gray)
+            Text("Across all your money jars")
+                .font(.body)
+                .foregroundColor(KidTheme.textSecondary)
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 30)
-        .background(KidTheme.cardGradient) // Colorful, glassy card background
-        .cornerRadius(16)
-        .shadow(color: .black.opacity(0.05), radius: 10)
+        .padding(.vertical, 32)
+        .background(KidTheme.cardBackground)
+        .cornerRadius(20)
+        .shadow(color: .black.opacity(0.05), radius: 12, x: 0, y: 6)
+        .overlay(
+            RoundedRectangle(cornerRadius: 20)
+                .stroke(KidTheme.green.opacity(0.2), lineWidth: 2)
+        )
         .padding(.horizontal)
     }
     
     private var moneyJarsSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Image(systemName: "dollarsign.circle.fill")
-                    .foregroundColor(KidTheme.purple) // KidTheme purple icon for visual pop
+            HStack(spacing: 8) {
+                Text("🏺")
+                    .font(.title)
                 Text("My Money Jars")
-                    .font(.title3)
+                    .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundColor(KidTheme.purple)
+                    .foregroundColor(KidTheme.textPrimary)
             }
             .padding(.horizontal)
             
             VStack(spacing: 12) {
                 MoneyJarCard(
                     title: "Spending (80%)",
-                    subtitle: "For things I want",
+                    subtitle: "For things I want to buy",
                     amount: child.spendingBalance,
                     color: KidTheme.purple
                 )
                 
                 MoneyJarCard(
                     title: "Savings (10%)",
-                    subtitle: "For my future",
+                    subtitle: "For my future goals",
                     amount: child.savingsBalance,
                     color: KidTheme.green
                 )
                 
                 MoneyJarCard(
                     title: "Giving (10%)",
-                    subtitle: "To help others",
+                    subtitle: "To help others in need",
                     amount: child.givingBalance,
                     color: KidTheme.orange
                 )
             }
             .padding(.horizontal)
             
-            Text("Every time you earn money, it's automatically split into these three jars!")
-                .font(.caption)
-                .foregroundColor(.gray)
+            Text("💡 Every time you earn money, it's automatically split into these three jars!")
+                .font(.body)
+                .foregroundColor(KidTheme.textSecondary)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal)
+                .padding(.horizontal, 24)
+                .padding(.top, 8)
         }
         .padding(.vertical)
     }
@@ -311,7 +319,8 @@ struct ChildDashboardView: View {
                 .padding(.vertical, 40)
             } else {
                 VStack(spacing: 0) {
-                    ForEach(Array(allTransactions.enumerated()), id: \.element.id) { index, completion in
+                    ForEach(allTransactions.indices, id: \.self) { index in
+                        let completion = allTransactions[index]
                         TransactionLedgerRow(
                             completion: completion,
                             child: child,
@@ -324,7 +333,7 @@ struct ChildDashboardView: View {
                         }
                     }
                 }
-                .background(KidTheme.cardGradient) // Card gradient for transaction ledger background
+                .background(KidTheme.cardBackground) // Card background for transaction ledger
                 .cornerRadius(12)
                 .shadow(color: .black.opacity(0.05), radius: 5)
                 .padding(.horizontal)
@@ -606,13 +615,9 @@ struct ChoreRowWithStatus: View {
             .padding(.vertical, 12)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(isFlashing ?
-                          LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.3), Color.orange.opacity(0.3)]),
-                                       startPoint: .topLeading,
-                                       endPoint: .bottomTrailing) :
-                          LinearGradient(gradient: Gradient(colors: [Color.white, Color.white]),
-                                       startPoint: .topLeading,
-                                       endPoint: .bottomTrailing))
+                    .fill(isFlashing ? 
+                          Color.yellow.opacity(0.3) : 
+                          Color.white)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
@@ -686,7 +691,7 @@ struct BigConfettiCelebrationView: View {
             // LOTS MORE confetti pieces - different sizes
             ForEach(0..<30) { index in
                 RoundedRectangle(cornerRadius: 3)
-                    .fill([Color.red, Color.blue, Color.green, Color.orange, Color.purple, Color.pink, Color.yellow, Color.cyan].randomElement() ?? .blue)
+                    .fill(confettiColor(for: index))
                     .frame(width: CGFloat.random(in: 8...14), height: CGFloat.random(in: 12...20))
                     .rotationEffect(.degrees(isAnimating ? Double(index) * 30 + 720 : Double(index) * 30))
                     .offset(x: isAnimating ? cos(Double(index) * .pi / 15) * CGFloat.random(in: 80...120) : 0,
@@ -697,7 +702,7 @@ struct BigConfettiCelebrationView: View {
             // Additional sparkle particles
             ForEach(0..<20) { index in
                 Circle()
-                    .fill([Color.white, Color.yellow, Color.orange].randomElement() ?? .white)
+                    .fill(sparkleColor(for: index))
                     .frame(width: CGFloat.random(in: 4...8), height: CGFloat.random(in: 4...8))
                     .offset(x: isAnimating ? cos(Double(index) * .pi / 10) * CGFloat.random(in: 60...100) : 0,
                            y: isAnimating ? sin(Double(index) * .pi / 10) * CGFloat.random(in: 60...100) : 0)
@@ -736,11 +741,7 @@ struct BigConfettiCelebrationView: View {
                 .padding(.vertical, 10)
                 .background(
                     Capsule()
-                        .fill(
-                            LinearGradient(gradient: Gradient(colors: [KidTheme.purple, KidTheme.pink]),
-                                         startPoint: .leading,
-                                         endPoint: .trailing)
-                        )
+                        .fill(KidTheme.funGradient)
                 )
                 .scaleEffect(isAnimating ? 1.3 : 0.5)
                 .opacity(isAnimating ? 0 : 1)
@@ -752,6 +753,16 @@ struct BigConfettiCelebrationView: View {
             }
         }
     }
+    
+    private func confettiColor(for index: Int) -> Color {
+        let colors: [Color] = [.red, .blue, KidTheme.green, KidTheme.orange, KidTheme.purple, KidTheme.pink, KidTheme.yellow, .cyan]
+        return colors[index % colors.count]
+    }
+    
+    private func sparkleColor(for index: Int) -> Color {
+        let colors: [Color] = [.white, KidTheme.yellow, KidTheme.orange]
+        return colors[index % colors.count]
+    }
 }
 
 struct MoneyJarCard: View {
@@ -761,25 +772,48 @@ struct MoneyJarCard: View {
     let color: Color
     
     var body: some View {
-        HStack {
+        HStack(spacing: 16) {
+            // Color indicator circle
+            Circle()
+                .fill(color.opacity(0.2))
+                .frame(width: 50, height: 50)
+                .overlay(
+                    Text(jarEmoji(for: title))
+                        .font(.title2)
+                )
+            
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundColor(KidTheme.textPrimary)
+                    
                 Text(String(format: "$%.2f", amount))
-                    .font(.title2)
+                    .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(color)
+                    
                 Text(subtitle)
-                    .font(.caption)
-                    .foregroundColor(.gray)
+                    .font(.subheadline)
+                    .foregroundColor(KidTheme.textSecondary)
             }
             Spacer()
         }
-        .padding()
-        .background(KidTheme.cardGradient) // Colorful, glassy background for money jar card
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.05), radius: 5)
+        .padding(20)
+        .background(KidTheme.cardBackground)
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: 3)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(color.opacity(0.3), lineWidth: 1)
+        )
+    }
+    
+    private func jarEmoji(for title: String) -> String {
+        if title.contains("Spending") { return "🛍️" }
+        if title.contains("Savings") { return "🏦" }
+        if title.contains("Giving") { return "❤️" }
+        return "💰"
     }
 }
 
@@ -810,7 +844,7 @@ struct StatCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .background(KidTheme.cardGradient) // Consistent card gradient background
+        .background(KidTheme.cardBackground) // Consistent card background
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.05), radius: 5)
     }

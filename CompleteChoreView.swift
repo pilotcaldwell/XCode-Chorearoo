@@ -47,105 +47,146 @@ struct CompleteChoreView: View {
     }
     
     var body: some View {
-        ZStack { // Add background gradient for whole screen - playful theme background
-            KidTheme.mainGradient
-                .ignoresSafeArea()
-            
-            NavigationView {
-                VStack {
-                    if chores.isEmpty {
-                        VStack(spacing: 20) {
-                            Image(systemName: "list.clipboard")
-                                .font(.system(size: 60))
-                                .foregroundColor(KidTheme.purple) // Using theme purple for icon
-                            Text("No chores available")
-                                .font(.headline)
-                                .foregroundColor(KidTheme.purple) // Themed text color
-                            Text("Ask a parent to add chores to the library")
-                                .font(.subheadline)
-                                .foregroundColor(KidTheme.purple.opacity(0.8))
-                                .multilineTextAlignment(.center)
+        NavigationView {
+            VStack(spacing: 0) {
+                // Progress Card at Top
+                if !chores.isEmpty {
+                    VStack(spacing: 16) {
+                        HStack(spacing: 8) {
+                            Text("🎯")
+                                .font(.title)
+                            Text("Weekly Progress")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundColor(KidTheme.textPrimary)
                         }
-                        .padding()
-                        .background(KidTheme.cardGradient) // Card gradient on no chores view - friendly card look
-                        .cornerRadius(15)
-                        .shadow(radius: 5)
-                        .padding()
-                    } else {
-                        VStack(alignment: .leading, spacing: 8) {
-                            HStack(spacing: 8) {
-                                Image(systemName: "gift.fill") // playful icon near earnings
-                                    .foregroundColor(KidTheme.green)
-                                Text("This week: $\(thisWeekEarnings, specifier: "%.2f") of $\(child.weeklyCap, specifier: "%.2f")")
-                                    .font(.subheadline)
-                                    .foregroundColor(KidTheme.purple) // Themed text for earnings
-                            }
-                            .padding(.horizontal)
+                        
+                        VStack(spacing: 8) {
+                            Text("$\(thisWeekEarnings, specifier: "%.2f") of $\(child.weeklyCap, specifier: "%.2f")")
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundColor(KidTheme.green)
                             
                             ProgressView(value: thisWeekEarnings, total: child.weeklyCap)
-                                .accentColor(KidTheme.orange) // Themed progress bar color
-                                .padding(.horizontal)
+                                .progressViewStyle(LinearProgressViewStyle(tint: KidTheme.green))
+                                .scaleEffect(1.2)
+                                .padding(.horizontal, 8)
                         }
-                        .padding(.top)
-                        .padding()
-                        .background(KidTheme.cardGradient) // Card gradient behind progress and earnings - friendly card look
-                        .cornerRadius(15)
-                        .shadow(radius: 5)
-                        .padding(.horizontal)
-                        
-                        List(chores) { chore in
-                            Button(action: {
-                                handleChoreSelection(chore)
-                            }) {
-                                HStack {
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        Text(chore.name ?? "Unknown")
-                                            .font(.headline)
-                                            .foregroundColor(.primary)
+                    }
+                    .padding(24)
+                    .background(KidTheme.cardBackground)
+                    .cornerRadius(16)
+                    .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 16)
+                }
+                
+                if chores.isEmpty {
+                    // Empty State
+                    VStack(spacing: 24) {
+                        Text("📝")
+                            .font(.system(size: 80))
+                        Text("No Chores Available")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundColor(KidTheme.textPrimary)
+                        Text("Ask a parent to add some chores for you to complete!")
+                            .font(.body)
+                            .foregroundColor(KidTheme.textSecondary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 32)
+                    }
+                    .frame(maxHeight: .infinity)
+                } else {
+                    // Chores List
+                    ScrollView {
+                        LazyVStack(spacing: 12) {
+                            ForEach(chores) { chore in
+                                Button(action: {
+                                    handleChoreSelection(chore)
+                                }) {
+                                    HStack(spacing: 16) {
+                                        // Chore Icon
+                                        Circle()
+                                            .fill(KidTheme.blue.opacity(0.2))
+                                            .frame(width: 50, height: 50)
+                                            .overlay(
+                                                Text("✨")
+                                                    .font(.title2)
+                                            )
                                         
-                                        if let description = chore.choreDescription, !description.isEmpty {
-                                            Text(description)
-                                                .font(.subheadline)
-                                                .foregroundColor(.gray)
-                                                .lineLimit(2)
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text(chore.name ?? "Unknown Chore")
+                                                .font(.headline)
+                                                .fontWeight(.bold)
+                                                .foregroundColor(KidTheme.textPrimary)
+                                                .multilineTextAlignment(.leading)
+                                            
+                                            if let description = chore.choreDescription, !description.isEmpty {
+                                                Text(description)
+                                                    .font(.subheadline)
+                                                    .foregroundColor(KidTheme.textSecondary)
+                                                    .lineLimit(2)
+                                                    .multilineTextAlignment(.leading)
+                                            }
+                                        }
+                                        
+                                        Spacer()
+                                        
+                                        VStack(alignment: .trailing, spacing: 4) {
+                                            Text("$\(chore.amount, specifier: "%.2f")")
+                                                .font(.title2)
+                                                .fontWeight(.bold)
+                                                .foregroundColor(wouldExceedCap(chore) ? KidTheme.orange : KidTheme.green)
+                                            
+                                            if wouldExceedCap(chore) {
+                                                Text("Cap Reached")
+                                                    .font(.caption)
+                                                    .foregroundColor(KidTheme.orange)
+                                            }
                                         }
                                     }
-                                    
-                                    Spacer()
-                                    
-                                    Text("$\(chore.amount, specifier: "%.2f")")
-                                        .font(.headline)
-                                        .foregroundColor(wouldExceedCap(chore) ? KidTheme.orange : KidTheme.green) // Use theme colors for amounts
-                                    
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.gray)
+                                    .padding(20)
+                                    .background(KidTheme.cardBackground)
+                                    .cornerRadius(16)
+                                    .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: 3)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .stroke(
+                                                wouldExceedCap(chore) ? 
+                                                KidTheme.orange.opacity(0.3) : 
+                                                KidTheme.blue.opacity(0.2), 
+                                                lineWidth: 1
+                                            )
+                                    )
+                                    .scaleEffect(wouldExceedCap(chore) ? 0.95 : 1.0)
+                                    .opacity(wouldExceedCap(chore) ? 0.7 : 1.0)
                                 }
-                                .padding(.vertical, 4)
+                                .disabled(wouldExceedCap(chore))
+                                .buttonStyle(PlainButtonStyle())
                             }
-                            .disabled(wouldExceedCap(chore))
-                            .opacity(wouldExceedCap(chore) ? 0.5 : 1.0)
-                            .listRowBackground(
-                                KidTheme.cardGradient // Use card gradient behind each list row - playful cards for chores
-                                    .cornerRadius(10)
-                                    .padding(.vertical, 4)
-                            )
                         }
-                        .listStyle(.plain)
-                        .background(Color.clear)
+                        .padding(.horizontal, 16)
+                        .padding(.top, 16)
                     }
                 }
-                .navigationTitle("Complete Chore")
-                .navigationBarItems(trailing:
-                    Button("Cancel") {
+            }
+            .background(KidTheme.backgroundSecondary)
+            .navigationTitle("Complete Chores 🎯")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
                         dismiss()
                     }
                     .font(.headline)
+                    .foregroundColor(KidTheme.textOnColor)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
-                    .background(KidTheme.purple) // Themed button background purple
-                    .foregroundColor(.white) // White text on purple
-                    .cornerRadius(25)
-                ) // Large rounded cancel button with theme colors
+                    .background(KidTheme.purple)
+                    .cornerRadius(20)
+                }
+            }
                 
                 .alert("Complete Chore?", isPresented: Binding(
                     get: { selectedChore != nil },
