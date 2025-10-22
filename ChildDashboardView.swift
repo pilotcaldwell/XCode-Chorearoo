@@ -1,7 +1,7 @@
 import SwiftUI
+import SwiftUI
 import UIKit
 import CoreData
-import KidTheme  // Added KidTheme import for consistent styling
 
 struct ChildDashboardView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -861,7 +861,7 @@ struct TransactionLedgerRow: View {
         if isPurchase {
             return KidTheme.blue
         } else if isExpense {
-            return KidTheme.red
+            return KidTheme.redAccent
         } else if completion.isBonus {
             return KidTheme.green
         } else {
@@ -949,7 +949,7 @@ struct TransactionLedgerRow: View {
                 Text("\(isExpense ? "-" : "+")$\(transactionAmount, specifier: "%.2f")")
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundColor(isExpense ? KidTheme.red : (isPending ? KidTheme.orange : KidTheme.green))
+                    .foregroundColor(isExpense ? KidTheme.redAccent : (isPending ? KidTheme.orange : KidTheme.green))
                 
                 // Running balance (only for approved transactions)
                 if !isPending {

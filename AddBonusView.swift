@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftUI
 import UIKit // Import UIKit for haptic feedback
 import CoreData
 
@@ -22,56 +23,84 @@ struct AddBonusView: View {
     }
     
     var body: some View {
-        NavigationView {
-            // Replace Form with ScrollView and VStack for glassy look, styled with .background(.liquidGlass)
-            ScrollView {
-                VStack(spacing: 20) {
-                    Section(header: Text("Bonus Details")) {
-                        HStack {
-                            Text("Child:")
-                                .foregroundColor(.gray)
-                            Spacer()
-                            Text(child.name ?? "Unknown")
-                                .fontWeight(.semibold)
-                        }
-                        
-                        HStack {
-                            Text("$")
-                            TextField("Amount", text: $amount)
-                                .keyboardType(.decimalPad)
-                        }
-                        
-                        Picker("Money Jar", selection: $selectedJar) {
-                            ForEach(MoneyJar.allCases) { jar in
-                                Text(jar.rawValue).tag(jar)
+        ZStack {
+            KidTheme.mainGradient // Background gradient for playful, vibrant style
+                .ignoresSafeArea()
+            
+            NavigationView {
+                ScrollView {
+                    VStack(spacing: 20) {
+                        Section(header:
+                                    Text("Bonus Details")
+                                    .font(.headline)
+                                    .foregroundColor(KidTheme.green) // Brighten header with KidTheme green
+                        ) {
+                            HStack {
+                                Text("Child:")
+                                    .foregroundColor(KidTheme.yellow) // Accent color for labels
+                                Spacer()
+                                Text(child.name ?? "Unknown")
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(KidTheme.orange) // Accent child name
                             }
+                            
+                            HStack {
+                                Text("$")
+                                    .foregroundColor(KidTheme.purple) // Accent $ symbol
+                                TextField("Amount", text: $amount)
+                                    .keyboardType(.decimalPad)
+                                    .foregroundColor(KidTheme.textPrimary)
+                            }
+                            
+                            Picker("Money Jar", selection: $selectedJar) {
+                                ForEach(MoneyJar.allCases) { jar in
+                                    Text(jar.rawValue).tag(jar)
+                                }
+                            }
+                            .pickerStyle(SegmentedPickerStyle())
+                            .tint(KidTheme.green) // Tint segmented picker with KidTheme green
+                            
+                            TextField("Reason (optional)", text: $reason)
+                                .foregroundColor(KidTheme.textPrimary)
                         }
                         
-                        TextField("Reason (optional)", text: $reason)
-                    }
-                    
-                    Section {
-                        Text("💡 Bonuses are instantly added and don't count against the weekly cap!")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                    }
-                    
-                    Section {
-                        Button("Give Bonus") {
-                            giveBonus()
+                        Section {
+                            Text("💡 Bonuses are instantly added and don't count against the weekly cap!")
+                                .font(.caption)
+                                .foregroundColor(KidTheme.yellow.opacity(0.8)) // Accent info text
                         }
-                        .disabled(amount.isEmpty)
+                        
+                        Section {
+                            Button {
+                                giveBonus()
+                            } label: {
+                                Text("Give Bonus")
+                                    .fontWeight(.bold)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(KidTheme.green) // Prominent button background
+                                    .foregroundColor(.white) // White text for contrast
+                                    .cornerRadius(12) // Rounded corners
+                            }
+                            .disabled(amount.isEmpty)
+                        }
                     }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 20) // Modern card effect
+                            .fill(KidTheme.cardGradient)
+                            .shadow(color: KidTheme.green.opacity(0.3), radius: 10, x: 0, y: 5) // Soft shadow for depth
+                    )
+                    .padding()
                 }
-                .padding()
+                .navigationTitle("Add Bonus")
+                .navigationBarItems(
+                    leading: Button("Cancel") {
+                        dismiss()
+                    }
+                    .foregroundColor(KidTheme.orange) // Bright cancel button color
+                )
             }
-            .background(.liquidGlass) // Glassy background effect
-            .navigationTitle("Add Bonus")
-            .navigationBarItems(
-                leading: Button("Cancel") {
-                    dismiss()
-                }
-            )
         }
     }
     
@@ -154,4 +183,3 @@ struct AddBonusView: View {
     return AddBonusView(child: child, onBonusAdded: {})
         .environment(\.managedObjectContext, context)
 }
-

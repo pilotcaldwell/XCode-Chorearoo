@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftUI
 import CoreData
 
 struct ChoreLibraryView: View {
@@ -13,58 +14,81 @@ struct ChoreLibraryView: View {
     @State private var showingAddChore = false
     
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(chores) { chore in
-                    HStack {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(chore.name ?? "Unknown")
+        ZStack {
+            KidTheme.mainGradient // Background for the whole screen - playful gradient
+            
+            NavigationView {
+                List {
+                    ForEach(chores) { chore in
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(chore.name ?? "Unknown")
+                                    .font(.headline)
+                                
+                                if let description = chore.choreDescription, !description.isEmpty {
+                                    Text(description)
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                        .lineLimit(2)
+                                }
+                                
+                                // Show if active or inactive
+                                if !chore.isActive {
+                                    Text("Inactive")
+                                        .font(.caption)
+                                        .foregroundColor(.red)
+                                }
+                            }
+                            
+                            Spacer()
+                            
+                            // Amount
+                            Text("$\(chore.amount, specifier: "%.2f")")
                                 .font(.headline)
-                            
-                            if let description = chore.choreDescription, !description.isEmpty {
-                                Text(description)
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
-                                    .lineLimit(2)
-                            }
-                            
-                            // Show if active or inactive
-                            if !chore.isActive {
-                                Text("Inactive")
-                                    .font(.caption)
-                                    .foregroundColor(.red)
-                            }
+                                .foregroundColor(.green)
                         }
-                        
-                        Spacer()
-                        
-                        // Amount
-                        Text("$\(chore.amount, specifier: "%.2f")")
-                            .font(.headline)
-                            .foregroundColor(.green)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal)
+                        .background(
+                            KidTheme.cardGradient
+                        ) // Card background with playful glassy gradient
+                        .cornerRadius(12)
+                        .opacity(chore.isActive ? 1.0 : 0.5)
+                        .listRowBackground(Color.clear) // Clear default list row background to show gradient
                     }
-                    .padding(.vertical, 4)
-                    .opacity(chore.isActive ? 1.0 : 0.5)
+                    .onDelete(perform: deleteChores)
                 }
-                .onDelete(perform: deleteChores)
-            }
-            .navigationTitle("Chore Library")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showingAddChore = true
-                    }) {
-                        Image(systemName: "plus")
+                .navigationTitle("Chore Library")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: {
+                            showingAddChore = true
+                        }) {
+                            Image(systemName: "plus")
+                                .font(.system(size: 22, weight: .bold))
+                                .padding(10)
+                                .background(KidTheme.playfulColor)
+                                .foregroundColor(.white)
+                                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        } // Playful add button with color and rounded corners
+                    }
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        EditButton()
+                            .font(.system(size: 18, weight: .semibold))
+                            .padding(8)
+                            .background(KidTheme.playfulColor.opacity(0.8))
+                            .foregroundColor(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                     }
                 }
-                ToolbarItem(placement: .navigationBarLeading) {
-                    EditButton()
+                .sheet(isPresented: $showingAddChore) {
+                    AddChoreView()
                 }
-            }
-            .sheet(isPresented: $showingAddChore) {
-                AddChoreView()
+                .listStyle(.plain)
+                .background(Color.clear) // Make list background clear to show ZStack background
             }
         }
+        .edgesIgnoringSafeArea(.all) // Make gradient fill entire screen
     }
     
     private func deleteChores(offsets: IndexSet) {

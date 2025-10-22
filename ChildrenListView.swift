@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftUI
 import CoreData
 
 struct ChildrenListView: View {
@@ -11,61 +12,94 @@ struct ChildrenListView: View {
     
     @State private var showingAddChild = false
     
+    private func totalBalance(for child: Child) -> Double {
+        return child.spendingBalance + child.savingsBalance + child.givingBalance
+    }
+    
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(children) { child in
-                    NavigationLink {
-                        ChildTransactionLedgerView(child: child)
-                    } label: {
-                        HStack {
-                            // Avatar circle with first letter of name
-                            Circle()
-                                .fill(Color(hex: child.avatarColor ?? "#3b82f6"))
-                                .frame(width: 50, height: 50)
-                                .overlay(
-                                    Text(String(child.name?.prefix(1) ?? "?"))
-                                        .foregroundColor(.white)
-                                        .font(.title2)
-                                        .bold()
-                                )
-                            
-                            VStack(alignment: .leading) {
-                                Text(child.name ?? "Unknown")
-                                    .font(.headline)
-                                if child.age > 0 {
-                                    Text("Age: \(child.age)")
-                                        .font(.subheadline)
+        // Use ZStack to add background gradient behind entire view
+        ZStack {
+            KidTheme.mainGradient // Background gradient for whole screen
+            
+            NavigationView {
+                List {
+                    ForEach(children) { child in
+                        NavigationLink {
+                            ChildTransactionLedgerView(child: child)
+                        } label: {
+                            // Card background with gradient, padding and rounded corners
+                            HStack {
+                                // Avatar circle with first letter of name and playful color
+                                Circle()
+                                    .fill(Color(hex: child.avatarColor ?? "#3b82f6"))
+                                    .frame(width: 50, height: 50)
+                                    .overlay(
+                                        Text(String(child.name?.prefix(1) ?? "?"))
+                                            .foregroundColor(.white)
+                                            .font(.title2)
+                                            .bold()
+                                            .shadow(color: KidTheme.purple.opacity(0.8), radius: 2) // Playful shadow on avatar letter
+                                    )
+                                
+                                VStack(alignment: .leading) {
+                                    Text(child.name ?? "Unknown")
+                                        .font(.headline)
+                                        .foregroundColor(.primary)
+                                    if child.age > 0 {
+                                        Text("Age: \(child.age)")
+                                            .font(.subheadline)
+                                            .foregroundColor(.secondary)
+                                    }
+                                }
+                                
+                                Spacer()
+                                
+                                // Show total balance with accent color and playful icon
+                                VStack(alignment: .trailing) {
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "dollarsign.circle.fill")
+                                            .foregroundColor(KidTheme.purple)
+                                        Text("$\(totalBalance(for: child), specifier: "%.2f")")
+                                            .font(.headline)
+                                            .foregroundColor(KidTheme.purple)
+                                            .bold()
+                                    }
+                                    Text("Total")
+                                        .font(.caption)
                                         .foregroundColor(.gray)
                                 }
                             }
-                            
-                            Spacer()
-                            
-                            // Show total balance
-                            VStack(alignment: .trailing) {
-                                Text("$\(child.spendingBalance + child.savingsBalance + child.givingBalance, specifier: "%.2f")")
-                                    .font(.headline)
-                                Text("Total")
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
-                            }
+                            .padding(12) // Padding inside card
+                            .background(
+                                KidTheme.cardGradient // Card gradient for glassy, colorful look
+                            )
+                            .cornerRadius(12) // Rounded corners for card
+                            .shadow(color: KidTheme.purple.opacity(0.15), radius: 4, x: 0, y: 2) // Subtle shadow for elevation
+                            .padding(.vertical, 4) // Space between cards
                         }
-                        .padding(.vertical, 4)
                     }
                 }
-            }
-            .navigationTitle("Children")
-            .toolbar {
-                Button(action: {
-                    showingAddChild = true
-                }) {
-                    Image(systemName: "plus")
+                .listStyle(PlainListStyle())
+                .navigationTitle("Children")
+                .toolbar {
+                    Button(action: {
+                        showingAddChild = true
+                    }) {
+                        Image(systemName: "plus")
+                            .font(.title2)
+                            .foregroundColor(.white)
+                            .bold()
+                            .padding(8)
+                            .background(KidTheme.purple) // Using KidTheme purple color for button background
+                            .clipShape(Circle()) // Make button round
+                            .shadow(color: KidTheme.purple.opacity(0.6), radius: 3, x: 0, y: 2) // Shadow for button
+                    }
+                }
+                .sheet(isPresented: $showingAddChild) {
+                    AddChildView()
                 }
             }
-            .sheet(isPresented: $showingAddChild) {
-                AddChildView()
-            }
+            .navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }

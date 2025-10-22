@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftUI
 import CoreData
 
 enum UserRole {
@@ -30,70 +31,78 @@ struct LoginView: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 30) {
-                VStack(spacing: 10) {
-                    Image(systemName: "star.fill")
-                        .font(.system(size: 60))
-                        .foregroundColor(.purple)
-                    Text("Chorearoo")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                    Text("Chore Tracker")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                }
-                .padding(.top, 50)
+            ZStack {
+                KidTheme.mainGradient // Fun, vibrant background for whole screen
                 
-                Spacer()
-                
-                VStack(spacing: 20) {
-                    Text("Who are you?")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    
-                    Button(action: {
-                        loginType = .parent
-                    }) {
-                        HStack {
-                            Image(systemName: "person.fill")
-                            Text("Parent")
-                                .fontWeight(.semibold)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(12)
+                VStack(spacing: 30) {
+                    VStack(spacing: 10) {
+                        Image(systemName: "star.fill")
+                            .font(.system(size: 60))
+                            .foregroundColor(KidTheme.purple) // KidTheme purple for icon pop
+                        Text("Chorearoo")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(KidTheme.orange) // KidTheme orange for heading pop
+                        Text("Chore Tracker")
+                            .font(.subheadline)
+                            .foregroundColor(KidTheme.green) // KidTheme green as subtitle color
                     }
+                    .padding(.top, 50)
                     
-                    if !children.isEmpty {
-                        ForEach(children) { child in
-                            Button(action: {
-                                loginType = .child(child)
-                            }) {
-                                HStack {
-                                    Circle()
-                                        .fill(Color(hex: child.avatarColor ?? "#3b82f6"))
-                                        .frame(width: 40, height: 40)
-                                        .overlay(
-                                            Text(String(child.name?.prefix(1) ?? "?"))
-                                                .foregroundColor(.white)
-                                                .fontWeight(.bold)
-                                        )
-                                    Text(child.name ?? "Unknown")
-                                        .fontWeight(.semibold)
-                                    Spacer()
+                    Spacer()
+                    
+                    VStack(spacing: 20) {
+                        Text("Who are you?")
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(KidTheme.blue) // Blue color for question text
+                        
+                        Button(action: {
+                            loginType = .parent
+                        }) {
+                            HStack {
+                                Image(systemName: "person.fill")
+                                Text("Parent")
+                                    .fontWeight(.semibold)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(KidTheme.purple) // KidTheme purple for Parent button
+                            .foregroundColor(.white)
+                            .cornerRadius(20) // Larger, rounder corners
+                            .font(.headline) // Larger font for playful look
+                        }
+                        
+                        if !children.isEmpty {
+                            ForEach(children) { child in
+                                Button(action: {
+                                    loginType = .child(child)
+                                }) {
+                                    HStack {
+                                        Circle()
+                                            .fill(Color(hex: child.avatarColor ?? "#3b82f6"))
+                                            .frame(width: 40, height: 40)
+                                            .overlay(
+                                                Text(String(child.name?.prefix(1) ?? "?"))
+                                                    .foregroundColor(.white)
+                                                    .fontWeight(.bold)
+                                            )
+                                        Text(child.name ?? "Unknown")
+                                            .fontWeight(.semibold)
+                                            .foregroundColor(.white) // Text in white on gradient card
+                                        Spacer()
+                                    }
+                                    .padding()
+                                    .background(KidTheme.cardGradient) // KidTheme card gradient for child cards
+                                    .cornerRadius(20) // Larger, rounder corners for cards
                                 }
-                                .padding()
-                                .background(Color.gray.opacity(0.1))
-                                .cornerRadius(12)
                             }
                         }
                     }
+                    .padding(.horizontal)
+                    
+                    Spacer()
                 }
-                .padding(.horizontal)
-                
-                Spacer()
             }
             .navigationBarHidden(true)
             .sheet(item: $loginType) { type in
@@ -185,9 +194,9 @@ struct PINSheetView2: View {
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.blue)
+                        .background(KidTheme.blue) // KidTheme blue for Submit button
                         .foregroundColor(.white)
-                        .cornerRadius(12)
+                        .cornerRadius(20) // Larger, rounder corners for Submit
                 }
                 .padding(.horizontal, 40)
                 .padding(.bottom, 40)

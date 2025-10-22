@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftUI
 import UIKit
 import CoreData
 
@@ -48,26 +49,30 @@ struct AddExpenseView: View {
     }
     
     var body: some View {
-        NavigationView {
-            // Changed from Form to ScrollView and VStack with glassy background for a modern look
+        ZStack {
+            KidTheme.mainGradient // Vibrant, playful background for whole screen
+            
             ScrollView {
                 VStack(spacing: 20) {
                     Group {
                         Text("Expense Details")
                             .font(.headline)
+                            .foregroundColor(KidTheme.orange) // Brightened header with KidTheme accent
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.bottom, 5)
                         
                         HStack {
                             Text("Child:")
-                                .foregroundColor(.gray)
+                                .foregroundColor(KidTheme.purple) // Bright label color
                             Spacer()
                             Text(child.name ?? "Unknown")
                                 .fontWeight(.semibold)
+                                .foregroundColor(KidTheme.orange) // Accent color on name
                         }
                         
                         HStack {
                             Text("$")
+                                .foregroundColor(KidTheme.green) // Bright currency symbol
                             TextField("Amount", text: $amount)
                                 .keyboardType(.decimalPad)
                                 .textFieldStyle(.roundedBorder)
@@ -75,17 +80,19 @@ struct AddExpenseView: View {
                         
                         Picker("Money Jar", selection: $selectedJar) {
                             ForEach(MoneyJar.allCases) { jar in
-                                Text(jar.rawValue).tag(jar)
+                                Text(jar.rawValue)
+                                    .foregroundColor(KidTheme.blue) // Bright picker text
+                                    .tag(jar)
                             }
                         }
                         .pickerStyle(.segmented)
                         
                         HStack {
                             Text("Current Balance:")
-                                .foregroundColor(.gray)
+                                .foregroundColor(KidTheme.purple) // Bright label color
                             Spacer()
                             Text("$\(currentJarBalance, specifier: "%.2f")")
-                                .foregroundColor(hasEnoughMoney ? .primary : .red)
+                                .foregroundColor(hasEnoughMoney ? KidTheme.orange : .red)
                                 .fontWeight(.semibold)
                         }
                         
@@ -102,31 +109,39 @@ struct AddExpenseView: View {
                     
                     Text("💡 This will deduct money from \(child.name ?? "child")'s account and appear in their transaction history.")
                         .font(.caption)
-                        .foregroundColor(.gray)
+                        .foregroundColor(KidTheme.purple) // Accent info text color
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    Button("Record Expense") {
+                    Button {
                         recordExpense()
+                    } label: {
+                        Text("Record Expense")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(KidTheme.orange) // Bold orange button background
+                            .cornerRadius(12) // Rounded corners for approachable style
                     }
                     .disabled(amount.isEmpty || description.isEmpty || !hasEnoughMoney)
-                    .buttonStyle(.borderedProminent)
                 }
                 .padding()
-                .background(.ultraThinMaterial) // glassy background
+                .background(KidTheme.cardGradient) // Glassy, playful card effect behind content
                 .cornerRadius(20)
                 .padding()
             }
-            .navigationTitle("Add Expense")
-            .navigationBarItems(
-                leading: Button("Cancel") {
-                    dismiss()
-                }
-            )
-            .alert("Insufficient Funds", isPresented: $showInsufficientFundsAlert) {
-                Button("OK", role: .cancel) {}
-            } message: {
-                Text("Not enough money in the \(selectedJar.rawValue) jar.")
+        }
+        .ignoresSafeArea() // Allow background gradient to fill whole screen
+        .navigationTitle("Add Expense")
+        .navigationBarItems(
+            leading: Button("Cancel") {
+                dismiss()
             }
+            .foregroundColor(KidTheme.orange) // Bright cancel button color
+        )
+        .alert("Insufficient Funds", isPresented: $showInsufficientFundsAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Not enough money in the \(selectedJar.rawValue) jar.")
         }
     }
     

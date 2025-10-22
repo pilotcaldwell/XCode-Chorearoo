@@ -69,6 +69,30 @@
 		13070EC92E973F7F000D2F69 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13070EC72E973F7F000D2F69 /* PersistenceController.swift */; };
 		135550342EA8645D00E1ADCD /* KidTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550332EA8645D00E1ADCD /* KidTheme.swift */; };
 		135550352EA8645D00E1ADCD /* KidTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550332EA8645D00E1ADCD /* KidTheme.swift */; };
+		1355503D2EA86AA300E1ADCD /* KidTheme 4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1355503C2EA86AA300E1ADCD /* KidTheme 4.swift */; };
+		1355503E2EA86AA300E1ADCD /* KidTheme 4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1355503C2EA86AA300E1ADCD /* KidTheme 4.swift */; };
+		135550402EA86AA600E1ADCD /* KidTheme 5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1355503F2EA86AA600E1ADCD /* KidTheme 5.swift */; };
+		135550412EA86AA600E1ADCD /* KidTheme 5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1355503F2EA86AA600E1ADCD /* KidTheme 5.swift */; };
+		135550552EA86CAE00E1ADCD /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550542EA86CAE00E1ADCD /* AppTheme.swift */; };
+		135550562EA86CAE00E1ADCD /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550542EA86CAE00E1ADCD /* AppTheme.swift */; };
+		1355505B2EA86CEB00E1ADCD /* KidTheme 13.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1355505A2EA86CEB00E1ADCD /* KidTheme 13.swift */; };
+		1355505C2EA86CEB00E1ADCD /* KidTheme 13.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1355505A2EA86CEB00E1ADCD /* KidTheme 13.swift */; };
+		1355505E2EA86CEF00E1ADCD /* KidTheme 14.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1355505D2EA86CEF00E1ADCD /* KidTheme 14.swift */; };
+		1355505F2EA86CEF00E1ADCD /* KidTheme 14.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1355505D2EA86CEF00E1ADCD /* KidTheme 14.swift */; };
+		135550612EA86CF200E1ADCD /* KidTheme 15.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550602EA86CF200E1ADCD /* KidTheme 15.swift */; };
+		135550622EA86CF200E1ADCD /* KidTheme 15.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550602EA86CF200E1ADCD /* KidTheme 15.swift */; };
+		135550642EA86CF600E1ADCD /* KidTheme 16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550632EA86CF600E1ADCD /* KidTheme 16.swift */; };
+		135550652EA86CF600E1ADCD /* KidTheme 16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550632EA86CF600E1ADCD /* KidTheme 16.swift */; };
+		135550672EA86CF900E1ADCD /* KidTheme 17.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550662EA86CF900E1ADCD /* KidTheme 17.swift */; };
+		135550682EA86CF900E1ADCD /* KidTheme 17.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550662EA86CF900E1ADCD /* KidTheme 17.swift */; };
+		1355506A2EA86CFD00E1ADCD /* KidTheme 18.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550692EA86CFD00E1ADCD /* KidTheme 18.swift */; };
+		1355506B2EA86CFD00E1ADCD /* KidTheme 18.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550692EA86CFD00E1ADCD /* KidTheme 18.swift */; };
+		135550702EA86D0400E1ADCD /* KidTheme 20.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1355506F2EA86D0400E1ADCD /* KidTheme 20.swift */; };
+		135550712EA86D0400E1ADCD /* KidTheme 20.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1355506F2EA86D0400E1ADCD /* KidTheme 20.swift */; };
+		135550762EA86D0F00E1ADCD /* AppTheme 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550752EA86D0F00E1ADCD /* AppTheme 2.swift */; };
+		135550772EA86D0F00E1ADCD /* AppTheme 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550752EA86D0F00E1ADCD /* AppTheme 2.swift */; };
+		135550792EA86DAD00E1ADCD /* README_THEME_FIX.txt in Resources */ = {isa = PBXBuildFile; fileRef = 135550782EA86DAD00E1ADCD /* README_THEME_FIX.txt */; };
+		1355507A2EA86DAD00E1ADCD /* README_THEME_FIX.txt in Resources */ = {isa = PBXBuildFile; fileRef = 135550782EA86DAD00E1ADCD /* README_THEME_FIX.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +147,18 @@
 		13070E812E9714E1000D2F69 /* chorearooUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chorearooUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		13070EC72E973F7F000D2F69 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		135550332EA8645D00E1ADCD /* KidTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KidTheme.swift; sourceTree = "<group>"; };
+		1355503C2EA86AA300E1ADCD /* KidTheme 4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KidTheme 4.swift"; sourceTree = "<group>"; };
+		1355503F2EA86AA600E1ADCD /* KidTheme 5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KidTheme 5.swift"; sourceTree = "<group>"; };
+		135550542EA86CAE00E1ADCD /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		1355505A2EA86CEB00E1ADCD /* KidTheme 13.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KidTheme 13.swift"; sourceTree = "<group>"; };
+		1355505D2EA86CEF00E1ADCD /* KidTheme 14.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KidTheme 14.swift"; sourceTree = "<group>"; };
+		135550602EA86CF200E1ADCD /* KidTheme 15.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KidTheme 15.swift"; sourceTree = "<group>"; };
+		135550632EA86CF600E1ADCD /* KidTheme 16.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KidTheme 16.swift"; sourceTree = "<group>"; };
+		135550662EA86CF900E1ADCD /* KidTheme 17.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KidTheme 17.swift"; sourceTree = "<group>"; };
+		135550692EA86CFD00E1ADCD /* KidTheme 18.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KidTheme 18.swift"; sourceTree = "<group>"; };
+		1355506F2EA86D0400E1ADCD /* KidTheme 20.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KidTheme 20.swift"; sourceTree = "<group>"; };
+		135550752EA86D0F00E1ADCD /* AppTheme 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppTheme 2.swift"; sourceTree = "<group>"; };
+		135550782EA86DAD00E1ADCD /* README_THEME_FIX.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README_THEME_FIX.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -224,6 +260,18 @@
 				13070E842E9714E1000D2F69 /* chorearooUITests */,
 				13070E642E9714E0000D2F69 /* Products */,
 				135550332EA8645D00E1ADCD /* KidTheme.swift */,
+				1355503C2EA86AA300E1ADCD /* KidTheme 4.swift */,
+				1355503F2EA86AA600E1ADCD /* KidTheme 5.swift */,
+				135550542EA86CAE00E1ADCD /* AppTheme.swift */,
+				1355505A2EA86CEB00E1ADCD /* KidTheme 13.swift */,
+				1355505D2EA86CEF00E1ADCD /* KidTheme 14.swift */,
+				135550602EA86CF200E1ADCD /* KidTheme 15.swift */,
+				135550632EA86CF600E1ADCD /* KidTheme 16.swift */,
+				135550662EA86CF900E1ADCD /* KidTheme 17.swift */,
+				135550692EA86CFD00E1ADCD /* KidTheme 18.swift */,
+				1355506F2EA86D0400E1ADCD /* KidTheme 20.swift */,
+				135550752EA86D0F00E1ADCD /* AppTheme 2.swift */,
+				135550782EA86DAD00E1ADCD /* README_THEME_FIX.txt */,
 			);
 			sourceTree = "<group>";
 		};
@@ -400,6 +448,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1355507A2EA86DAD00E1ADCD /* README_THEME_FIX.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,6 +456,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				135550792EA86DAD00E1ADCD /* README_THEME_FIX.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,14 +474,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				135550652EA86CF600E1ADCD /* KidTheme 16.swift in Sources */,
+				135550762EA86D0F00E1ADCD /* AppTheme 2.swift in Sources */,
 				1303EBDC2E97821600A727C4 /* ChildTransactionLedgerView.swift in Sources */,
 				1303EBA12E9756C200A727C4 /* AddChildView.swift in Sources */,
 				1303EBFE2E9898ED00A727C4 /* ParentStoreView.swift in Sources */,
 				1303EC012E98990E00A727C4 /* ChildStoreView.swift in Sources */,
+				135550682EA86CF900E1ADCD /* KidTheme 17.swift in Sources */,
 				1303EBB32E975D7100A727C4 /* ParentApprovalsView.swift in Sources */,
+				1355506A2EA86CFD00E1ADCD /* KidTheme 18.swift in Sources */,
+				135550712EA86D0400E1ADCD /* KidTheme 20.swift in Sources */,
+				1355503D2EA86AA300E1ADCD /* KidTheme 4.swift in Sources */,
+				1355505E2EA86CEF00E1ADCD /* KidTheme 14.swift in Sources */,
+				135550612EA86CF200E1ADCD /* KidTheme 15.swift in Sources */,
 				1303EB882E974F6300A727C4 /* ChoreCompletion+CoreDataClass.swift in Sources */,
 				1303EBD32E9777E000A727C4 /* WeeklyProgressCard.swift in Sources */,
 				1303EBBE2E976C0F00A727C4 /* ChildDashboardView.swift in Sources */,
+				135550412EA86AA600E1ADCD /* KidTheme 5.swift in Sources */,
 				1303EBD72E97784A00A727C4 /* AddBonusView.swift in Sources */,
 				1303EBAA2E9758E200A727C4 /* ChoreLibraryView.swift in Sources */,
 				1303EBF22E988EFE00A727C4 /* AddExpenseView.swift in Sources */,
@@ -450,8 +509,10 @@
 				1303EBD92E977AFC00A727C4 /* DataMigrationHelper.swift in Sources */,
 				1303EBB82E975E9D00A727C4 /* LoginView.swift in Sources */,
 				1303EBA72E9758B400A727C4 /* AddChoreView.swift in Sources */,
+				135550552EA86CAE00E1ADCD /* AppTheme.swift in Sources */,
 				1303EBF52E98989300A727C4 /* StoreItem+CoreDataProperties.swift in Sources */,
 				1303EBF62E98989300A727C4 /* StoreItem+CoreDataClass.swift in Sources */,
+				1355505B2EA86CEB00E1ADCD /* KidTheme 13.swift in Sources */,
 				1303EBB52E975E7B00A727C4 /* PINEntryView.swift in Sources */,
 				13070EC92E973F7F000D2F69 /* PersistenceController.swift in Sources */,
 				1303EBBC2E975FA400A727C4 /* SettingsView.swift in Sources */,
@@ -463,25 +524,35 @@
 			buildActionMask = 2147483647;
 			files = (
 				1303EBDA2E977AFC00A727C4 /* DataMigrationHelper.swift in Sources */,
+				135550772EA86D0F00E1ADCD /* AppTheme 2.swift in Sources */,
 				1303EBA92E9758E200A727C4 /* ChoreLibraryView.swift in Sources */,
 				1303EBB22E975D7100A727C4 /* ParentApprovalsView.swift in Sources */,
 				1303EBDD2E97821600A727C4 /* ChildTransactionLedgerView.swift in Sources */,
 				1303EBA02E9756C200A727C4 /* AddChildView.swift in Sources */,
 				1303EBFB2E9898CD00A727C4 /* AddStoreItemView.swift in Sources */,
 				13070EC82E973F7F000D2F69 /* PersistenceController.swift in Sources */,
+				1355505F2EA86CEF00E1ADCD /* KidTheme 14.swift in Sources */,
 				1303EBBB2E975FA400A727C4 /* SettingsView.swift in Sources */,
 				1303EB902E974F6300A727C4 /* ChoreCompletion+CoreDataClass.swift in Sources */,
 				1303EB912E974F6300A727C4 /* Child+CoreDataClass.swift in Sources */,
 				1303EBBF2E976C0F00A727C4 /* ChildDashboardView.swift in Sources */,
+				1355505C2EA86CEB00E1ADCD /* KidTheme 13.swift in Sources */,
 				1303EBA42E97570400A727C4 /* ChildrenListView.swift in Sources */,
 				1303EBAF2E975B4200A727C4 /* CompleteChoreView.swift in Sources */,
+				1355506B2EA86CFD00E1ADCD /* KidTheme 18.swift in Sources */,
 				1303EC002E98990E00A727C4 /* ChildStoreView.swift in Sources */,
 				1303EBF12E988EFE00A727C4 /* AddExpenseView.swift in Sources */,
+				135550622EA86CF200E1ADCD /* KidTheme 15.swift in Sources */,
+				135550702EA86D0400E1ADCD /* KidTheme 20.swift in Sources */,
 				1303EB922E974F6300A727C4 /* Chore+CoreDataClass.swift in Sources */,
 				1303EB932E974F6300A727C4 /* Child+CoreDataProperties.swift in Sources */,
 				1303EBD62E97784A00A727C4 /* AddBonusView.swift in Sources */,
+				1355503E2EA86AA300E1ADCD /* KidTheme 4.swift in Sources */,
 				1303EBFD2E9898ED00A727C4 /* ParentStoreView.swift in Sources */,
+				135550642EA86CF600E1ADCD /* KidTheme 16.swift in Sources */,
 				1303EB942E974F6300A727C4 /* Chore+CoreDataProperties.swift in Sources */,
+				135550402EA86AA600E1ADCD /* KidTheme 5.swift in Sources */,
+				135550562EA86CAE00E1ADCD /* AppTheme.swift in Sources */,
 				135550352EA8645D00E1ADCD /* KidTheme.swift in Sources */,
 				1303EB952E974F6300A727C4 /* ChoreCompletion+CoreDataProperties.swift in Sources */,
 				1303EBA62E9758B400A727C4 /* AddChoreView.swift in Sources */,
@@ -491,6 +562,7 @@
 				1303EBF72E98989300A727C4 /* StoreItem+CoreDataProperties.swift in Sources */,
 				1303EBF82E98989300A727C4 /* StoreItem+CoreDataClass.swift in Sources */,
 				1303EBAC2E97590800A727C4 /* MainTabView.swift in Sources */,
+				135550672EA86CF900E1ADCD /* KidTheme 17.swift in Sources */,
 				1303EBB62E975E7B00A727C4 /* PINEntryView.swift in Sources */,
 				1303EBD42E9777E000A727C4 /* WeeklyProgressCard.swift in Sources */,
 			);

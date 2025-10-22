@@ -47,93 +47,130 @@ struct CompleteChoreView: View {
     }
     
     var body: some View {
-        NavigationView {
-            VStack {
-                if chores.isEmpty {
-                    VStack(spacing: 20) {
-                        Image(systemName: "list.clipboard")
-                            .font(.system(size: 60))
-                            .foregroundColor(.gray)
-                        Text("No chores available")
-                            .font(.headline)
-                            .foregroundColor(.gray)
-                        Text("Ask a parent to add chores to the library")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                            .multilineTextAlignment(.center)
-                    }
-                    .padding()
-                } else {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("This week: $\(thisWeekEarnings, specifier: "%.2f") of $\(child.weeklyCap, specifier: "%.2f")")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                            .padding(.horizontal)
-                        
-                        ProgressView(value: thisWeekEarnings, total: child.weeklyCap)
-                            .padding(.horizontal)
-                    }
-                    .padding(.top)
-                    
-                    List(chores) { chore in
-                        Button(action: {
-                            handleChoreSelection(chore)
-                        }) {
-                            HStack {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(chore.name ?? "Unknown")
-                                        .font(.headline)
-                                        .foregroundColor(.primary)
-                                    
-                                    if let description = chore.choreDescription, !description.isEmpty {
-                                        Text(description)
-                                            .font(.subheadline)
-                                            .foregroundColor(.gray)
-                                            .lineLimit(2)
-                                    }
-                                }
-                                
-                                Spacer()
-                                
-                                Text("$\(chore.amount, specifier: "%.2f")")
-                                    .font(.headline)
-                                    .foregroundColor(wouldExceedCap(chore) ? .red : .green)
-                                
-                                Image(systemName: "chevron.right")
-                                    .foregroundColor(.gray)
-                            }
-                            .padding(.vertical, 4)
+        ZStack { // Add background gradient for whole screen - playful theme background
+            KidTheme.mainGradient
+                .ignoresSafeArea()
+            
+            NavigationView {
+                VStack {
+                    if chores.isEmpty {
+                        VStack(spacing: 20) {
+                            Image(systemName: "list.clipboard")
+                                .font(.system(size: 60))
+                                .foregroundColor(KidTheme.purple) // Using theme purple for icon
+                            Text("No chores available")
+                                .font(.headline)
+                                .foregroundColor(KidTheme.purple) // Themed text color
+                            Text("Ask a parent to add chores to the library")
+                                .font(.subheadline)
+                                .foregroundColor(KidTheme.purple.opacity(0.8))
+                                .multilineTextAlignment(.center)
                         }
-                        .disabled(wouldExceedCap(chore))
-                        .opacity(wouldExceedCap(chore) ? 0.5 : 1.0)
+                        .padding()
+                        .background(KidTheme.cardGradient) // Card gradient on no chores view - friendly card look
+                        .cornerRadius(15)
+                        .shadow(radius: 5)
+                        .padding()
+                    } else {
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "gift.fill") // playful icon near earnings
+                                    .foregroundColor(KidTheme.green)
+                                Text("This week: $\(thisWeekEarnings, specifier: "%.2f") of $\(child.weeklyCap, specifier: "%.2f")")
+                                    .font(.subheadline)
+                                    .foregroundColor(KidTheme.purple) // Themed text for earnings
+                            }
+                            .padding(.horizontal)
+                            
+                            ProgressView(value: thisWeekEarnings, total: child.weeklyCap)
+                                .accentColor(KidTheme.orange) // Themed progress bar color
+                                .padding(.horizontal)
+                        }
+                        .padding(.top)
+                        .padding()
+                        .background(KidTheme.cardGradient) // Card gradient behind progress and earnings - friendly card look
+                        .cornerRadius(15)
+                        .shadow(radius: 5)
+                        .padding(.horizontal)
+                        
+                        List(chores) { chore in
+                            Button(action: {
+                                handleChoreSelection(chore)
+                            }) {
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(chore.name ?? "Unknown")
+                                            .font(.headline)
+                                            .foregroundColor(.primary)
+                                        
+                                        if let description = chore.choreDescription, !description.isEmpty {
+                                            Text(description)
+                                                .font(.subheadline)
+                                                .foregroundColor(.gray)
+                                                .lineLimit(2)
+                                        }
+                                    }
+                                    
+                                    Spacer()
+                                    
+                                    Text("$\(chore.amount, specifier: "%.2f")")
+                                        .font(.headline)
+                                        .foregroundColor(wouldExceedCap(chore) ? KidTheme.orange : KidTheme.green) // Use theme colors for amounts
+                                    
+                                    Image(systemName: "chevron.right")
+                                        .foregroundColor(.gray)
+                                }
+                                .padding(.vertical, 4)
+                            }
+                            .disabled(wouldExceedCap(chore))
+                            .opacity(wouldExceedCap(chore) ? 0.5 : 1.0)
+                            .listRowBackground(
+                                KidTheme.cardGradient // Use card gradient behind each list row - playful cards for chores
+                                    .cornerRadius(10)
+                                    .padding(.vertical, 4)
+                            )
+                        }
+                        .listStyle(.plain)
+                        .background(Color.clear)
                     }
                 }
-            }
-            .navigationTitle("Complete Chore")
-            .navigationBarItems(trailing: Button("Cancel") {
-                dismiss()
-            })
-            .alert("Complete Chore?", isPresented: Binding(
-                get: { selectedChore != nil },
-                set: { if !$0 { selectedChore = nil } }
-            )) {
-                Button("Cancel", role: .cancel) {
-                    selectedChore = nil
-                }
-                Button("Complete") {
+                .navigationTitle("Complete Chore")
+                .navigationBarItems(trailing:
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                    .font(.headline)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(KidTheme.purple) // Themed button background purple
+                    .foregroundColor(.white) // White text on purple
+                    .cornerRadius(25)
+                ) // Large rounded cancel button with theme colors
+                
+                .alert("Complete Chore?", isPresented: Binding(
+                    get: { selectedChore != nil },
+                    set: { if !$0 { selectedChore = nil } }
+                )) {
+                    Button("Cancel", role: .cancel) {
+                        selectedChore = nil
+                    }
+                    Button("Complete") {
+                        if let chore = selectedChore {
+                            completeChore(chore)
+                        }
+                    }
+                    .tint(KidTheme.green) // Green tinted complete button for success
+                } message: {
                     if let chore = selectedChore {
-                        completeChore(chore)
+                        Text("Mark \"\(chore.name ?? "")\" as complete for $\(chore.amount, specifier: "%.2f")?")
                     }
                 }
-            } message: {
-                if let chore = selectedChore {
-                    Text("Mark \"\(chore.name ?? "")\" as complete for $\(chore.amount, specifier: "%.2f")?")
+                .alert("Weekly Cap Reached", isPresented: $showCapReachedAlert) {
+                    Button("OK", role: .cancel) {}
+                        .tint(KidTheme.orange) // Orange button for alert confirmation
+                } message: {
+                    Text("You've reached your weekly earning cap of $\(child.weeklyCap, specifier: "%.2f"). Ask a parent for a bonus or wait until next week!")
                 }
-            }
-            .alert("Weekly Cap Reached", isPresented: $showCapReachedAlert) {
-                Button("OK", role: .cancel) {}
-            } message: {
-                Text("You've reached your weekly earning cap of $\(child.weeklyCap, specifier: "%.2f"). Ask a parent for a bonus or wait until next week!")
             }
         }
     }
@@ -184,3 +221,4 @@ struct CompleteChoreView: View {
     return CompleteChoreView(child: child)
         .environment(\.managedObjectContext, context)
 }
+

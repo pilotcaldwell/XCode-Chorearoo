@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftUI
 import UIKit
 import CoreData
 
@@ -22,6 +23,10 @@ struct ChildTransactionLedgerView: View {
     
     var body: some View {
         ZStack {
+            // Background gradient for whole screen - colorful and lively
+            KidTheme.mainGradient
+                .ignoresSafeArea()
+            
             ScrollView {
                 VStack(spacing: 20) {
                     balanceCard
@@ -30,19 +35,6 @@ struct ChildTransactionLedgerView: View {
                     resetStatsButton
                 }
                 .padding(.vertical)
-            }
-            .background(Color.gray.opacity(0.05))
-            
-            // Bonus animation overlay
-            if showBonusAnimation {
-                BonusAnimationView()
-                    .transition(.scale.combined(with: .opacity))
-            }
-            
-            // Expense animation overlay
-            if showExpenseAnimation {
-                ExpenseAnimationView()
-                    .transition(.scale.combined(with: .opacity))
             }
         }
         .navigationTitle(child.name ?? "Transactions")
@@ -68,6 +60,20 @@ struct ChildTransactionLedgerView: View {
         } message: {
             Text("This will reset all balances and clear all transaction history. This action cannot be undone.")
         }
+        // Bonus animation overlay
+        .overlay {
+            if showBonusAnimation {
+                BonusAnimationView()
+                    .transition(.scale.combined(with: .opacity))
+            }
+        }
+        // Expense animation overlay
+        .overlay {
+            if showExpenseAnimation {
+                ExpenseAnimationView()
+                    .transition(.scale.combined(with: .opacity))
+            }
+        }
     }
     
     private func fetchTransactions() {
@@ -92,9 +98,14 @@ struct ChildTransactionLedgerView: View {
     
     private var balanceCard: some View {
         VStack(spacing: 8) {
-            Text("Total Balance")
-                .font(.headline)
-                .foregroundColor(.gray)
+            HStack(spacing: 6) {
+                Image(systemName: "banknote.fill")
+                    .foregroundColor(.purple)
+                Text("Total Balance")
+                    .font(.headline)
+                    .foregroundColor(.purple)
+            }
+            // Added playful icon and purple accent
             
             Text(String(format: "$%.2f", totalBalance))
                 .font(.system(size: 48, weight: .bold))
@@ -104,16 +115,18 @@ struct ChildTransactionLedgerView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 30)
-        // Changed background to liquidGlass for a translucent glass effect
-        .background(.liquidGlass)
-        .cornerRadius(16)
-        .shadow(color: .black.opacity(0.05), radius: 10)
+        // Changed background to KidTheme.cardGradient for colorful, glassy effect
+        .background(KidTheme.cardGradient)
+        .cornerRadius(24) // larger rounded corners for friendliness
+        .shadow(color: .black.opacity(0.1), radius: 15, x: 0, y: 8)
         .padding(.horizontal)
     }
     
     private var jarBalances: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 20) {
             VStack {
+                Image(systemName: "cart.fill")
+                    .foregroundColor(.purple)
                 Text("Spending")
                     .font(.caption)
                     .foregroundColor(.purple)
@@ -124,6 +137,8 @@ struct ChildTransactionLedgerView: View {
             }
             
             VStack {
+                Image(systemName: "banknote.fill")
+                    .foregroundColor(.green)
                 Text("Savings")
                     .font(.caption)
                     .foregroundColor(.green)
@@ -134,6 +149,8 @@ struct ChildTransactionLedgerView: View {
             }
             
             VStack {
+                Image(systemName: "gift.fill")
+                    .foregroundColor(.orange)
                 Text("Giving")
                     .font(.caption)
                     .foregroundColor(.orange)
@@ -146,57 +163,51 @@ struct ChildTransactionLedgerView: View {
     }
     
     private var actionButtons: some View {
-        HStack(spacing: 12) {
-            // Give Bonus Button
+        HStack(spacing: 16) {
+            // Give Bonus Button - KidTheme.greenAccent with white text, larger, rounder corners
             Button(action: {
                 // Added haptic feedback on tap for better tactile experience
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 showBonusSheet = true
             }) {
-                HStack(spacing: 8) {
+                HStack(spacing: 10) {
                     Image(systemName: "gift.fill")
-                        .font(.title3)
+                        .font(.title2)
                     Text("Give Bonus")
                         .fontWeight(.semibold)
+                        .font(.title3)
                 }
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
+                .padding(.vertical, 18)
                 .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [Color.green, Color.green.opacity(0.8)]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+                    KidTheme.greenAccent
                 )
-                .cornerRadius(12)
-                .shadow(color: .green.opacity(0.3), radius: 5, x: 0, y: 3)
+                .cornerRadius(20) // rounder corners for friendliness
+                .shadow(color: KidTheme.greenAccent.opacity(0.5), radius: 8, x: 0, y: 4)
             }
             
-            // Add Expense Button
+            // Add Expense Button - KidTheme.redAccent with white text, larger, rounder corners
             Button(action: {
                 // Added haptic feedback on tap for better tactile experience
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 showExpenseSheet = true
             }) {
-                HStack(spacing: 8) {
+                HStack(spacing: 10) {
                     Image(systemName: "minus.circle.fill")
-                        .font(.title3)
+                        .font(.title2)
                     Text("Add Expense")
                         .fontWeight(.semibold)
+                        .font(.title3)
                 }
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
+                .padding(.vertical, 18)
                 .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [Color.red, Color.red.opacity(0.8)]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+                    KidTheme.redAccent
                 )
-                .cornerRadius(12)
-                .shadow(color: .red.opacity(0.3), radius: 5, x: 0, y: 3)
+                .cornerRadius(20) // rounder corners for friendliness
+                .shadow(color: KidTheme.redAccent.opacity(0.5), radius: 8, x: 0, y: 4)
             }
         }
         .padding(.horizontal)
@@ -206,15 +217,20 @@ struct ChildTransactionLedgerView: View {
         Button(action: {
             showResetAlert = true
         }) {
-            HStack {
-                Image(systemName: "arrow.counterclockwise")
+            HStack(spacing: 8) {
+                Image(systemName: "arrow.counterclockwise.circle.fill")
+                    .font(.title2)
                 Text("Reset Stats")
+                    .fontWeight(.semibold)
+                    .font(.title3)
             }
-            .foregroundColor(.red)
-            .padding(.vertical, 12)
+            .foregroundColor(.purple)
+            .padding(.vertical, 16)
             .frame(maxWidth: .infinity)
-            .background(Color.red.opacity(0.1))
-            .cornerRadius(10)
+            // KidTheme.purpleAccent background for lively feel
+            .background(KidTheme.purpleAccent)
+            .cornerRadius(24) // large round corners for friendliness
+            .shadow(color: KidTheme.purpleAccent.opacity(0.5), radius: 8, x: 0, y: 4)
         }
         .padding(.horizontal)
     }
@@ -239,28 +255,31 @@ struct ChildTransactionLedgerView: View {
             Text("Transactions")
                 .font(.title3)
                 .fontWeight(.bold)
+                .foregroundColor(.purple)
             
             Spacer()
             
-            // Show count
+            // Show count with playful background and purple accent
             Text("\(allCompletions.count)")
                 .font(.subheadline)
-                .foregroundColor(.gray)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(Color.gray.opacity(0.1))
-                .cornerRadius(8)
+                .foregroundColor(.white)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .background(KidTheme.purpleAccent)
+                .cornerRadius(12)
+                .shadow(color: KidTheme.purpleAccent.opacity(0.5), radius: 6, x: 0, y: 3)
         }
         .padding(.horizontal)
     }
     
     private var emptyTransactionsView: some View {
         VStack(spacing: 12) {
-            Image(systemName: "tray")
-                .font(.system(size: 40))
+            Image(systemName: "tray.fill")
+                .font(.system(size: 44))
                 .foregroundColor(.gray.opacity(0.5))
             Text("No transactions yet")
                 .foregroundColor(.gray)
+                .font(.headline)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 40)
@@ -281,10 +300,10 @@ struct ChildTransactionLedgerView: View {
                 }
             }
         }
-        // Changed background to liquidGlass for a translucent glass effect
-        .background(.liquidGlass)
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.05), radius: 5)
+        // Changed background to KidTheme.cardGradient for colorful, glassy effect
+        .background(KidTheme.cardGradient)
+        .cornerRadius(20) // rounder corners for friendly UI
+        .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
         .padding(.horizontal)
     }
     
@@ -546,3 +565,4 @@ struct ParentTransactionRow: View {
     }
     .environment(\.managedObjectContext, context)
 }
+

@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftUI
 import CoreData
 
 struct AddChildView: View {
@@ -15,30 +16,86 @@ struct AddChildView: View {
     
     var body: some View {
         NavigationView {
-            Form {
-                Section(header: Text("Child Information")) {
-                    TextField("Name", text: $name)
-                    TextField("Age", text: $age)
-                        .keyboardType(.numberPad)
-                    TextField("PIN (4 digits)", text: $pin)
-                        .keyboardType(.numberPad)
-                }
+            ZStack {
+                // Background gradient for the entire screen (KidTheme)
+                KidTheme.mainGradient
+                    .ignoresSafeArea()
                 
-                Section(header: Text("Avatar Color")) {
-                    ColorPicker("Choose Color", selection: $avatarColor)
-                }
-                
-                Section {
-                    Button("Save Child") {
-                        saveChild()
+                ScrollView {
+                    VStack(spacing: 20) {
+                        // Section for Child Information with card style background
+                        VStack(alignment: .leading, spacing: 15) {
+                            Text("Child Information")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .padding(.bottom, 5)
+                            
+                            TextField("Name", text: $name)
+                                .padding()
+                                .background(KidTheme.purple.opacity(0.15))
+                                .cornerRadius(8)
+                                .foregroundColor(.primary)
+                            
+                            TextField("Age", text: $age)
+                                .keyboardType(.numberPad)
+                                .padding()
+                                .background(KidTheme.purple.opacity(0.15))
+                                .cornerRadius(8)
+                                .foregroundColor(.primary)
+                            
+                            TextField("PIN (4 digits)", text: $pin)
+                                .keyboardType(.numberPad)
+                                .padding()
+                                .background(KidTheme.purple.opacity(0.15))
+                                .cornerRadius(8)
+                                .foregroundColor(.primary)
+                        }
+                        .padding()
+                        .background(KidTheme.cardGradient) // Card style background
+                        .cornerRadius(15)
+                        .shadow(color: KidTheme.purple.opacity(0.4), radius: 5, x: 0, y: 3)
+                        
+                        // Section for Avatar Color with card style background
+                        VStack(alignment: .leading, spacing: 15) {
+                            Text("Avatar Color")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .padding(.bottom, 5)
+                            
+                            ColorPicker("Choose Color", selection: $avatarColor)
+                                .padding()
+                                .background(KidTheme.purple.opacity(0.15))
+                                .cornerRadius(8)
+                                .foregroundColor(.primary)
+                        }
+                        .padding()
+                        .background(KidTheme.cardGradient) // Card style background
+                        .cornerRadius(15)
+                        .shadow(color: KidTheme.purple.opacity(0.4), radius: 5, x: 0, y: 3)
+                        
+                        // Save button styled boldly and playfully with KidTheme colors
+                        Button(action: {
+                            saveChild()
+                        }) {
+                            Text("Save Child")
+                                .fontWeight(.bold)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(KidTheme.purple)
+                                .foregroundColor(.white)
+                                .cornerRadius(15)
+                        }
+                        .disabled(name.isEmpty || pin.isEmpty)
+                        .opacity((name.isEmpty || pin.isEmpty) ? 0.5 : 1.0)
                     }
-                    .disabled(name.isEmpty || pin.isEmpty)
+                    .padding()
                 }
             }
             .navigationTitle("Add Child")
             .navigationBarItems(trailing: Button("Cancel") {
                 dismiss()
-            })
+            }
+            .foregroundColor(KidTheme.purple))
         }
     }
     
