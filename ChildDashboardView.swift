@@ -1,5 +1,7 @@
 import SwiftUI
+import UIKit
 import CoreData
+import KidTheme  // Added KidTheme import for consistent styling
 
 struct ChildDashboardView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -138,44 +140,57 @@ struct ChildDashboardView: View {
     
     private var dashboardContent: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
-                    // Total Balance Card (FIRST - biggest)
-                    totalBalanceCard
-                    
-                    // Money Jars Section (SECOND)
-                    moneyJarsSection
-                    
-                    // Weekly Progress Card (THIRD)
-                    WeeklyProgressCard(
-                        child: child,
-                        choreEarnings: thisWeekChoreEarnings,
-                        bonusEarnings: thisWeekBonusEarnings,
-                        weeklyCap: child.weeklyCap > 0 ? child.weeklyCap : 10.0
-                    )
-                    
-                    // Stats Cards
-                    statsCardsSection
-                    
-                    // Transaction Ledger (replacing Recent Transactions)
-                    transactionLedgerSection
-                    
-                    // Logout Button at Bottom
-                    Button(action: {
-                        isAuthenticated = false
-                        userRole = nil
-                    }) {
-                        HStack(spacing: 8) {
-                            Image(systemName: "xmark")
-                            Text("Logout")
+            ZStack {
+                KidTheme.mainGradient // Dashboard background with colorful gradient for lively look
+                
+                ScrollView {
+                    VStack(spacing: 20) {
+                        // Total Balance Card (FIRST - biggest)
+                        totalBalanceCard
+                        
+                        // Money Jars Section (SECOND)
+                        moneyJarsSection
+                        
+                        // Weekly Progress Card (THIRD)
+                        WeeklyProgressCard(
+                            child: child,
+                            choreEarnings: thisWeekChoreEarnings,
+                            bonusEarnings: thisWeekBonusEarnings,
+                            weeklyCap: child.weeklyCap > 0 ? child.weeklyCap : 10.0
+                        )
+                        .background(KidTheme.cardGradient) // Card gradient for consistent card style
+                        .cornerRadius(16)
+                        .shadow(color: .black.opacity(0.05), radius: 5)
+                        .padding(.horizontal)
+                        
+                        // Stats Cards
+                        statsCardsSection
+                        
+                        // Transaction Ledger (replacing Recent Transactions)
+                        transactionLedgerSection
+                        
+                        // Logout Button at Bottom
+                        Button(action: {
+                            isAuthenticated = false
+                            userRole = nil
+                        }) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "xmark")
+                                Text("Logout")
+                                    .fontWeight(.semibold)
+                            }
+                            .foregroundColor(.white)
+                            .padding(.vertical, 16)
+                            .frame(maxWidth: .infinity)
+                            .background(KidTheme.orange) // Playful orange background for logout button
+                            .cornerRadius(12)
+                            .padding(.horizontal)
+                            .shadow(color: KidTheme.orange.opacity(0.6), radius: 10, x: 0, y: 5)
                         }
-                        .foregroundColor(.red)
-                        .padding(.vertical, 16)
                     }
+                    .padding(.vertical)
                 }
-                .padding(.vertical)
             }
-            .background(Color.gray.opacity(0.05))
             .navigationTitle(child.name ?? "Dashboard")
             .navigationBarTitleDisplayMode(.inline)
         }
@@ -189,15 +204,15 @@ struct ChildDashboardView: View {
             
             Text(String(format: "$%.2f", totalBalance))
                 .font(.system(size: 48, weight: .bold))
-                .foregroundColor(.purple)
-            
+                .foregroundColor(KidTheme.purple) // Use KidTheme purple for the main number
+                
             Text("Total across all three money jars")
                 .font(.caption)
                 .foregroundColor(.gray)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 30)
-        .background(Color.white)
+        .background(KidTheme.cardGradient) // Colorful, glassy card background
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.05), radius: 10)
         .padding(.horizontal)
@@ -207,10 +222,11 @@ struct ChildDashboardView: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Image(systemName: "dollarsign.circle.fill")
-                    .foregroundColor(.purple)
+                    .foregroundColor(KidTheme.purple) // KidTheme purple icon for visual pop
                 Text("My Money Jars")
                     .font(.title3)
                     .fontWeight(.bold)
+                    .foregroundColor(KidTheme.purple)
             }
             .padding(.horizontal)
             
@@ -219,21 +235,21 @@ struct ChildDashboardView: View {
                     title: "Spending (80%)",
                     subtitle: "For things I want",
                     amount: child.spendingBalance,
-                    color: .purple
+                    color: KidTheme.purple
                 )
                 
                 MoneyJarCard(
                     title: "Savings (10%)",
                     subtitle: "For my future",
                     amount: child.savingsBalance,
-                    color: .green
+                    color: KidTheme.green
                 )
                 
                 MoneyJarCard(
                     title: "Giving (10%)",
                     subtitle: "To help others",
                     amount: child.givingBalance,
-                    color: .orange
+                    color: KidTheme.orange
                 )
             }
             .padding(.horizontal)
@@ -254,7 +270,7 @@ struct ChildDashboardView: View {
                 title: "Total Earned",
                 value: String(format: "$%.2f", totalBalance),
                 subtitle: "Since you started",
-                color: .orange
+                color: KidTheme.orange
             )
             
             StatCard(
@@ -262,7 +278,7 @@ struct ChildDashboardView: View {
                 title: "Today",
                 value: "\(todayCompletionCount)",
                 subtitle: "Chores completed",
-                color: .green
+                color: KidTheme.green
             )
         }
         .padding(.horizontal)
@@ -272,10 +288,11 @@ struct ChildDashboardView: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Image(systemName: "book.fill")
-                    .foregroundColor(.purple)
+                    .foregroundColor(KidTheme.purple) // KidTheme purple icon for heading
                 Text("Transactions")
                     .font(.title3)
                     .fontWeight(.bold)
+                    .foregroundColor(KidTheme.purple)
             }
             .padding(.horizontal)
             
@@ -307,7 +324,7 @@ struct ChildDashboardView: View {
                         }
                     }
                 }
-                .background(Color.white)
+                .background(KidTheme.cardGradient) // Card gradient for transaction ledger background
                 .cornerRadius(12)
                 .shadow(color: .black.opacity(0.05), radius: 5)
                 .padding(.horizontal)
@@ -542,7 +559,7 @@ struct ChoreRowWithStatus: View {
                     Text("$\(chore.amount, specifier: "%.2f")")
                         .font(.subheadline)
                         .fontWeight(.bold)
-                        .foregroundColor(wouldExceedCap ? .red : .green)
+                        .foregroundColor(wouldExceedCap ? .red : KidTheme.green) // Use KidTheme green for positive amount
                 }
                 
                 Spacer()
@@ -554,6 +571,9 @@ struct ChoreRowWithStatus: View {
                     print("🟣 wouldExceedCap: \(wouldExceedCap)")
                     
                     if !isPending && !wouldExceedCap {
+                        // Trigger haptic feedback for better UX
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred() // Added haptics on tap
+                        
                         // Start the celebration sequence
                         startCelebration()
                     }
@@ -576,7 +596,7 @@ struct ChoreRowWithStatus: View {
                     .foregroundColor(.white)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
-                    .background(isPending ? Color.gray : (wouldExceedCap ? Color.red.opacity(0.5) : Color.purple))
+                    .background(isPending ? Color.gray : (wouldExceedCap ? Color.red.opacity(0.5) : KidTheme.purple)) // Use KidTheme purple for active button
                     .cornerRadius(8)
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -717,7 +737,7 @@ struct BigConfettiCelebrationView: View {
                 .background(
                     Capsule()
                         .fill(
-                            LinearGradient(gradient: Gradient(colors: [Color.purple, Color.pink]),
+                            LinearGradient(gradient: Gradient(colors: [KidTheme.purple, KidTheme.pink]),
                                          startPoint: .leading,
                                          endPoint: .trailing)
                         )
@@ -757,7 +777,7 @@ struct MoneyJarCard: View {
             Spacer()
         }
         .padding()
-        .background(Color.white)
+        .background(KidTheme.cardGradient) // Colorful, glassy background for money jar card
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.05), radius: 5)
     }
@@ -774,7 +794,7 @@ struct StatCard: View {
         VStack(alignment: .leading, spacing: 8) {
             Image(systemName: icon)
                 .font(.title2)
-                .foregroundColor(color)
+                .foregroundColor(color) // Playful accent icon color
             
             Text(title)
                 .font(.caption)
@@ -790,7 +810,7 @@ struct StatCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .background(Color.white)
+        .background(KidTheme.cardGradient) // Consistent card gradient background
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.05), radius: 5)
     }
@@ -839,13 +859,13 @@ struct TransactionLedgerRow: View {
     
     var displayColor: Color {
         if isPurchase {
-            return .blue
+            return KidTheme.blue
         } else if isExpense {
-            return .red
+            return KidTheme.red
         } else if completion.isBonus {
-            return .green
+            return KidTheme.green
         } else {
-            return .orange
+            return KidTheme.orange
         }
     }
     
@@ -880,7 +900,7 @@ struct TransactionLedgerRow: View {
                         if isPending {
                             Text("(Pending)")
                                 .font(.caption)
-                                .foregroundColor(.orange)
+                                .foregroundColor(KidTheme.orange)
                         }
                     } else {
                         Text(completion.chore?.name ?? "Unknown Chore")
@@ -890,7 +910,7 @@ struct TransactionLedgerRow: View {
                         if isPending {
                             Text("(Pending)")
                                 .font(.caption)
-                                .foregroundColor(.orange)
+                                .foregroundColor(KidTheme.orange)
                         }
                     }
                 }
@@ -906,17 +926,17 @@ struct TransactionLedgerRow: View {
                     if completion.spendingAmount != 0 {
                         Text("Spending: $\(abs(completion.spendingAmount), specifier: "%.2f")")
                             .font(.caption2)
-                            .foregroundColor(.purple)
+                            .foregroundColor(KidTheme.purple)
                     }
                     if completion.savingsAmount != 0 {
                         Text("Savings: $\(abs(completion.savingsAmount), specifier: "%.2f")")
                             .font(.caption2)
-                            .foregroundColor(.green)
+                            .foregroundColor(KidTheme.green)
                     }
                     if completion.givingAmount != 0 {
                         Text("Giving: $\(abs(completion.givingAmount), specifier: "%.2f")")
                             .font(.caption2)
-                            .foregroundColor(.orange)
+                            .foregroundColor(KidTheme.orange)
                     }
                 }
             }
@@ -929,7 +949,7 @@ struct TransactionLedgerRow: View {
                 Text("\(isExpense ? "-" : "+")$\(transactionAmount, specifier: "%.2f")")
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundColor(isExpense ? .red : (isPending ? .orange : .green))
+                    .foregroundColor(isExpense ? KidTheme.red : (isPending ? KidTheme.orange : KidTheme.green))
                 
                 // Running balance (only for approved transactions)
                 if !isPending {

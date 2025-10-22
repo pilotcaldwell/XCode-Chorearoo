@@ -67,6 +67,8 @@
 		1303EC012E98990E00A727C4 /* ChildStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1303EBFF2E98990E00A727C4 /* ChildStoreView.swift */; };
 		13070EC82E973F7F000D2F69 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13070EC72E973F7F000D2F69 /* PersistenceController.swift */; };
 		13070EC92E973F7F000D2F69 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13070EC72E973F7F000D2F69 /* PersistenceController.swift */; };
+		135550342EA8645D00E1ADCD /* KidTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550332EA8645D00E1ADCD /* KidTheme.swift */; };
+		135550352EA8645D00E1ADCD /* KidTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135550332EA8645D00E1ADCD /* KidTheme.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +122,7 @@
 		13070E772E9714E1000D2F69 /* chorearooTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chorearooTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		13070E812E9714E1000D2F69 /* chorearooUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chorearooUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		13070EC72E973F7F000D2F69 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		135550332EA8645D00E1ADCD /* KidTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KidTheme.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -220,6 +223,7 @@
 				13070E7A2E9714E1000D2F69 /* chorearooTests */,
 				13070E842E9714E1000D2F69 /* chorearooUITests */,
 				13070E642E9714E0000D2F69 /* Products */,
+				135550332EA8645D00E1ADCD /* KidTheme.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -439,6 +443,7 @@
 				1303EBFA2E9898CD00A727C4 /* AddStoreItemView.swift in Sources */,
 				1303EB8C2E974F6300A727C4 /* Chore+CoreDataProperties.swift in Sources */,
 				1303EB8D2E974F6300A727C4 /* ChoreCompletion+CoreDataProperties.swift in Sources */,
+				135550342EA8645D00E1ADCD /* KidTheme.swift in Sources */,
 				1303EBAD2E97590800A727C4 /* MainTabView.swift in Sources */,
 				1303EB8E2E974F6300A727C4 /* Parent+CoreDataClass.swift in Sources */,
 				1303EB8F2E974F6300A727C4 /* Parent+CoreDataProperties.swift in Sources */,
@@ -477,6 +482,7 @@
 				1303EBD62E97784A00A727C4 /* AddBonusView.swift in Sources */,
 				1303EBFD2E9898ED00A727C4 /* ParentStoreView.swift in Sources */,
 				1303EB942E974F6300A727C4 /* Chore+CoreDataProperties.swift in Sources */,
+				135550352EA8645D00E1ADCD /* KidTheme.swift in Sources */,
 				1303EB952E974F6300A727C4 /* ChoreCompletion+CoreDataProperties.swift in Sources */,
 				1303EBA62E9758B400A727C4 /* AddChoreView.swift in Sources */,
 				1303EB962E974F6300A727C4 /* Parent+CoreDataClass.swift in Sources */,

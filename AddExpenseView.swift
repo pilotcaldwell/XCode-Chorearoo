@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import CoreData
 
 struct AddExpenseView: View {
@@ -48,61 +49,72 @@ struct AddExpenseView: View {
     
     var body: some View {
         NavigationView {
-            Form {
-                Section(header: Text("Expense Details")) {
-                    HStack {
-                        Text("Child:")
-                            .foregroundColor(.gray)
-                        Spacer()
-                        Text(child.name ?? "Unknown")
-                            .fontWeight(.semibold)
-                    }
-                    
-                    HStack {
-                        Text("$")
-                        TextField("Amount", text: $amount)
-                            .keyboardType(.decimalPad)
-                    }
-                    
-                    Picker("Money Jar", selection: $selectedJar) {
-                        ForEach(MoneyJar.allCases) { jar in
-                            Text(jar.rawValue).tag(jar)
+            // Changed from Form to ScrollView and VStack with glassy background for a modern look
+            ScrollView {
+                VStack(spacing: 20) {
+                    Group {
+                        Text("Expense Details")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.bottom, 5)
+                        
+                        HStack {
+                            Text("Child:")
+                                .foregroundColor(.gray)
+                            Spacer()
+                            Text(child.name ?? "Unknown")
+                                .fontWeight(.semibold)
                         }
+                        
+                        HStack {
+                            Text("$")
+                            TextField("Amount", text: $amount)
+                                .keyboardType(.decimalPad)
+                                .textFieldStyle(.roundedBorder)
+                        }
+                        
+                        Picker("Money Jar", selection: $selectedJar) {
+                            ForEach(MoneyJar.allCases) { jar in
+                                Text(jar.rawValue).tag(jar)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        
+                        HStack {
+                            Text("Current Balance:")
+                                .foregroundColor(.gray)
+                            Spacer()
+                            Text("$\(currentJarBalance, specifier: "%.2f")")
+                                .foregroundColor(hasEnoughMoney ? .primary : .red)
+                                .fontWeight(.semibold)
+                        }
+                        
+                        TextField("Description (e.g., Bought toy)", text: $description)
+                            .textFieldStyle(.roundedBorder)
                     }
                     
-                    // Show current balance in selected jar
-                    HStack {
-                        Text("Current Balance:")
-                            .foregroundColor(.gray)
-                        Spacer()
-                        Text("$\(currentJarBalance, specifier: "%.2f")")
-                            .foregroundColor(hasEnoughMoney ? .primary : .red)
-                            .fontWeight(.semibold)
-                    }
-                    
-                    TextField("Description (e.g., Bought toy)", text: $description)
-                }
-                
-                if !hasEnoughMoney {
-                    Section {
+                    if !hasEnoughMoney {
                         Text("⚠️ Insufficient funds in \(selectedJar.rawValue) jar")
                             .font(.caption)
                             .foregroundColor(.red)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                }
-                
-                Section {
+                    
                     Text("💡 This will deduct money from \(child.name ?? "child")'s account and appear in their transaction history.")
                         .font(.caption)
                         .foregroundColor(.gray)
-                }
-                
-                Section {
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
                     Button("Record Expense") {
                         recordExpense()
                     }
                     .disabled(amount.isEmpty || description.isEmpty || !hasEnoughMoney)
+                    .buttonStyle(.borderedProminent)
                 }
+                .padding()
+                .background(.ultraThinMaterial) // glassy background
+                .cornerRadius(20)
+                .padding()
             }
             .navigationTitle("Add Expense")
             .navigationBarItems(
@@ -182,6 +194,9 @@ struct AddExpenseView: View {
         do {
             try viewContext.save()
             print("✅ Successfully saved expense to Core Data")
+            
+            // Provide gentle vibration feedback on expense recording
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred() // Haptic feedback for button press
             
             // Dismiss first
             dismiss()

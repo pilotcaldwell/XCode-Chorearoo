@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit // Import UIKit for haptic feedback
 import CoreData
 
 struct AddBonusView: View {
@@ -22,44 +23,49 @@ struct AddBonusView: View {
     
     var body: some View {
         NavigationView {
-            Form {
-                Section(header: Text("Bonus Details")) {
-                    HStack {
-                        Text("Child:")
-                            .foregroundColor(.gray)
-                        Spacer()
-                        Text(child.name ?? "Unknown")
-                            .fontWeight(.semibold)
-                    }
-                    
-                    HStack {
-                        Text("$")
-                        TextField("Amount", text: $amount)
-                            .keyboardType(.decimalPad)
-                    }
-                    
-                    Picker("Money Jar", selection: $selectedJar) {
-                        ForEach(MoneyJar.allCases) { jar in
-                            Text(jar.rawValue).tag(jar)
+            // Replace Form with ScrollView and VStack for glassy look, styled with .background(.liquidGlass)
+            ScrollView {
+                VStack(spacing: 20) {
+                    Section(header: Text("Bonus Details")) {
+                        HStack {
+                            Text("Child:")
+                                .foregroundColor(.gray)
+                            Spacer()
+                            Text(child.name ?? "Unknown")
+                                .fontWeight(.semibold)
                         }
+                        
+                        HStack {
+                            Text("$")
+                            TextField("Amount", text: $amount)
+                                .keyboardType(.decimalPad)
+                        }
+                        
+                        Picker("Money Jar", selection: $selectedJar) {
+                            ForEach(MoneyJar.allCases) { jar in
+                                Text(jar.rawValue).tag(jar)
+                            }
+                        }
+                        
+                        TextField("Reason (optional)", text: $reason)
                     }
                     
-                    TextField("Reason (optional)", text: $reason)
-                }
-                
-                Section {
-                    Text("💡 Bonuses are instantly added and don't count against the weekly cap!")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                }
-                
-                Section {
-                    Button("Give Bonus") {
-                        giveBonus()
+                    Section {
+                        Text("💡 Bonuses are instantly added and don't count against the weekly cap!")
+                            .font(.caption)
+                            .foregroundColor(.gray)
                     }
-                    .disabled(amount.isEmpty)
+                    
+                    Section {
+                        Button("Give Bonus") {
+                            giveBonus()
+                        }
+                        .disabled(amount.isEmpty)
+                    }
                 }
+                .padding()
             }
+            .background(.liquidGlass) // Glassy background effect
             .navigationTitle("Add Bonus")
             .navigationBarItems(
                 leading: Button("Cancel") {
@@ -117,6 +123,9 @@ struct AddBonusView: View {
             try viewContext.save()
             print("✅ Successfully saved bonus to Core Data")
             
+            // Provide gentle vibration feedback for button press
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred() // Haptic feedback
+            
             // Dismiss first
             dismiss()
             
@@ -145,3 +154,4 @@ struct AddBonusView: View {
     return AddBonusView(child: child, onBonusAdded: {})
         .environment(\.managedObjectContext, context)
 }
+

@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import CoreData
 
 struct ChildTransactionLedgerView: View {
@@ -103,7 +104,8 @@ struct ChildTransactionLedgerView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 30)
-        .background(Color.white)
+        // Changed background to liquidGlass for a translucent glass effect
+        .background(.liquidGlass)
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.05), radius: 10)
         .padding(.horizontal)
@@ -147,6 +149,8 @@ struct ChildTransactionLedgerView: View {
         HStack(spacing: 12) {
             // Give Bonus Button
             Button(action: {
+                // Added haptic feedback on tap for better tactile experience
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 showBonusSheet = true
             }) {
                 HStack(spacing: 8) {
@@ -171,6 +175,8 @@ struct ChildTransactionLedgerView: View {
             
             // Add Expense Button
             Button(action: {
+                // Added haptic feedback on tap for better tactile experience
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 showExpenseSheet = true
             }) {
                 HStack(spacing: 8) {
@@ -275,7 +281,8 @@ struct ChildTransactionLedgerView: View {
                 }
             }
         }
-        .background(Color.white)
+        // Changed background to liquidGlass for a translucent glass effect
+        .background(.liquidGlass)
         .cornerRadius(12)
         .shadow(color: .black.opacity(0.05), radius: 5)
         .padding(.horizontal)

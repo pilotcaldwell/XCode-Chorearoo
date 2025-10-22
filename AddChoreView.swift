@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import CoreData
 
 struct AddChoreView: View {
@@ -12,24 +13,43 @@ struct AddChoreView: View {
     
     var body: some View {
         NavigationView {
-            Form {
-                Section(header: Text("Chore Details")) {
-                    TextField("Chore Name (e.g., Make Bed)", text: $name)
-                    
-                    TextField("Description (optional)", text: $choreDescription)
-                    
-                    HStack {
-                        Text("$")
-                        TextField("Amount", text: $amount)
-                            .keyboardType(.decimalPad)
-                    }
-                }
+            ZStack {
+                KidTheme.mainGradient // Added vibrant gradient background for the entire screen
                 
-                Section {
-                    Button("Save Chore") {
-                        saveChore()
+                ScrollView {
+                    VStack(spacing: 20) {
+                        VStack(alignment: .leading, spacing: 15) {
+                            Text("Chore Details")
+                                .font(.headline)
+                                .padding(.bottom, 5)
+                            
+                            TextField("Chore Name (e.g., Make Bed)", text: $name)
+                                .textFieldStyle(.roundedBorder)
+                            
+                            TextField("Description (optional)", text: $choreDescription)
+                                .textFieldStyle(.roundedBorder)
+                            
+                            HStack {
+                                Text("$")
+                                TextField("Amount", text: $amount)
+                                    .keyboardType(.decimalPad)
+                                    .textFieldStyle(.roundedBorder)
+                            }
+                        }
+                        .padding()
+                        .background(KidTheme.cardGradient) // Replaced liquidGlass with colorful card gradient for playful look
+                        .cornerRadius(12)
+                        
+                        Button("Save Chore") {
+                            saveChore()
+                        }
+                        .disabled(name.isEmpty || amount.isEmpty)
+                        .padding()
+                        .background(KidTheme.purple) // Bold purple background for prominent Save button
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
                     }
-                    .disabled(name.isEmpty || amount.isEmpty)
+                    .padding()
                 }
             }
             .navigationTitle("Add Chore")
@@ -50,6 +70,8 @@ struct AddChoreView: View {
         
         do {
             try viewContext.save()
+            // Trigger gentle haptic feedback on successful save
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             dismiss()
         } catch {
             print("Error saving chore: \(error)")
