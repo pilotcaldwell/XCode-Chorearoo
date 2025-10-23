@@ -109,7 +109,7 @@ struct ChildDashboardView: View {
         .onAppear {
             fetchTransactions()
         }
-        .onChange(of: selectedTab) {
+        .onChange(of: selectedTab) { _, _ in
             // Refresh transactions when switching back to dashboard
             if selectedTab == 0 {
                 fetchTransactions()
@@ -156,7 +156,7 @@ struct ChildDashboardView: View {
                     )
                     .background(KidTheme.cardBackground)
                     .cornerRadius(16)
-                    .shadow(color: .black.opacity(0.05), radius: 5)
+                    .shadow(color: Color.black.opacity(0.05), radius: 5)
                     .padding(.horizontal)
                     
                     // Stats Cards
@@ -217,7 +217,7 @@ struct ChildDashboardView: View {
         .padding(.vertical, 32)
         .background(KidTheme.cardBackground)
         .cornerRadius(20)
-        .shadow(color: .black.opacity(0.05), radius: 12, x: 0, y: 6)
+        .shadow(color: Color.black.opacity(0.05), radius: 12, x: 0, y: 6)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
                 .stroke(KidTheme.green.opacity(0.2), lineWidth: 2)
@@ -308,12 +308,12 @@ struct ChildDashboardView: View {
                 VStack(spacing: 12) {
                     Image(systemName: "tray")
                         .font(.system(size: 40))
-                        .foregroundColor(.gray.opacity(0.5))
+                        .foregroundColor(Color.gray.opacity(0.5))
                     Text("No transactions yet")
-                        .foregroundColor(.gray)
+                        .foregroundColor(Color.gray)
                     Text("Complete some chores to get started!")
                         .font(.caption)
-                        .foregroundColor(.gray)
+                        .foregroundColor(Color.gray)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 40)
@@ -335,7 +335,7 @@ struct ChildDashboardView: View {
                 }
                 .background(KidTheme.cardBackground) // Card background for transaction ledger
                 .cornerRadius(12)
-                .shadow(color: .black.opacity(0.05), radius: 5)
+                .shadow(color: Color.black.opacity(0.05), radius: 5)
                 .padding(.horizontal)
             }
         }
@@ -428,21 +428,21 @@ struct ChildChoreListView: View {
                     VStack(spacing: 20) {
                         Image(systemName: "list.clipboard")
                             .font(.system(size: 60))
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color.gray)
                         Text("No chores available")
                             .font(.headline)
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color.gray)
                         Text("Ask a parent to add chores to the library")
                             .font(.subheadline)
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color.gray)
                             .multilineTextAlignment(.center)
                     }
                     .padding()
                 } else {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("This week: $\(thisWeekEarnings, specifier: "%.2f") of $\(child.weeklyCap, specifier: "%.2f")")
+                        Text(String(format: "This week: $%.2f of $%.2f", thisWeekEarnings, child.weeklyCap))
                             .font(.subheadline)
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color.gray)
                             .padding(.horizontal)
                         
                         ProgressView(value: thisWeekEarnings, total: child.weeklyCap)
@@ -472,7 +472,7 @@ struct ChildChoreListView: View {
             .alert("Weekly Cap Reached", isPresented: $showCapReachedAlert) {
                 Button("OK", role: .cancel) {}
             } message: {
-                Text("You've reached your weekly earning cap of $\(child.weeklyCap, specifier: "%.2f"). Ask a parent for a bonus or wait until next week!")
+                Text(String(format: "You've reached your weekly earning cap of $%.2f. Ask a parent for a bonus or wait until next week!", child.weeklyCap))
             }
         }
     }
@@ -548,6 +548,16 @@ struct ChoreRowWithStatus: View {
     @State private var isFlashing = false
     @State private var cardScale: CGFloat = 1.0
     
+    private var buttonBackgroundColor: Color {
+        if isPending {
+            return Color.gray
+        } else if wouldExceedCap {
+            return Color.red.opacity(0.5)
+        } else {
+            return KidTheme.purple
+        }
+    }
+    
     var body: some View {
         ZStack {
             HStack(spacing: 12) {
@@ -555,20 +565,20 @@ struct ChoreRowWithStatus: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(chore.name ?? "Unknown")
                         .font(.headline)
-                        .foregroundColor(.primary)
+                        .foregroundColor(Color.primary)
                     
                     if let description = chore.choreDescription, !description.isEmpty {
                         Text(description)
                             .font(.subheadline)
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color.gray)
                             .lineLimit(2)
                     }
                     
                     // Amount on the left side under description
-                    Text("$\(chore.amount, specifier: "%.2f")")
+                    Text(String(format: "$%.2f", chore.amount))
                         .font(.subheadline)
                         .fontWeight(.bold)
-                        .foregroundColor(wouldExceedCap ? .red : KidTheme.green) // Use KidTheme green for positive amount
+                        .foregroundColor(wouldExceedCap ? Color.red : KidTheme.green) // Use KidTheme green for positive amount
                 }
                 
                 Spacer()
@@ -602,10 +612,10 @@ struct ChoreRowWithStatus: View {
                                 .fontWeight(.semibold)
                         }
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(Color.white)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
-                    .background(isPending ? Color.gray : (wouldExceedCap ? Color.red.opacity(0.5) : KidTheme.purple)) // Use KidTheme purple for active button
+                    .background(buttonBackgroundColor)
                     .cornerRadius(8)
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -615,16 +625,17 @@ struct ChoreRowWithStatus: View {
             .padding(.vertical, 12)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(isFlashing ? 
-                          Color.yellow.opacity(0.3) : 
-                          Color.white)
+                    .fill(isFlashing ? Color.yellow.opacity(0.3) : Color.white)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(isFlashing ? Color.yellow : Color.clear, lineWidth: 3)
             )
             .cornerRadius(12)
-            .shadow(color: isFlashing ? Color.yellow.opacity(0.5) : Color.black.opacity(0.05), radius: isFlashing ? 10 : 3)
+            .shadow(
+                color: isFlashing ? Color.yellow.opacity(0.5) : Color.black.opacity(0.05), 
+                radius: isFlashing ? 10 : 3
+            )
             .scaleEffect(cardScale)
             
             // Celebration overlay - BIGGER and more impressive
@@ -692,10 +703,10 @@ struct BigConfettiCelebrationView: View {
             ForEach(0..<30) { index in
                 RoundedRectangle(cornerRadius: 3)
                     .fill(confettiColor(for: index))
-                    .frame(width: CGFloat.random(in: 8...14), height: CGFloat.random(in: 12...20))
+                    .frame(width: CGFloat.random(in: 8.0...14.0), height: CGFloat.random(in: 12.0...20.0))
                     .rotationEffect(.degrees(isAnimating ? Double(index) * 30 + 720 : Double(index) * 30))
-                    .offset(x: isAnimating ? cos(Double(index) * .pi / 15) * CGFloat.random(in: 80...120) : 0,
-                           y: isAnimating ? sin(Double(index) * .pi / 15) * CGFloat.random(in: 80...120) : 0)
+                    .offset(x: isAnimating ? cos(Double(index) * .pi / 15) * CGFloat.random(in: 80.0...120.0) : 0,
+                           y: isAnimating ? sin(Double(index) * .pi / 15) * CGFloat.random(in: 80.0...120.0) : 0)
                     .opacity(isAnimating ? 0 : 1)
             }
             
@@ -703,9 +714,9 @@ struct BigConfettiCelebrationView: View {
             ForEach(0..<20) { index in
                 Circle()
                     .fill(sparkleColor(for: index))
-                    .frame(width: CGFloat.random(in: 4...8), height: CGFloat.random(in: 4...8))
-                    .offset(x: isAnimating ? cos(Double(index) * .pi / 10) * CGFloat.random(in: 60...100) : 0,
-                           y: isAnimating ? sin(Double(index) * .pi / 10) * CGFloat.random(in: 60...100) : 0)
+                    .frame(width: CGFloat.random(in: 4.0...8.0), height: CGFloat.random(in: 4.0...8.0))
+                    .offset(x: isAnimating ? cos(Double(index) * .pi / 10) * CGFloat.random(in: 60.0...100.0) : 0,
+                           y: isAnimating ? sin(Double(index) * .pi / 10) * CGFloat.random(in: 60.0...100.0) : 0)
                     .opacity(isAnimating ? 0 : 1)
             }
             
@@ -755,12 +766,21 @@ struct BigConfettiCelebrationView: View {
     }
     
     private func confettiColor(for index: Int) -> Color {
-        let colors: [Color] = [.red, .blue, KidTheme.green, KidTheme.orange, KidTheme.purple, KidTheme.pink, KidTheme.yellow, .cyan]
+        let colors: [Color] = [
+            Color.red, 
+            Color.blue, 
+            KidTheme.green, 
+            KidTheme.orange, 
+            KidTheme.purple, 
+            KidTheme.pink, 
+            KidTheme.yellow, 
+            Color.cyan
+        ]
         return colors[index % colors.count]
     }
     
     private func sparkleColor(for index: Int) -> Color {
-        let colors: [Color] = [.white, KidTheme.yellow, KidTheme.orange]
+        let colors: [Color] = [Color.white, KidTheme.yellow, KidTheme.orange]
         return colors[index % colors.count]
     }
 }
@@ -802,7 +822,7 @@ struct MoneyJarCard: View {
         .padding(20)
         .background(KidTheme.cardBackground)
         .cornerRadius(16)
-        .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: 3)
+        .shadow(color: Color.black.opacity(0.05), radius: 6, x: 0, y: 3)
         .overlay(
             RoundedRectangle(cornerRadius: 16)
                 .stroke(color.opacity(0.3), lineWidth: 1)
@@ -832,7 +852,7 @@ struct StatCard: View {
             
             Text(title)
                 .font(.caption)
-                .foregroundColor(.gray)
+                .foregroundColor(Color.gray)
             
             Text(value)
                 .font(.title)
@@ -840,13 +860,13 @@ struct StatCard: View {
             
             Text(subtitle)
                 .font(.caption)
-                .foregroundColor(.gray)
+                .foregroundColor(Color.gray)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .background(KidTheme.cardBackground) // Consistent card background
         .cornerRadius(12)
-        .shadow(color: .black.opacity(0.05), radius: 5)
+        .shadow(color: Color.black.opacity(0.05), radius: 5)
     }
 }
 
@@ -952,23 +972,23 @@ struct TransactionLedgerRow: View {
                 if let date = completion.completedAt {
                     Text(date, style: .date)
                         .font(.caption)
-                        .foregroundColor(.gray)
+                        .foregroundColor(Color.gray)
                 }
                 
                 // Show jar breakdown with color coding (no emojis)
                 HStack(spacing: 12) {
                     if completion.spendingAmount != 0 {
-                        Text("Spending: $\(abs(completion.spendingAmount), specifier: "%.2f")")
+                        Text(String(format: "Spending: $%.2f", abs(completion.spendingAmount)))
                             .font(.caption2)
                             .foregroundColor(KidTheme.purple)
                     }
                     if completion.savingsAmount != 0 {
-                        Text("Savings: $\(abs(completion.savingsAmount), specifier: "%.2f")")
+                        Text(String(format: "Savings: $%.2f", abs(completion.savingsAmount)))
                             .font(.caption2)
                             .foregroundColor(KidTheme.green)
                     }
                     if completion.givingAmount != 0 {
-                        Text("Giving: $\(abs(completion.givingAmount), specifier: "%.2f")")
+                        Text(String(format: "Giving: $%.2f", abs(completion.givingAmount)))
                             .font(.caption2)
                             .foregroundColor(KidTheme.orange)
                     }
@@ -980,16 +1000,24 @@ struct TransactionLedgerRow: View {
             // Amount and Balance
             VStack(alignment: .trailing, spacing: 4) {
                 // Transaction amount - show + for income, - for expense
-                Text("\(isExpense ? "-" : "+")$\(transactionAmount, specifier: "%.2f")")
+                Text(String(format: "%@$%.2f", isExpense ? "-" : "+", transactionAmount))
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundColor(isExpense ? KidTheme.redAccent : (isPending ? KidTheme.orange : KidTheme.green))
+                    .foregroundColor({
+                        if isExpense {
+                            return KidTheme.redAccent
+                        } else if isPending {
+                            return KidTheme.orange
+                        } else {
+                            return KidTheme.green
+                        }
+                    }())
                 
                 // Running balance (only for approved transactions)
                 if !isPending {
-                    Text("Balance: $\(runningBalance, specifier: "%.2f")")
+                    Text(String(format: "Balance: $%.2f", runningBalance))
                         .font(.caption)
-                        .foregroundColor(.gray)
+                        .foregroundColor(Color.gray)
                 }
             }
         }

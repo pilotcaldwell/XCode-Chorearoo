@@ -95,8 +95,6 @@
 		1355507A2EA86DAD00E1ADCD /* README_THEME_FIX.txt in Resources */ = {isa = PBXBuildFile; fileRef = 135550782EA86DAD00E1ADCD /* README_THEME_FIX.txt */; };
 		1355507C2EA8732200E1ADCD /* AppTheme 3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1355507B2EA8732200E1ADCD /* AppTheme 3.swift */; };
 		1355507D2EA8732200E1ADCD /* AppTheme 3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1355507B2EA8732200E1ADCD /* AppTheme 3.swift */; };
-		13E0CD272EA8F66C005C81F2 /* KidTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E0CD262EA8F66C005C81F2 /* KidTheme.swift */; };
-		13E0CD282EA8F66C005C81F2 /* KidTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E0CD262EA8F66C005C81F2 /* KidTheme.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -164,7 +162,6 @@
 		135550752EA86D0F00E1ADCD /* AppTheme 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppTheme 2.swift"; sourceTree = "<group>"; };
 		135550782EA86DAD00E1ADCD /* README_THEME_FIX.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README_THEME_FIX.txt; sourceTree = "<group>"; };
 		1355507B2EA8732200E1ADCD /* AppTheme 3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppTheme 3.swift"; sourceTree = "<group>"; };
-		13E0CD262EA8F66C005C81F2 /* KidTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KidTheme.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -279,7 +276,6 @@
 				135550752EA86D0F00E1ADCD /* AppTheme 2.swift */,
 				135550782EA86DAD00E1ADCD /* README_THEME_FIX.txt */,
 				1355507B2EA8732200E1ADCD /* AppTheme 3.swift */,
-				13E0CD262EA8F66C005C81F2 /* KidTheme.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -496,7 +492,6 @@
 				1355505E2EA86CEF00E1ADCD /* KidTheme 14.swift in Sources */,
 				135550612EA86CF200E1ADCD /* KidTheme 15.swift in Sources */,
 				1303EB882E974F6300A727C4 /* ChoreCompletion+CoreDataClass.swift in Sources */,
-				13E0CD272EA8F66C005C81F2 /* KidTheme.swift in Sources */,
 				1303EBD32E9777E000A727C4 /* WeeklyProgressCard.swift in Sources */,
 				1303EBBE2E976C0F00A727C4 /* ChildDashboardView.swift in Sources */,
 				135550412EA86AA600E1ADCD /* KidTheme 5.swift in Sources */,
@@ -549,7 +544,6 @@
 				1355505C2EA86CEB00E1ADCD /* KidTheme 13.swift in Sources */,
 				1303EBA42E97570400A727C4 /* ChildrenListView.swift in Sources */,
 				1303EBAF2E975B4200A727C4 /* CompleteChoreView.swift in Sources */,
-				13E0CD282EA8F66C005C81F2 /* KidTheme.swift in Sources */,
 				1355506B2EA86CFD00E1ADCD /* KidTheme 18.swift in Sources */,
 				1303EC002E98990E00A727C4 /* ChildStoreView.swift in Sources */,
 				1303EBF12E988EFE00A727C4 /* AddExpenseView.swift in Sources */,
