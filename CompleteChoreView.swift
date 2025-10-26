@@ -58,23 +58,23 @@ struct CompleteChoreView: View {
                             Text("Weekly Progress")
                                 .font(.title2)
                                 .fontWeight(.bold)
-                                .foregroundColor(KidTheme.textPrimary)
+                                .foregroundColor(AppThemeVibrant.textPrimary)
                         }
                         
                         VStack(spacing: 8) {
                             Text("$\(thisWeekEarnings, specifier: "%.2f") of $\(child.weeklyCap, specifier: "%.2f")")
                                 .font(.title)
                                 .fontWeight(.bold)
-                                .foregroundColor(KidTheme.green)
+                                .foregroundColor(AppThemeVibrant.green)
                             
                             ProgressView(value: thisWeekEarnings, total: child.weeklyCap)
-                                .progressViewStyle(LinearProgressViewStyle(tint: KidTheme.green))
+                                .progressViewStyle(LinearProgressViewStyle(tint: AppThemeVibrant.green))
                                 .scaleEffect(1.2)
                                 .padding(.horizontal, 8)
                         }
                     }
                     .padding(24)
-                    .background(KidTheme.cardBackground)
+                    .background(AppThemeVibrant.cardBackground)
                     .cornerRadius(16)
                     .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
                     .padding(.horizontal, 16)
@@ -89,10 +89,10 @@ struct CompleteChoreView: View {
                         Text("No Chores Available")
                             .font(.title)
                             .fontWeight(.bold)
-                            .foregroundColor(KidTheme.textPrimary)
+                            .foregroundColor(AppThemeVibrant.textPrimary)
                         Text("Ask a parent to add some chores for you to complete!")
                             .font(.body)
-                            .foregroundColor(KidTheme.textSecondary)
+                            .foregroundColor(AppThemeVibrant.textSecondary)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 32)
                     }
@@ -108,7 +108,7 @@ struct CompleteChoreView: View {
                                     HStack(spacing: 16) {
                                         // Chore Icon
                                         Circle()
-                                            .fill(KidTheme.blue.opacity(0.2))
+                                            .fill(AppThemeVibrant.blue.opacity(0.2))
                                             .frame(width: 50, height: 50)
                                             .overlay(
                                                 Text("✨")
@@ -119,13 +119,13 @@ struct CompleteChoreView: View {
                                             Text(chore.name ?? "Unknown Chore")
                                                 .font(.headline)
                                                 .fontWeight(.bold)
-                                                .foregroundColor(KidTheme.textPrimary)
+                                                .foregroundColor(AppThemeVibrant.textPrimary)
                                                 .multilineTextAlignment(.leading)
                                             
                                             if let description = chore.choreDescription, !description.isEmpty {
                                                 Text(description)
                                                     .font(.subheadline)
-                                                    .foregroundColor(KidTheme.textSecondary)
+                                                    .foregroundColor(AppThemeVibrant.textSecondary)
                                                     .lineLimit(2)
                                                     .multilineTextAlignment(.leading)
                                             }
@@ -137,25 +137,25 @@ struct CompleteChoreView: View {
                                             Text("$\(chore.amount, specifier: "%.2f")")
                                                 .font(.title2)
                                                 .fontWeight(.bold)
-                                                .foregroundColor(wouldExceedCap(chore) ? KidTheme.orange : KidTheme.green)
+                                                .foregroundColor(wouldExceedCap(chore) ? AppThemeVibrant.orange : AppThemeVibrant.green)
                                             
                                             if wouldExceedCap(chore) {
                                                 Text("Cap Reached")
                                                     .font(.caption)
-                                                    .foregroundColor(KidTheme.orange)
+                                                    .foregroundColor(AppThemeVibrant.orange)
                                             }
                                         }
                                     }
                                     .padding(20)
-                                    .background(KidTheme.cardBackground)
+                                    .background(AppThemeVibrant.cardBackground)
                                     .cornerRadius(16)
                                     .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: 3)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 16)
                                             .stroke(
                                                 wouldExceedCap(chore) ?
-                                                KidTheme.orange.opacity(0.3) :
-                                                KidTheme.blue.opacity(0.2),
+                                                AppThemeVibrant.orange.opacity(0.3) :
+                                                AppThemeVibrant.blue.opacity(0.2),
                                                 lineWidth: 1
                                             )
                                     )
@@ -171,7 +171,7 @@ struct CompleteChoreView: View {
                     }
                 }
             }
-            .background(KidTheme.backgroundSecondary)
+            .background(AppThemeVibrant.backgroundSecondary)
             .navigationTitle("Complete Chores 🎯")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -180,10 +180,10 @@ struct CompleteChoreView: View {
                         dismiss()
                     }
                     .font(.headline)
-                    .foregroundColor(KidTheme.textOnColor)
+                    .foregroundColor(AppThemeVibrant.textOnColor)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
-                    .background(KidTheme.purple)
+                    .background(AppThemeVibrant.purple)
                     .cornerRadius(20)
                 }
             }
@@ -199,7 +199,7 @@ struct CompleteChoreView: View {
                         completeChore(chore)
                     }
                 }
-                .tint(KidTheme.green) // Green tinted complete button for success
+                .tint(AppThemeVibrant.green) // Green tinted complete button for success
             } message: {
                 if let chore = selectedChore {
                     Text("Mark \"\(chore.name ?? "")\" as complete for $\(chore.amount, specifier: "%.2f")?")
@@ -207,7 +207,7 @@ struct CompleteChoreView: View {
             }
             .alert("Weekly Cap Reached", isPresented: $showCapReachedAlert) {
                 Button("OK", role: .cancel) {}
-                    .tint(KidTheme.orange) // Orange button for alert confirmation
+                    .tint(AppThemeVibrant.orange) // Orange button for alert confirmation
             } message: {
                 Text("You've reached your weekly earning cap of $\(child.weeklyCap, specifier: "%.2f"). Ask a parent for a bonus or wait until next week!")
             }

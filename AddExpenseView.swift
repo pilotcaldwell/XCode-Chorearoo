@@ -50,29 +50,29 @@ struct AddExpenseView: View {
     
     var body: some View {
         ZStack {
-            KidTheme.mainGradient // Vibrant, playful background for whole screen
+            AppThemeVibrant.mainGradient // Vibrant, playful background for whole screen
             
             ScrollView {
                 VStack(spacing: 20) {
                     Group {
                         Text("Expense Details")
                             .font(.headline)
-                            .foregroundColor(KidTheme.orange) // Brightened header with KidTheme accent
+                            .foregroundColor(AppThemeVibrant.orange) // Brightened header with KidTheme accent
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.bottom, 5)
                         
                         HStack {
                             Text("Child:")
-                                .foregroundColor(KidTheme.purple) // Bright label color
+                                .foregroundColor(AppThemeVibrant.purple) // Bright label color
                             Spacer()
                             Text(child.name ?? "Unknown")
                                 .fontWeight(.semibold)
-                                .foregroundColor(KidTheme.orange) // Accent color on name
+                                .foregroundColor(AppThemeVibrant.orange) // Accent color on name
                         }
                         
                         HStack {
                             Text("$")
-                                .foregroundColor(KidTheme.green) // Bright currency symbol
+                                .foregroundColor(AppThemeVibrant.green) // Bright currency symbol
                             TextField("Amount", text: $amount)
                                 .keyboardType(.decimalPad)
                                 .textFieldStyle(.roundedBorder)
@@ -81,7 +81,7 @@ struct AddExpenseView: View {
                         Picker("Money Jar", selection: $selectedJar) {
                             ForEach(MoneyJar.allCases) { jar in
                                 Text(jar.rawValue)
-                                    .foregroundColor(KidTheme.blue) // Bright picker text
+                                    .foregroundColor(AppThemeVibrant.blue) // Bright picker text
                                     .tag(jar)
                             }
                         }
@@ -89,10 +89,10 @@ struct AddExpenseView: View {
                         
                         HStack {
                             Text("Current Balance:")
-                                .foregroundColor(KidTheme.purple) // Bright label color
+                                .foregroundColor(AppThemeVibrant.purple) // Bright label color
                             Spacer()
                             Text("$\(currentJarBalance, specifier: "%.2f")")
-                                .foregroundColor(hasEnoughMoney ? KidTheme.orange : .red)
+                                .foregroundColor(hasEnoughMoney ? AppThemeVibrant.orange : .red)
                                 .fontWeight(.semibold)
                         }
                         
@@ -109,7 +109,7 @@ struct AddExpenseView: View {
                     
                     Text("💡 This will deduct money from \(child.name ?? "child")'s account and appear in their transaction history.")
                         .font(.caption)
-                        .foregroundColor(KidTheme.purple) // Accent info text color
+                        .foregroundColor(AppThemeVibrant.purple) // Accent info text color
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Button {
@@ -119,13 +119,13 @@ struct AddExpenseView: View {
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(KidTheme.orange) // Bold orange button background
+                            .background(AppThemeVibrant.orange) // Bold orange button background
                             .cornerRadius(12) // Rounded corners for approachable style
                     }
                     .disabled(amount.isEmpty || description.isEmpty || !hasEnoughMoney)
                 }
                 .padding()
-                .background(KidTheme.cardGradient) // Glassy, playful card effect behind content
+                .background(AppThemeVibrant.cardGradient) // Glassy, playful card effect behind content
                 .cornerRadius(20)
                 .padding()
             }
@@ -136,7 +136,7 @@ struct AddExpenseView: View {
             leading: Button("Cancel") {
                 dismiss()
             }
-            .foregroundColor(KidTheme.orange) // Bright cancel button color
+            .foregroundColor(AppThemeVibrant.orange) // Bright cancel button color
         )
         .alert("Insufficient Funds", isPresented: $showInsufficientFundsAlert) {
             Button("OK", role: .cancel) {}

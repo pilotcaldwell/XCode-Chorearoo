@@ -26,7 +26,7 @@ struct WeeklyProgressCard: View {
             HStack {
                 Image(systemName: "clock.badge.checkmark.fill")
                     .font(.title2)
-                    .foregroundColor(KidTheme.green) // Use KidTheme green for icon
+                    .foregroundColor(Color.green) // Use KidTheme green for icon
                 
                 Text("This Week")
                     .font(.title2)
@@ -38,8 +38,8 @@ struct WeeklyProgressCard: View {
                     .font(.subheadline)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
-                    .background(KidTheme.green.opacity(0.2)) // KidTheme green badge bg
-                    .foregroundColor(KidTheme.green)           // KidTheme green badge fg
+                    .background(Color.green.opacity(0.2)) // KidTheme green badge bg
+                    .foregroundColor(Color.green)           // KidTheme green badge fg
                     .cornerRadius(20)
             }
             
@@ -56,7 +56,7 @@ struct WeeklyProgressCard: View {
                 if bonusEarnings > 0 {
                     Text(String(format: "+ $%.2f bonus (extra!)", bonusEarnings))
                         .font(.subheadline)
-                        .foregroundColor(KidTheme.green)  // KidTheme green bonus text
+                        .foregroundColor(Color.green)  // KidTheme green bonus text
                         .fontWeight(.medium)
                 }
             }
@@ -78,7 +78,7 @@ struct WeeklyProgressCard: View {
                         // Bonus section bar in orange, offset after chore earnings
                         if bonusEarnings > 0 {
                             RoundedRectangle(cornerRadius: 10)
-                                .fill(KidTheme.orange)
+                                .fill(Color.orange)
                                 .frame(width: geometry.size.width * min(0.3, (bonusEarnings / weeklyCap)), height: 20)
                                 .offset(x: geometry.size.width * progressPercentage)
                         }
@@ -107,3 +107,4 @@ struct WeeklyProgressCard: View {
         weeklyCap: 10.0
     )
 }
+

@@ -154,7 +154,7 @@ struct ChildDashboardView: View {
                         bonusEarnings: thisWeekBonusEarnings,
                         weeklyCap: child.weeklyCap > 0 ? child.weeklyCap : 10.0
                     )
-                    .background(KidTheme.cardBackground)
+                    .background(AppThemeVibrant.cardBackground)
                     .cornerRadius(16)
                     .shadow(color: Color.black.opacity(0.05), radius: 5)
                     .padding(.horizontal)
@@ -177,18 +177,18 @@ struct ChildDashboardView: View {
                                 .fontWeight(.bold)
                                 .font(.title3)
                         }
-                        .foregroundColor(KidTheme.textOnColor)
+                        .foregroundColor(AppThemeVibrant.textOnColor)
                         .padding(.vertical, 20)
                         .frame(maxWidth: .infinity)
-                        .background(KidTheme.orange)
+                        .background(AppThemeVibrant.orange)
                         .cornerRadius(16)
                         .padding(.horizontal)
-                        .shadow(color: KidTheme.orange.opacity(0.3), radius: 8, x: 0, y: 4)
+                        .shadow(color: AppThemeVibrant.orange.opacity(0.3), radius: 8, x: 0, y: 4)
                     }
                 }
                 .padding(.vertical)
             }
-            .background(KidTheme.backgroundSecondary)
+            .background(AppThemeVibrant.backgroundSecondary)
             .navigationTitle("\(child.name ?? "My") Dashboard 🏠")
             .navigationBarTitleDisplayMode(.large)
         }
@@ -202,25 +202,25 @@ struct ChildDashboardView: View {
                 Text("Total Balance")
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundColor(KidTheme.textPrimary)
+                    .foregroundColor(AppThemeVibrant.textPrimary)
             }
             
             Text(String(format: "$%.2f", totalBalance))
                 .font(.system(size: 56, weight: .bold, design: .rounded))
-                .foregroundColor(KidTheme.green)
+                .foregroundColor(AppThemeVibrant.green)
                 
             Text("Across all your money jars")
                 .font(.body)
-                .foregroundColor(KidTheme.textSecondary)
+                .foregroundColor(AppThemeVibrant.textSecondary)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 32)
-        .background(KidTheme.cardBackground)
+        .background(AppThemeVibrant.cardBackground)
         .cornerRadius(20)
         .shadow(color: Color.black.opacity(0.05), radius: 12, x: 0, y: 6)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
-                .stroke(KidTheme.green.opacity(0.2), lineWidth: 2)
+                .stroke(AppThemeVibrant.green.opacity(0.2), lineWidth: 2)
         )
         .padding(.horizontal)
     }
@@ -233,7 +233,7 @@ struct ChildDashboardView: View {
                 Text("My Money Jars")
                     .font(.title2)
                     .fontWeight(.bold)
-                    .foregroundColor(KidTheme.textPrimary)
+                    .foregroundColor(AppThemeVibrant.textPrimary)
             }
             .padding(.horizontal)
             
@@ -242,28 +242,28 @@ struct ChildDashboardView: View {
                     title: "Spending (80%)",
                     subtitle: "For things I want to buy",
                     amount: child.spendingBalance,
-                    color: KidTheme.purple
+                    color: AppThemeVibrant.purple
                 )
                 
                 MoneyJarCard(
                     title: "Savings (10%)",
                     subtitle: "For my future goals",
                     amount: child.savingsBalance,
-                    color: KidTheme.green
+                    color: AppThemeVibrant.green
                 )
                 
                 MoneyJarCard(
                     title: "Giving (10%)",
                     subtitle: "To help others in need",
                     amount: child.givingBalance,
-                    color: KidTheme.orange
+                    color: AppThemeVibrant.orange
                 )
             }
             .padding(.horizontal)
             
             Text("💡 Every time you earn money, it's automatically split into these three jars!")
                 .font(.body)
-                .foregroundColor(KidTheme.textSecondary)
+                .foregroundColor(AppThemeVibrant.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
                 .padding(.top, 8)
@@ -278,7 +278,7 @@ struct ChildDashboardView: View {
                 title: "Total Earned",
                 value: String(format: "$%.2f", totalBalance),
                 subtitle: "Since you started",
-                color: KidTheme.orange
+                color: AppThemeVibrant.orange
             )
             
             StatCard(
@@ -286,7 +286,7 @@ struct ChildDashboardView: View {
                 title: "Today",
                 value: "\(todayCompletionCount)",
                 subtitle: "Chores completed",
-                color: KidTheme.green
+                color: AppThemeVibrant.green
             )
         }
         .padding(.horizontal)
@@ -296,11 +296,11 @@ struct ChildDashboardView: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Image(systemName: "book.fill")
-                    .foregroundColor(KidTheme.purple) // KidTheme purple icon for heading
+                    .foregroundColor(AppThemeVibrant.purple) // KidTheme purple icon for heading
                 Text("Transactions")
                     .font(.title3)
                     .fontWeight(.bold)
-                    .foregroundColor(KidTheme.purple)
+                    .foregroundColor(AppThemeVibrant.purple)
             }
             .padding(.horizontal)
             
@@ -333,7 +333,7 @@ struct ChildDashboardView: View {
                         }
                     }
                 }
-                .background(KidTheme.cardBackground) // Card background for transaction ledger
+                .background(AppThemeVibrant.cardBackground) // Card background for transaction ledger
                 .cornerRadius(12)
                 .shadow(color: Color.black.opacity(0.05), radius: 5)
                 .padding(.horizontal)
@@ -554,7 +554,7 @@ struct ChoreRowWithStatus: View {
         } else if wouldExceedCap {
             return Color.red.opacity(0.5)
         } else {
-            return KidTheme.purple
+            return AppThemeVibrant.purple
         }
     }
     
@@ -578,7 +578,7 @@ struct ChoreRowWithStatus: View {
                     Text(String(format: "$%.2f", chore.amount))
                         .font(.subheadline)
                         .fontWeight(.bold)
-                        .foregroundColor(wouldExceedCap ? Color.red : KidTheme.green) // Use KidTheme green for positive amount
+                        .foregroundColor(wouldExceedCap ? Color.red : AppThemeVibrant.green) // Use KidTheme green for positive amount
                 }
                 
                 Spacer()
@@ -752,7 +752,7 @@ struct BigConfettiCelebrationView: View {
                 .padding(.vertical, 10)
                 .background(
                     Capsule()
-                        .fill(KidTheme.funGradient)
+                        .fill(AppThemeVibrant.funGradient)
                 )
                 .scaleEffect(isAnimating ? 1.3 : 0.5)
                 .opacity(isAnimating ? 0 : 1)
@@ -769,18 +769,18 @@ struct BigConfettiCelebrationView: View {
         let colors: [Color] = [
             Color.red, 
             Color.blue, 
-            KidTheme.green, 
-            KidTheme.orange, 
-            KidTheme.purple, 
-            KidTheme.pink, 
-            KidTheme.yellow, 
+            AppThemeVibrant.green, 
+            AppThemeVibrant.orange, 
+            AppThemeVibrant.purple, 
+            AppThemeVibrant.pink, 
+            AppThemeVibrant.yellow, 
             Color.cyan
         ]
         return colors[index % colors.count]
     }
     
     private func sparkleColor(for index: Int) -> Color {
-        let colors: [Color] = [Color.white, KidTheme.yellow, KidTheme.orange]
+        let colors: [Color] = [Color.white, AppThemeVibrant.yellow, AppThemeVibrant.orange]
         return colors[index % colors.count]
     }
 }
@@ -806,7 +806,7 @@ struct MoneyJarCard: View {
                 Text(title)
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(KidTheme.textPrimary)
+                    .foregroundColor(AppThemeVibrant.textPrimary)
                     
                 Text(String(format: "$%.2f", amount))
                     .font(.title)
@@ -815,12 +815,12 @@ struct MoneyJarCard: View {
                     
                 Text(subtitle)
                     .font(.subheadline)
-                    .foregroundColor(KidTheme.textSecondary)
+                    .foregroundColor(AppThemeVibrant.textSecondary)
             }
             Spacer()
         }
         .padding(20)
-        .background(KidTheme.cardBackground)
+        .background(AppThemeVibrant.cardBackground)
         .cornerRadius(16)
         .shadow(color: Color.black.opacity(0.05), radius: 6, x: 0, y: 3)
         .overlay(
@@ -864,7 +864,7 @@ struct StatCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .background(KidTheme.cardBackground) // Consistent card background
+        .background(AppThemeVibrant.cardBackground) // Consistent card background
         .cornerRadius(12)
         .shadow(color: Color.black.opacity(0.05), radius: 5)
     }
@@ -913,13 +913,13 @@ struct TransactionLedgerRow: View {
     
     var displayColor: Color {
         if isPurchase {
-            return KidTheme.blue
+            return AppThemeVibrant.blue
         } else if isExpense {
-            return KidTheme.redAccent
+            return AppThemeVibrant.redAccent
         } else if completion.isBonus {
-            return KidTheme.green
+            return AppThemeVibrant.green
         } else {
-            return KidTheme.orange
+            return AppThemeVibrant.orange
         }
     }
     
@@ -954,7 +954,7 @@ struct TransactionLedgerRow: View {
                         if isPending {
                             Text("(Pending)")
                                 .font(.caption)
-                                .foregroundColor(KidTheme.orange)
+                                .foregroundColor(AppThemeVibrant.orange)
                         }
                     } else {
                         Text(completion.chore?.name ?? "Unknown Chore")
@@ -964,7 +964,7 @@ struct TransactionLedgerRow: View {
                         if isPending {
                             Text("(Pending)")
                                 .font(.caption)
-                                .foregroundColor(KidTheme.orange)
+                                .foregroundColor(AppThemeVibrant.orange)
                         }
                     }
                 }
@@ -980,17 +980,17 @@ struct TransactionLedgerRow: View {
                     if completion.spendingAmount != 0 {
                         Text(String(format: "Spending: $%.2f", abs(completion.spendingAmount)))
                             .font(.caption2)
-                            .foregroundColor(KidTheme.purple)
+                            .foregroundColor(AppThemeVibrant.purple)
                     }
                     if completion.savingsAmount != 0 {
                         Text(String(format: "Savings: $%.2f", abs(completion.savingsAmount)))
                             .font(.caption2)
-                            .foregroundColor(KidTheme.green)
+                            .foregroundColor(AppThemeVibrant.green)
                     }
                     if completion.givingAmount != 0 {
                         Text(String(format: "Giving: $%.2f", abs(completion.givingAmount)))
                             .font(.caption2)
-                            .foregroundColor(KidTheme.orange)
+                            .foregroundColor(AppThemeVibrant.orange)
                     }
                 }
             }
@@ -1005,11 +1005,11 @@ struct TransactionLedgerRow: View {
                     .fontWeight(.semibold)
                     .foregroundColor({
                         if isExpense {
-                            return KidTheme.redAccent
+                            return AppThemeVibrant.redAccent
                         } else if isPending {
-                            return KidTheme.orange
+                            return AppThemeVibrant.orange
                         } else {
-                            return KidTheme.green
+                            return AppThemeVibrant.green
                         }
                     }())
                 
@@ -1045,3 +1045,4 @@ struct TransactionLedgerRow: View {
     )
     .environment(\.managedObjectContext, context)
 }
+

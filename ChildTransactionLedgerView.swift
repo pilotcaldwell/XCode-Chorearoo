@@ -24,7 +24,7 @@ struct ChildTransactionLedgerView: View {
     var body: some View {
         ZStack {
             // Background gradient for whole screen - colorful and lively
-            KidTheme.mainGradient
+            AppThemeVibrant.mainGradient
                 .ignoresSafeArea()
             
             ScrollView {
@@ -115,8 +115,8 @@ struct ChildTransactionLedgerView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 30)
-        // Changed background to KidTheme.cardGradient for colorful, glassy effect
-        .background(KidTheme.cardGradient)
+        // Changed background to AppThemeVibrant.cardGradient for colorful, glassy effect
+        .background(AppThemeVibrant.cardGradient)
         .cornerRadius(24) // larger rounded corners for friendliness
         .shadow(color: .black.opacity(0.1), radius: 15, x: 0, y: 8)
         .padding(.horizontal)
@@ -164,7 +164,7 @@ struct ChildTransactionLedgerView: View {
     
     private var actionButtons: some View {
         HStack(spacing: 16) {
-            // Give Bonus Button - KidTheme.greenAccent with white text, larger, rounder corners
+            // Give Bonus Button - AppThemeVibrant.greenAccent with white text, larger, rounder corners
             Button(action: {
                 // Added haptic feedback on tap for better tactile experience
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
@@ -181,13 +181,13 @@ struct ChildTransactionLedgerView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 18)
                 .background(
-                    KidTheme.greenAccent
+                    AppThemeVibrant.greenAccent
                 )
                 .cornerRadius(20) // rounder corners for friendliness
-                .shadow(color: KidTheme.greenAccent.opacity(0.5), radius: 8, x: 0, y: 4)
+                .shadow(color: AppThemeVibrant.greenAccent.opacity(0.5), radius: 8, x: 0, y: 4)
             }
             
-            // Add Expense Button - KidTheme.redAccent with white text, larger, rounder corners
+            // Add Expense Button - AppThemeVibrant.redAccent with white text, larger, rounder corners
             Button(action: {
                 // Added haptic feedback on tap for better tactile experience
                 UIImpactFeedbackGenerator(style: .medium).impactOccurred()
@@ -204,10 +204,10 @@ struct ChildTransactionLedgerView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 18)
                 .background(
-                    KidTheme.redAccent
+                    AppThemeVibrant.redAccent
                 )
                 .cornerRadius(20) // rounder corners for friendliness
-                .shadow(color: KidTheme.redAccent.opacity(0.5), radius: 8, x: 0, y: 4)
+                .shadow(color: AppThemeVibrant.redAccent.opacity(0.5), radius: 8, x: 0, y: 4)
             }
         }
         .padding(.horizontal)
@@ -227,10 +227,10 @@ struct ChildTransactionLedgerView: View {
             .foregroundColor(.purple)
             .padding(.vertical, 16)
             .frame(maxWidth: .infinity)
-            // KidTheme.purpleAccent background for lively feel
-            .background(KidTheme.purpleAccent)
+            // AppThemeVibrant.purpleAccent background for lively feel
+            .background(AppThemeVibrant.purpleAccent)
             .cornerRadius(24) // large round corners for friendliness
-            .shadow(color: KidTheme.purpleAccent.opacity(0.5), radius: 8, x: 0, y: 4)
+            .shadow(color: AppThemeVibrant.purpleAccent.opacity(0.5), radius: 8, x: 0, y: 4)
         }
         .padding(.horizontal)
     }
@@ -265,9 +265,9 @@ struct ChildTransactionLedgerView: View {
                 .foregroundColor(.white)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 6)
-                .background(KidTheme.purpleAccent)
+                .background(AppThemeVibrant.purpleAccent)
                 .cornerRadius(12)
-                .shadow(color: KidTheme.purpleAccent.opacity(0.5), radius: 6, x: 0, y: 3)
+                .shadow(color: AppThemeVibrant.purpleAccent.opacity(0.5), radius: 6, x: 0, y: 3)
         }
         .padding(.horizontal)
     }
@@ -300,8 +300,8 @@ struct ChildTransactionLedgerView: View {
                 }
             }
         }
-        // Changed background to KidTheme.cardGradient for colorful, glassy effect
-        .background(KidTheme.cardGradient)
+        // Changed background to AppThemeVibrant.cardGradient for colorful, glassy effect
+        .background(AppThemeVibrant.cardGradient)
         .cornerRadius(20) // rounder corners for friendly UI
         .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
         .padding(.horizontal)

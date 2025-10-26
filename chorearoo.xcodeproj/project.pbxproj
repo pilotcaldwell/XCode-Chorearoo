@@ -93,6 +93,10 @@
 		1355507A2EA86DAD00E1ADCD /* README_THEME_FIX.txt in Resources */ = {isa = PBXBuildFile; fileRef = 135550782EA86DAD00E1ADCD /* README_THEME_FIX.txt */; };
 		13907E9C2EADA2B4002C2AA0 /* KidTheme 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13907E9B2EADA2B4002C2AA0 /* KidTheme 2.swift */; };
 		13907E9D2EADA2B4002C2AA0 /* KidTheme 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13907E9B2EADA2B4002C2AA0 /* KidTheme 2.swift */; };
+		13907E9F2EADA394002C2AA0 /* AppTheme 4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13907E9E2EADA394002C2AA0 /* AppTheme 4.swift */; };
+		13907EA02EADA394002C2AA0 /* AppTheme 4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13907E9E2EADA394002C2AA0 /* AppTheme 4.swift */; };
+		13907EA22EADA3D4002C2AA0 /* ParentApprovalsView 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13907EA12EADA3D4002C2AA0 /* ParentApprovalsView 2.swift */; };
+		13907EA32EADA3D4002C2AA0 /* ParentApprovalsView 2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13907EA12EADA3D4002C2AA0 /* ParentApprovalsView 2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -161,6 +165,8 @@
 		135550782EA86DAD00E1ADCD /* README_THEME_FIX.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README_THEME_FIX.txt; sourceTree = "<group>"; };
 		1355507B2EA8732200E1ADCD /* AppTheme 3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppTheme 3.swift"; sourceTree = "<group>"; };
 		13907E9B2EADA2B4002C2AA0 /* KidTheme 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KidTheme 2.swift"; sourceTree = "<group>"; };
+		13907E9E2EADA394002C2AA0 /* AppTheme 4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppTheme 4.swift"; sourceTree = "<group>"; };
+		13907EA12EADA3D4002C2AA0 /* ParentApprovalsView 2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ParentApprovalsView 2.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -276,6 +282,8 @@
 				135550782EA86DAD00E1ADCD /* README_THEME_FIX.txt */,
 				1355507B2EA8732200E1ADCD /* AppTheme 3.swift */,
 				13907E9B2EADA2B4002C2AA0 /* KidTheme 2.swift */,
+				13907E9E2EADA394002C2AA0 /* AppTheme 4.swift */,
+				13907EA12EADA3D4002C2AA0 /* ParentApprovalsView 2.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -508,8 +516,10 @@
 				1303EB8C2E974F6300A727C4 /* Chore+CoreDataProperties.swift in Sources */,
 				1303EB8D2E974F6300A727C4 /* ChoreCompletion+CoreDataProperties.swift in Sources */,
 				1303EBAD2E97590800A727C4 /* MainTabView.swift in Sources */,
+				13907EA32EADA3D4002C2AA0 /* ParentApprovalsView 2.swift in Sources */,
 				1303EB8E2E974F6300A727C4 /* Parent+CoreDataClass.swift in Sources */,
 				1303EB8F2E974F6300A727C4 /* Parent+CoreDataProperties.swift in Sources */,
+				13907EA02EADA394002C2AA0 /* AppTheme 4.swift in Sources */,
 				1303EBD92E977AFC00A727C4 /* DataMigrationHelper.swift in Sources */,
 				1303EBB82E975E9D00A727C4 /* LoginView.swift in Sources */,
 				1303EBA72E9758B400A727C4 /* AddChoreView.swift in Sources */,
@@ -534,6 +544,7 @@
 				1303EBDD2E97821600A727C4 /* ChildTransactionLedgerView.swift in Sources */,
 				1303EBA02E9756C200A727C4 /* AddChildView.swift in Sources */,
 				1303EBFB2E9898CD00A727C4 /* AddStoreItemView.swift in Sources */,
+				13907EA22EADA3D4002C2AA0 /* ParentApprovalsView 2.swift in Sources */,
 				13070EC82E973F7F000D2F69 /* PersistenceController.swift in Sources */,
 				1355505F2EA86CEF00E1ADCD /* KidTheme 14.swift in Sources */,
 				1303EBBB2E975FA400A727C4 /* SettingsView.swift in Sources */,
@@ -569,6 +580,7 @@
 				135550672EA86CF900E1ADCD /* KidTheme 17.swift in Sources */,
 				1303EBB62E975E7B00A727C4 /* PINEntryView.swift in Sources */,
 				1303EBD42E9777E000A727C4 /* WeeklyProgressCard.swift in Sources */,
+				13907E9F2EADA394002C2AA0 /* AppTheme 4.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
