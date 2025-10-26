@@ -1,66 +1,98 @@
 import SwiftUI
 
-/// Kid-friendly theme configuration for the chorearoo app
-/// Designed with high contrast, bright colors, and excellent readability
-struct AppTheme {
-    // Bright, kid-friendly basic colors with high contrast
-    static let purple = Color(red: 138/255, green: 43/255, blue: 226/255)     // Vivid purple
-    static let blue = Color(red: 30/255, green: 144/255, blue: 255/255)       // Bright blue
-    static let green = Color(red: 34/255, green: 197/255, blue: 94/255)       // Fresh green
-    static let orange = Color(red: 255/255, green: 149/255, blue: 0/255)      // Vibrant orange
-    static let pink = Color(red: 255/255, green: 45/255, blue: 85/255)        // Hot pink
-    static let yellow = Color(red: 255/255, green: 204/255, blue: 0/255)      // Sunny yellow
-    static let red = Color(red: 255/255, green: 59/255, blue: 48/255)         // Bright red
+// Basic app-wide theme definition to replace corrupted content
+public struct AppTheme: Sendable, Equatable {
+    public var primaryColor: Color
+    public var secondaryColor: Color
+    public var backgroundColor: Color
+    public var accentColor: Color
+    public var cornerRadius: CGFloat
 
-    // Lighter accent colors for interactions and highlights
-    static let greenAccent = Color(red: 52/255, green: 199/255, blue: 89/255)
-    static let redAccent = Color(red: 255/255, green: 69/255, blue: 58/255)
-    static let purpleAccent = Color(red: 191/255, green: 90/255, blue: 242/255)
-    static let playfulColor = Color(red: 255/255, green: 45/255, blue: 85/255) // Hot pink for fun elements
-
-    // Text colors with high contrast
-    static let textPrimary = Color.primary
-    static let textSecondary = Color.secondary
-    static let textOnColor = Color.white // White text on colored backgrounds
-
-    // Clean, accessible backgrounds
-    static let backgroundPrimary = Color(.systemBackground)
-    static let backgroundSecondary = Color(.secondarySystemBackground)
-    static let cardBackground = Color(.systemBackground)
-    
-    // Subtle gradients that don't interfere with readability
-    static let mainGradient = LinearGradient(
-        gradient: Gradient(colors: [
-            Color(.systemBackground),
-            Color(.secondarySystemBackground)
-        ]),
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-    )
-
-    static let cardGradient = LinearGradient(
-        gradient: Gradient(colors: [
-            Color(.systemBackground),
-            Color(.systemGroupedBackground)
-        ]),
-        startPoint: .top,
-        endPoint: .bottom
-    )
-    
-    // Fun accent gradients for special elements (use sparingly)
-    static let funGradient = LinearGradient(
-        gradient: Gradient(colors: [purple, pink]),
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-    )
-    
-    static let successGradient = LinearGradient(
-        gradient: Gradient(colors: [green, greenAccent]),
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-    )
+    public init(primaryColor: Color = .blue,
+                secondaryColor: Color = .teal,
+                backgroundColor: Color = Color(.systemBackground),
+                accentColor: Color = .orange,
+                cornerRadius: CGFloat = 12) {
+        self.primaryColor = primaryColor
+        self.secondaryColor = secondaryColor
+        self.backgroundColor = backgroundColor
+        self.accentColor = accentColor
+        self.cornerRadius = cornerRadius
+    }
 }
 
-/// Legacy alias for backwards compatibility
-/// This allows existing code to continue using KidTheme
-typealias KidTheme = AppTheme
+public extension AppTheme {
+    static let `default` = AppTheme()
+}
+
+// Optional environment key for easy injection across views
+private struct AppThemeKey: EnvironmentKey {
+    static let defaultValue: AppTheme = .default
+}
+
+public extension EnvironmentValues {
+    var appTheme: AppTheme {
+        get { self[AppThemeKey.self] }
+        set { self[AppThemeKey.self] = newValue }
+    }
+}
+
+public extension View {
+    func appTheme(_ theme: AppTheme) -> some View {
+        environment(\.appTheme, theme)
+    }
+}
+
+// MARK: - Static KidTheme-style palette and surfaces
+public extension AppTheme {
+    // Core palette
+    static let green: Color = Color(hue: 0.35, saturation: 0.70, brightness: 0.70) // friendly green
+    static let purple: Color = Color(hue: 0.76, saturation: 0.55, brightness: 0.70)
+    static let orange: Color = Color(hue: 0.08, saturation: 0.85, brightness: 0.95)
+    static let pink: Color = Color(hue: 0.94, saturation: 0.55, brightness: 0.95)
+    static let yellow: Color = Color(hue: 0.14, saturation: 0.85, brightness: 0.95)
+    static let blue: Color = Color(hue: 0.58, saturation: 0.65, brightness: 0.85)
+
+    // Accents
+    static let redAccent: Color = Color(red: 0.95, green: 0.30, blue: 0.35)
+    static let greenAccent: Color = Color(red: 0.20, green: 0.75, blue: 0.45)
+    static let purpleAccent: Color = Color.purple.opacity(0.15)
+
+    // Text
+    static let textPrimary: Color = Color.primary
+    static let textSecondary: Color = Color.secondary
+    static let textOnColor: Color = Color.white
+
+    // Surfaces / backgrounds
+    static let cardBackground: Color = Color(.secondarySystemBackground)
+    static let backgroundSecondary: Color = Color(.systemGroupedBackground)
+
+    // Gradients
+    static let cardGradient: LinearGradient = LinearGradient(
+        colors: [
+            Color.purple.opacity(0.12),
+            Color.blue.opacity(0.12),
+            Color.cyan.opacity(0.12)
+        ],
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+
+    static let mainGradient: LinearGradient = LinearGradient(
+        colors: [
+            Color.purple.opacity(0.15),
+            Color.orange.opacity(0.15)
+        ],
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+
+    static let funGradient: LinearGradient = LinearGradient(
+        colors: [
+            Color.pink,
+            Color.orange
+        ],
+        startPoint: .leading,
+        endPoint: .trailing
+    )
+}

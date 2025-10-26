@@ -67,7 +67,7 @@ struct ChoreLibraryView: View {
                             Image(systemName: "plus")
                                 .font(.system(size: 22, weight: .bold))
                                 .padding(10)
-                                .background(KidTheme.playfulColor)
+                                .background(Color.accentColor)
                                 .foregroundColor(.white)
                                 .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                         } // Playful add button with color and rounded corners
@@ -76,7 +76,7 @@ struct ChoreLibraryView: View {
                         EditButton()
                             .font(.system(size: 18, weight: .semibold))
                             .padding(8)
-                            .background(KidTheme.playfulColor.opacity(0.8))
+                            .background(Color.accentColor.opacity(0.8))
                             .foregroundColor(.white)
                             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                     }

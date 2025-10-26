@@ -42,10 +42,10 @@ struct LoginView: View {
                         Text("Chorearoo")
                             .font(.largeTitle)
                             .fontWeight(.bold)
-                            .foregroundColor(KidTheme.orange) // KidTheme orange for heading pop
+                            .foregroundColor(.orange) // changed to system orange for heading pop
                         Text("Chore Tracker")
                             .font(.subheadline)
-                            .foregroundColor(KidTheme.green) // KidTheme green as subtitle color
+                            .foregroundColor(.green) // changed to system green as subtitle color
                     }
                     .padding(.top, 50)
                     
@@ -55,7 +55,7 @@ struct LoginView: View {
                         Text("Who are you?")
                             .font(.title2)
                             .fontWeight(.semibold)
-                            .foregroundColor(KidTheme.blue) // Blue color for question text
+                            .foregroundColor(.blue) // changed to system blue for question text
                         
                         Button(action: {
                             loginType = .parent
@@ -194,7 +194,7 @@ struct PINSheetView2: View {
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(KidTheme.blue) // KidTheme blue for Submit button
+                        .background(Color.blue) // System blue for Submit button
                         .foregroundColor(.white)
                         .cornerRadius(20) // Larger, rounder corners for Submit
                 }
@@ -225,3 +225,4 @@ struct PINSheetView2: View {
     LoginView(isAuthenticated: .constant(false), userRole: .constant(nil))
         .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
+

@@ -153,9 +153,9 @@ struct CompleteChoreView: View {
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 16)
                                             .stroke(
-                                                wouldExceedCap(chore) ? 
-                                                KidTheme.orange.opacity(0.3) : 
-                                                KidTheme.blue.opacity(0.2), 
+                                                wouldExceedCap(chore) ?
+                                                KidTheme.orange.opacity(0.3) :
+                                                KidTheme.blue.opacity(0.2),
                                                 lineWidth: 1
                                             )
                                     )
@@ -187,31 +187,29 @@ struct CompleteChoreView: View {
                     .cornerRadius(20)
                 }
             }
-                
-                .alert("Complete Chore?", isPresented: Binding(
-                    get: { selectedChore != nil },
-                    set: { if !$0 { selectedChore = nil } }
-                )) {
-                    Button("Cancel", role: .cancel) {
-                        selectedChore = nil
-                    }
-                    Button("Complete") {
-                        if let chore = selectedChore {
-                            completeChore(chore)
-                        }
-                    }
-                    .tint(KidTheme.green) // Green tinted complete button for success
-                } message: {
+            .alert("Complete Chore?", isPresented: Binding(
+                get: { selectedChore != nil },
+                set: { if !$0 { selectedChore = nil } }
+            )) {
+                Button("Cancel", role: .cancel) {
+                    selectedChore = nil
+                }
+                Button("Complete") {
                     if let chore = selectedChore {
-                        Text("Mark \"\(chore.name ?? "")\" as complete for $\(chore.amount, specifier: "%.2f")?")
+                        completeChore(chore)
                     }
                 }
-                .alert("Weekly Cap Reached", isPresented: $showCapReachedAlert) {
-                    Button("OK", role: .cancel) {}
-                        .tint(KidTheme.orange) // Orange button for alert confirmation
-                } message: {
-                    Text("You've reached your weekly earning cap of $\(child.weeklyCap, specifier: "%.2f"). Ask a parent for a bonus or wait until next week!")
+                .tint(KidTheme.green) // Green tinted complete button for success
+            } message: {
+                if let chore = selectedChore {
+                    Text("Mark \"\(chore.name ?? "")\" as complete for $\(chore.amount, specifier: "%.2f")?")
                 }
+            }
+            .alert("Weekly Cap Reached", isPresented: $showCapReachedAlert) {
+                Button("OK", role: .cancel) {}
+                    .tint(KidTheme.orange) // Orange button for alert confirmation
+            } message: {
+                Text("You've reached your weekly earning cap of $\(child.weeklyCap, specifier: "%.2f"). Ask a parent for a bonus or wait until next week!")
             }
         }
     }
