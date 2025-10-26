@@ -13,7 +13,7 @@ struct AppThemeVibrant4 {
     
     // Background colors - using iOS system colors like the approvals page  
     static let backgroundPrimary: Color = Color(.systemBackground) // Clean iOS system background
-    static let backgroundSecondary: Color = Color(.secondarySystemBackground) // iOS secondary background  
+    static let backgroundSecondary: Color = Color(.systemBackground) // iOS system background  
     static let cardBackground: Color = Color(.systemBackground) // iOS system card background
     
     // Text colors (darker for better contrast)
@@ -23,13 +23,13 @@ struct AppThemeVibrant4 {
     
     // Simple gradients - very subtle
     static let mainGradient: LinearGradient = LinearGradient(
-        colors: [backgroundPrimary, backgroundSecondary],
+        colors: [backgroundPrimary, backgroundPrimary],
         startPoint: .top,
         endPoint: .bottom
     )
     
     static let cardGradient: LinearGradient = LinearGradient(
-        colors: [cardBackground, Color(.secondarySystemBackground)],
+        colors: [cardBackground, cardBackground],
         startPoint: .topLeading,
         endPoint: .bottomTrailing
     )

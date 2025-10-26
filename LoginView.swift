@@ -31,13 +31,13 @@ struct LoginView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                AppVibrantTheme.mainGradient // Fun, vibrant background for whole screen
+                Color(.systemBackground) // System default background
                 
                 VStack(spacing: 30) {
                     VStack(spacing: 10) {
                         Image(systemName: "star.fill")
                             .font(.system(size: 60))
-                            .foregroundColor(AppVibrantTheme.purple) // KidTheme purple for icon pop
+                            .foregroundColor(AppTheme.purple) // KidTheme purple for icon pop
                         Text("Chorearoo")
                             .font(.largeTitle)
                             .fontWeight(.bold)
@@ -66,7 +66,7 @@ struct LoginView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(AppVibrantTheme.purple) // KidTheme purple for Parent button
+                            .background(AppTheme.purple) // KidTheme purple for Parent button
                             .foregroundColor(.white)
                             .cornerRadius(20) // Larger, rounder corners
                             .font(.headline) // Larger font for playful look
@@ -88,14 +88,14 @@ struct LoginView: View {
                                             )
                                         Text(child.name ?? "Unknown")
                                             .fontWeight(.semibold)
-                                            .foregroundColor(AppVibrantTheme.textPrimary) // Use dark text for visibility
+                                            .foregroundColor(AppTheme.textPrimary) // Use dark text for visibility
                                         Spacer()
                                     }
                                     .padding()
-                                    .background(AppVibrantTheme.cardGradient) // KidTheme card gradient for child cards
+                                    .background(Color(.systemBackground)) // System card background for child cards
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 20)
-                                            .stroke(AppVibrantTheme.purple, lineWidth: 1.5) // Purple border for visibility
+                                            .stroke(AppTheme.purple, lineWidth: 1.5) // Purple border for visibility
                                     )
                                     .cornerRadius(20) // Larger, rounder corners for cards
                                 }
@@ -223,6 +223,8 @@ struct PINSheetView2: View {
         }
     }
 }
+
+
 
 #Preview {
     LoginView(isAuthenticated: .constant(false), userRole: .constant(nil))

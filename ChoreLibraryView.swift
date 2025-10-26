@@ -15,7 +15,7 @@ struct ChoreLibraryView: View {
     
     var body: some View {
         ZStack {
-            AppThemeVibrant.mainGradient // Background for the whole screen - playful gradient
+            Color(.systemBackground) // System default background
             
             NavigationView {
                 List {
@@ -50,8 +50,8 @@ struct ChoreLibraryView: View {
                         .padding(.vertical, 8)
                         .padding(.horizontal)
                         .background(
-                            AppThemeVibrant.cardGradient
-                        ) // Card background with playful glassy gradient
+                            Color(.systemBackground)
+                        ) // Card background with system default
                         .cornerRadius(12)
                         .opacity(chore.isActive ? 1.0 : 0.5)
                         .listRowBackground(Color.clear) // Clear default list row background to show gradient
@@ -88,7 +88,6 @@ struct ChoreLibraryView: View {
                 .background(Color.clear) // Make list background clear to show ZStack background
             }
         }
-        .edgesIgnoringSafeArea(.all) // Make gradient fill entire screen
     }
     
     private func deleteChores(offsets: IndexSet) {

@@ -50,7 +50,7 @@ struct AddExpenseView: View {
     
     var body: some View {
         ZStack {
-            AppThemeVibrant.mainGradient // Vibrant, playful background for whole screen
+            Color(.systemBackground) // System default background
             
             ScrollView {
                 VStack(spacing: 20) {
@@ -125,12 +125,11 @@ struct AddExpenseView: View {
                     .disabled(amount.isEmpty || description.isEmpty || !hasEnoughMoney)
                 }
                 .padding()
-                .background(AppThemeVibrant.cardGradient) // Glassy, playful card effect behind content
+                .background(Color(.systemBackground)) // System card background
                 .cornerRadius(20)
                 .padding()
             }
         }
-        .ignoresSafeArea() // Allow background gradient to fill whole screen
         .navigationTitle("Add Expense")
         .navigationBarItems(
             leading: Button("Cancel") {

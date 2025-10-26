@@ -91,7 +91,7 @@ struct WeeklyProgressCard: View {
             }
         }
         .padding(20)
-        .background(AppTheme.cardGradient) // Modern, glassy, colorful background
+        .background(Color(.systemBackground)) // System default background
         .cornerRadius(16)                   // Preserve rounding for friendly feel
         .shadow(color: .black.opacity(0.05), radius: 10) // Soft shadow for bouncy effect
         .padding(.horizontal)

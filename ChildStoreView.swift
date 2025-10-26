@@ -17,13 +17,9 @@ struct ChildStoreView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                // Fun background gradient
-                LinearGradient(
-                    gradient: Gradient(colors: [Color.purple.opacity(0.1), Color.blue.opacity(0.1)]),
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
+                // System default background
+                Color(.systemBackground)
+                    .ignoresSafeArea()
                 
                 ScrollView {
                     VStack(spacing: 20) {
@@ -165,7 +161,7 @@ struct StoreItemCard: View {
             }
             .padding()
             .frame(maxWidth: .infinity)
-            .background(Color.white)
+            .background(Color(.systemBackground))
             .cornerRadius(15)
             .shadow(color: .black.opacity(0.1), radius: 5)
             .opacity(canAfford ? 1.0 : 0.6)

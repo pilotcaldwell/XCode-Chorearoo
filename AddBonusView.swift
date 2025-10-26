@@ -1,5 +1,4 @@
 import SwiftUI
-import SwiftUI
 import UIKit // Import UIKit for haptic feedback
 import CoreData
 
@@ -24,8 +23,8 @@ struct AddBonusView: View {
     
     var body: some View {
         ZStack {
-            AppTheme.mainGradient // Background gradient for playful, vibrant style
-                .ignoresSafeArea()
+            Color(.systemBackground) // System default background
+            .ignoresSafeArea() // System background fills screen
             
             NavigationView {
                 ScrollView {
@@ -37,7 +36,7 @@ struct AddBonusView: View {
                         ) {
                             HStack {
                                 Text("Child:")
-                                    .foregroundColor(AppThemeVibrant.yellow) // Accent color for labels
+                                    .foregroundColor(AppTheme.yellow) // Accent color for labels
                                 Spacer()
                                 Text(child.name ?? "Unknown")
                                     .fontWeight(.semibold)
@@ -49,7 +48,7 @@ struct AddBonusView: View {
                                     .foregroundColor(AppTheme.purple) // Accent $ symbol
                                 TextField("Amount", text: $amount)
                                     .keyboardType(.decimalPad)
-                                    .foregroundColor(AppThemeVibrant.textPrimary)
+                                    .foregroundColor(AppTheme.textPrimary)
                             }
                             
                             Picker("Money Jar", selection: $selectedJar) {
@@ -61,13 +60,13 @@ struct AddBonusView: View {
                             .tint(AppTheme.green) // Tint segmented picker with AppTheme green
                             
                             TextField("Reason (optional)", text: $reason)
-                                .foregroundColor(AppThemeVibrant.textPrimary)
+                                .foregroundColor(AppTheme.textPrimary)
                         }
                         
                         Section {
                             Text("💡 Bonuses are instantly added and don't count against the weekly cap!")
                                 .font(.caption)
-                                .foregroundColor(AppThemeVibrant.yellow.opacity(0.8)) // Accent info text
+                                .foregroundColor(AppTheme.yellow.opacity(0.8)) // Accent info text
                         }
                         
                         Section {
@@ -78,7 +77,7 @@ struct AddBonusView: View {
                                     .fontWeight(.bold)
                                     .frame(maxWidth: .infinity)
                                     .padding()
-                                    .background(AppThemeVibrant.green) // Prominent button background
+                                    .background(AppTheme.green) // Prominent button background
                                     .foregroundColor(.white) // White text for contrast
                                     .cornerRadius(12) // Rounded corners
                             }
@@ -88,8 +87,8 @@ struct AddBonusView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 20) // Modern card effect
-                            .fill(AppThemeVibrant.cardGradient)
-                            .shadow(color: AppThemeVibrant.green.opacity(0.3), radius: 10, x: 0, y: 5) // Soft shadow for depth
+                            .fill(Color(.systemBackground))
+                            .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2) // Subtle shadow
                     )
                     .padding()
                 }
@@ -98,7 +97,7 @@ struct AddBonusView: View {
                     leading: Button("Cancel") {
                         dismiss()
                     }
-                    .foregroundColor(AppThemeVibrant.orange) // Bright cancel button color
+                    .foregroundColor(AppTheme.orange) // Bright cancel button color
                 )
             }
         }

@@ -17,8 +17,8 @@ struct AddChildView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                // Background gradient for the entire screen (KidTheme)
-                AppThemeVibrant.mainGradient
+                // System default background
+                Color(.systemBackground)
                     .ignoresSafeArea()
                 
                 ScrollView {
@@ -32,28 +32,28 @@ struct AddChildView: View {
                             
                             TextField("Name", text: $name)
                                 .padding()
-                                .background(AppThemeVibrant.purple.opacity(0.15))
+                                .background(AppTheme.purple.opacity(0.15))
                                 .cornerRadius(8)
                                 .foregroundColor(.primary)
                             
                             TextField("Age", text: $age)
                                 .keyboardType(.numberPad)
                                 .padding()
-                                .background(AppThemeVibrant.purple.opacity(0.15))
+                                .background(AppTheme.purple.opacity(0.15))
                                 .cornerRadius(8)
                                 .foregroundColor(.primary)
                             
                             TextField("PIN (4 digits)", text: $pin)
                                 .keyboardType(.numberPad)
                                 .padding()
-                                .background(AppThemeVibrant.purple.opacity(0.15))
+                                .background(AppTheme.purple.opacity(0.15))
                                 .cornerRadius(8)
                                 .foregroundColor(.primary)
                         }
                         .padding()
-                        .background(AppThemeVibrant.cardGradient) // Card style background
+                        .background(AppTheme.cardGradient) // Card style background
                         .cornerRadius(15)
-                        .shadow(color: AppThemeVibrant.purple.opacity(0.4), radius: 5, x: 0, y: 3)
+                        .shadow(color: AppTheme.purple.opacity(0.4), radius: 5, x: 0, y: 3)
                         
                         // Section for Avatar Color with card style background
                         VStack(alignment: .leading, spacing: 15) {
@@ -64,14 +64,14 @@ struct AddChildView: View {
                             
                             ColorPicker("Choose Color", selection: $avatarColor)
                                 .padding()
-                                .background(AppThemeVibrant.purple.opacity(0.15))
+                                .background(AppTheme.purple.opacity(0.15))
                                 .cornerRadius(8)
                                 .foregroundColor(.primary)
                         }
                         .padding()
-                        .background(AppThemeVibrant.cardGradient) // Card style background
+                        .background(AppTheme.cardGradient) // Card style background
                         .cornerRadius(15)
-                        .shadow(color: AppThemeVibrant.purple.opacity(0.4), radius: 5, x: 0, y: 3)
+                        .shadow(color: AppTheme.purple.opacity(0.4), radius: 5, x: 0, y: 3)
                         
                         // Save button styled boldly and playfully with KidTheme colors
                         Button(action: {
@@ -81,7 +81,7 @@ struct AddChildView: View {
                                 .fontWeight(.bold)
                                 .frame(maxWidth: .infinity)
                                 .padding()
-                                .background(AppThemeVibrant.purple)
+                                .background(AppTheme.purple)
                                 .foregroundColor(.white)
                                 .cornerRadius(15)
                         }
@@ -95,7 +95,7 @@ struct AddChildView: View {
             .navigationBarItems(trailing: Button("Cancel") {
                 dismiss()
             }
-            .foregroundColor(AppThemeVibrant.purple))
+            .foregroundColor(AppTheme.purple))
         }
     }
     

@@ -64,8 +64,8 @@ public extension AppTheme {
     static let textOnColor: Color = Color.white
 
     // Surfaces / backgrounds
-    static let cardBackground: Color = Color(.secondarySystemBackground)
-    static let backgroundSecondary: Color = Color(.systemGroupedBackground)
+    static let cardBackground: Color = Color(.systemBackground)
+    static let backgroundSecondary: Color = Color(.systemBackground)
 
     // Gradients
     static let cardGradient: LinearGradient = LinearGradient(

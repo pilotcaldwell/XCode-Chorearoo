@@ -36,7 +36,7 @@ private struct Content: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
-        .background(Color(.systemGroupedBackground))
+        .background(Color(.systemBackground))
     }
 }
 

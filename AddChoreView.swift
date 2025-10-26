@@ -14,7 +14,7 @@ struct AddChoreView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                AppVibrantTheme.mainGradient // Added vibrant gradient background for the entire screen
+                Color(.systemBackground) // System default background
                 
                 ScrollView {
                     VStack(spacing: 20) {
@@ -37,7 +37,7 @@ struct AddChoreView: View {
                             }
                         }
                         .padding()
-                        .background(AppVibrantTheme.cardGradient) // Replaced liquidGlass with colorful card gradient for playful look
+                        .background(Color(.systemBackground)) // System card background
                         .cornerRadius(12)
                         
                         Button("Save Chore") {
@@ -45,7 +45,7 @@ struct AddChoreView: View {
                         }
                         .disabled(name.isEmpty || amount.isEmpty)
                         .padding()
-                        .background(AppVibrantTheme.purple) // Bold purple background for prominent Save button
+                        .background(AppTheme.purple) // Bold purple background for prominent Save button
                         .foregroundColor(.white)
                         .cornerRadius(8)
                     }

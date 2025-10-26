@@ -68,7 +68,7 @@ struct ChildrenListView: View {
                             }
                         }
                         .padding(20)
-                        .background(AppThemeVibrant.cardBackground)
+                        .background(Color(.systemBackground))
                         .cornerRadius(16)
                         .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
                         .overlay(
@@ -81,7 +81,7 @@ struct ChildrenListView: View {
                 .listRowBackground(Color.clear)
             }
             .listStyle(.plain)
-            .background(AppThemeVibrant.backgroundSecondary)
+            .background(Color(.systemBackground))
             .navigationTitle("My Kids 👨‍👩‍👧‍👦")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {

@@ -74,7 +74,7 @@ struct CompleteChoreView: View {
                         }
                     }
                     .padding(24)
-                    .background(AppThemeVibrant.cardBackground)
+                    .background(Color(.systemBackground))
                     .cornerRadius(16)
                     .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
                     .padding(.horizontal, 16)
@@ -147,7 +147,7 @@ struct CompleteChoreView: View {
                                         }
                                     }
                                     .padding(20)
-                                    .background(AppThemeVibrant.cardBackground)
+                                    .background(Color(.systemBackground))
                                     .cornerRadius(16)
                                     .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: 3)
                                     .overlay(
@@ -171,7 +171,7 @@ struct CompleteChoreView: View {
                     }
                 }
             }
-            .background(AppThemeVibrant.backgroundSecondary)
+            .background(Color(.systemBackground))
             .navigationTitle("Complete Chores 🎯")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
