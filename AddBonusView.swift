@@ -24,7 +24,7 @@ struct AddBonusView: View {
     
     var body: some View {
         ZStack {
-            KidTheme.mainGradient // Background gradient for playful, vibrant style
+            AppTheme.mainGradient // Background gradient for playful, vibrant style
                 .ignoresSafeArea()
             
             NavigationView {
@@ -33,23 +33,23 @@ struct AddBonusView: View {
                         Section(header:
                                     Text("Bonus Details")
                                     .font(.headline)
-                                    .foregroundColor(KidTheme.green) // Brighten header with KidTheme green
+                                    .foregroundColor(AppTheme.green) // Brighten header with AppTheme green
                         ) {
                             HStack {
                                 Text("Child:")
-                                    .foregroundColor(KidTheme.yellow) // Accent color for labels
+                                    .foregroundColor(AppThemeVibrant.yellow) // Accent color for labels
                                 Spacer()
                                 Text(child.name ?? "Unknown")
                                     .fontWeight(.semibold)
-                                    .foregroundColor(KidTheme.orange) // Accent child name
+                                    .foregroundColor(AppTheme.orange) // Accent child name
                             }
                             
                             HStack {
                                 Text("$")
-                                    .foregroundColor(KidTheme.purple) // Accent $ symbol
+                                    .foregroundColor(AppTheme.purple) // Accent $ symbol
                                 TextField("Amount", text: $amount)
                                     .keyboardType(.decimalPad)
-                                    .foregroundColor(KidTheme.textPrimary)
+                                    .foregroundColor(AppThemeVibrant.textPrimary)
                             }
                             
                             Picker("Money Jar", selection: $selectedJar) {
@@ -58,16 +58,16 @@ struct AddBonusView: View {
                                 }
                             }
                             .pickerStyle(SegmentedPickerStyle())
-                            .tint(KidTheme.green) // Tint segmented picker with KidTheme green
+                            .tint(AppTheme.green) // Tint segmented picker with AppTheme green
                             
                             TextField("Reason (optional)", text: $reason)
-                                .foregroundColor(KidTheme.textPrimary)
+                                .foregroundColor(AppThemeVibrant.textPrimary)
                         }
                         
                         Section {
                             Text("💡 Bonuses are instantly added and don't count against the weekly cap!")
                                 .font(.caption)
-                                .foregroundColor(KidTheme.yellow.opacity(0.8)) // Accent info text
+                                .foregroundColor(AppThemeVibrant.yellow.opacity(0.8)) // Accent info text
                         }
                         
                         Section {
@@ -78,7 +78,7 @@ struct AddBonusView: View {
                                     .fontWeight(.bold)
                                     .frame(maxWidth: .infinity)
                                     .padding()
-                                    .background(KidTheme.green) // Prominent button background
+                                    .background(AppThemeVibrant.green) // Prominent button background
                                     .foregroundColor(.white) // White text for contrast
                                     .cornerRadius(12) // Rounded corners
                             }
@@ -88,8 +88,8 @@ struct AddBonusView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 20) // Modern card effect
-                            .fill(KidTheme.cardGradient)
-                            .shadow(color: KidTheme.green.opacity(0.3), radius: 10, x: 0, y: 5) // Soft shadow for depth
+                            .fill(AppThemeVibrant.cardGradient)
+                            .shadow(color: AppThemeVibrant.green.opacity(0.3), radius: 10, x: 0, y: 5) // Soft shadow for depth
                     )
                     .padding()
                 }
@@ -98,7 +98,7 @@ struct AddBonusView: View {
                     leading: Button("Cancel") {
                         dismiss()
                     }
-                    .foregroundColor(KidTheme.orange) // Bright cancel button color
+                    .foregroundColor(AppThemeVibrant.orange) // Bright cancel button color
                 )
             }
         }

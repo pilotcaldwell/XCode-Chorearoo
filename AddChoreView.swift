@@ -1,5 +1,4 @@
 import SwiftUI
-import SwiftUI
 import UIKit
 import CoreData
 
@@ -15,7 +14,7 @@ struct AddChoreView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                KidTheme.mainGradient // Added vibrant gradient background for the entire screen
+                AppVibrantTheme.mainGradient // Added vibrant gradient background for the entire screen
                 
                 ScrollView {
                     VStack(spacing: 20) {
@@ -38,7 +37,7 @@ struct AddChoreView: View {
                             }
                         }
                         .padding()
-                        .background(KidTheme.cardGradient) // Replaced liquidGlass with colorful card gradient for playful look
+                        .background(AppVibrantTheme.cardGradient) // Replaced liquidGlass with colorful card gradient for playful look
                         .cornerRadius(12)
                         
                         Button("Save Chore") {
@@ -46,7 +45,7 @@ struct AddChoreView: View {
                         }
                         .disabled(name.isEmpty || amount.isEmpty)
                         .padding()
-                        .background(KidTheme.purple) // Bold purple background for prominent Save button
+                        .background(AppVibrantTheme.purple) // Bold purple background for prominent Save button
                         .foregroundColor(.white)
                         .cornerRadius(8)
                     }
@@ -84,3 +83,4 @@ struct AddChoreView: View {
 #Preview {
     AddChoreView()
 }
+

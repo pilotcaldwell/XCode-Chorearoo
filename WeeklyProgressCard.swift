@@ -1,5 +1,4 @@
 import SwiftUI
-import SwiftUI
 import CoreData
 
 struct WeeklyProgressCard: View {
@@ -26,7 +25,7 @@ struct WeeklyProgressCard: View {
             HStack {
                 Image(systemName: "clock.badge.checkmark.fill")
                     .font(.title2)
-                    .foregroundColor(Color.green) // Use KidTheme green for icon
+                    .foregroundColor(AppTheme.green) // Use AppTheme green for icon
                 
                 Text("This Week")
                     .font(.title2)
@@ -38,8 +37,8 @@ struct WeeklyProgressCard: View {
                     .font(.subheadline)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
-                    .background(Color.green.opacity(0.2)) // KidTheme green badge bg
-                    .foregroundColor(Color.green)           // KidTheme green badge fg
+                    .background(AppTheme.green.opacity(0.2)) // AppTheme green badge bg
+                    .foregroundColor(AppTheme.green)           // AppTheme green badge fg
                     .cornerRadius(20)
             }
             
@@ -56,7 +55,7 @@ struct WeeklyProgressCard: View {
                 if bonusEarnings > 0 {
                     Text(String(format: "+ $%.2f bonus (extra!)", bonusEarnings))
                         .font(.subheadline)
-                        .foregroundColor(Color.green)  // KidTheme green bonus text
+                        .foregroundColor(AppTheme.green)  // AppTheme green bonus text
                         .fontWeight(.medium)
                 }
             }
@@ -70,15 +69,15 @@ struct WeeklyProgressCard: View {
                             .fill(Color.gray.opacity(0.2))
                             .frame(height: 20)
                         
-                        // Chore earnings progress bar in KidTheme purple color
+                        // Chore earnings progress bar in AppTheme purple color
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(KidTheme.purple)
+                            .fill(AppTheme.purple)
                             .frame(width: geometry.size.width * progressPercentage, height: 20)
                         
                         // Bonus section bar in orange, offset after chore earnings
                         if bonusEarnings > 0 {
                             RoundedRectangle(cornerRadius: 10)
-                                .fill(Color.orange)
+                                .fill(AppTheme.orange)
                                 .frame(width: geometry.size.width * min(0.3, (bonusEarnings / weeklyCap)), height: 20)
                                 .offset(x: geometry.size.width * progressPercentage)
                         }
@@ -92,7 +91,7 @@ struct WeeklyProgressCard: View {
             }
         }
         .padding(20)
-        .background(KidTheme.cardGradient) // Modern, glassy, colorful background
+        .background(AppTheme.cardGradient) // Modern, glassy, colorful background
         .cornerRadius(16)                   // Preserve rounding for friendly feel
         .shadow(color: .black.opacity(0.05), radius: 10) // Soft shadow for bouncy effect
         .padding(.horizontal)

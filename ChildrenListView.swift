@@ -41,12 +41,12 @@ struct ChildrenListView: View {
                                 Text(child.name ?? "Unknown")
                                     .font(.title2)
                                     .fontWeight(.bold)
-                                    .foregroundColor(KidTheme.textPrimary)
+                                    .foregroundColor(AppThemeVibrant.textPrimary)
                                 
                                 if child.age > 0 {
                                     Text("Age: \(child.age)")
                                         .font(.subheadline)
-                                        .foregroundColor(KidTheme.textSecondary)
+                                        .foregroundColor(AppThemeVibrant.textSecondary)
                                 }
                             }
                             
@@ -60,20 +60,20 @@ struct ChildrenListView: View {
                                     Text("$\(totalBalance(for: child), specifier: "%.2f")")
                                         .font(.title2)
                                         .fontWeight(.bold)
-                                        .foregroundColor(KidTheme.green)
+                                        .foregroundColor(AppThemeVibrant.green)
                                 }
                                 Text("Total Saved")
                                     .font(.caption)
-                                    .foregroundColor(KidTheme.textSecondary)
+                                    .foregroundColor(AppThemeVibrant.textSecondary)
                             }
                         }
                         .padding(20)
-                        .background(KidTheme.cardBackground)
+                        .background(AppThemeVibrant.cardBackground)
                         .cornerRadius(16)
                         .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
                         .overlay(
                             RoundedRectangle(cornerRadius: 16)
-                                .stroke(KidTheme.purple.opacity(0.2), lineWidth: 1)
+                                .stroke(AppThemeVibrant.purple.opacity(0.2), lineWidth: 1)
                         )
                     }
                 }
@@ -81,7 +81,7 @@ struct ChildrenListView: View {
                 .listRowBackground(Color.clear)
             }
             .listStyle(.plain)
-            .background(KidTheme.backgroundSecondary)
+            .background(AppThemeVibrant.backgroundSecondary)
             .navigationTitle("My Kids 👨‍👩‍👧‍👦")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
@@ -94,12 +94,12 @@ struct ChildrenListView: View {
                             Text("Add Kid")
                         }
                         .font(.headline)
-                        .foregroundColor(KidTheme.textOnColor)
+                        .foregroundColor(AppThemeVibrant.textOnColor)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 10)
-                        .background(KidTheme.purple)
+                        .background(AppThemeVibrant.purple)
                         .cornerRadius(25)
-                        .shadow(color: KidTheme.purple.opacity(0.3), radius: 4, x: 0, y: 2)
+                        .shadow(color: AppThemeVibrant.purple.opacity(0.3), radius: 4, x: 0, y: 2)
                     }
                 }
             }

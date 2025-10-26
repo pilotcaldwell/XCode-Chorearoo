@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftUI
 import UIKit
 import CoreData
 
@@ -564,4 +565,3 @@ struct ParentTransactionRow: View {
     }
     .environment(\.managedObjectContext, context)
 }
-

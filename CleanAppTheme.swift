@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct AppThemeVibrant4 {
+struct AppVibrantTheme {
     // Primary accent colors - clean and readable
     static let green: Color = Color(.sRGB, red: 0.2, green: 0.7, blue: 0.3, opacity: 1)
     static let orange: Color = Color(.sRGB, red: 0.95, green: 0.5, blue: 0.1, opacity: 1)
@@ -56,11 +56,11 @@ struct AppThemeVibrant4 {
         VStack(spacing: 20) {
             Text("Clean App Theme Preview")
                 .font(.largeTitle.bold())
-                .foregroundColor(AppThemeVibrant4.textPrimary)
+                .foregroundColor(AppVibrantTheme.textPrimary)
             
-            Text("Simple white background with green, orange, and purple accents")
+            Text("iOS system background with green, orange, and purple accents")
                 .font(.subheadline)
-                .foregroundColor(AppThemeVibrant4.textSecondary)
+                .foregroundColor(AppVibrantTheme.textSecondary)
                 .multilineTextAlignment(.center)
                 .padding(.bottom)
             
@@ -68,12 +68,12 @@ struct AppThemeVibrant4 {
             VStack(spacing: 15) {
                 Text("Primary Accent Colors")
                     .font(.headline)
-                    .foregroundColor(AppThemeVibrant4.textPrimary)
+                    .foregroundColor(AppVibrantTheme.textPrimary)
                 
                 HStack(spacing: 15) {
-                    AccentColorCard4(color: AppThemeVibrant4.green, name: "Green", lightColor: AppThemeVibrant4.greenLight)
-                    AccentColorCard4(color: AppThemeVibrant4.orange, name: "Orange", lightColor: AppThemeVibrant4.orangeLight)
-                    AccentColorCard4(color: AppThemeVibrant4.purple, name: "Purple", lightColor: AppThemeVibrant4.purpleLight)
+                    AccentColorCard(color: AppVibrantTheme.green, name: "Green", lightColor: AppVibrantTheme.greenLight)
+                    AccentColorCard(color: AppVibrantTheme.orange, name: "Orange", lightColor: AppVibrantTheme.orangeLight)
+                    AccentColorCard(color: AppVibrantTheme.purple, name: "Purple", lightColor: AppVibrantTheme.purpleLight)
                 }
             }
             
@@ -81,31 +81,31 @@ struct AppThemeVibrant4 {
             VStack(spacing: 15) {
                 Text("Example UI Elements")
                     .font(.headline)
-                    .foregroundColor(AppThemeVibrant4.textPrimary)
+                    .foregroundColor(AppVibrantTheme.textPrimary)
                 
                 // Buttons
                 HStack(spacing: 10) {
                     Button("Green Action") {}
-                        .buttonStyle(AccentButtonStyle4(color: AppThemeVibrant4.green))
+                        .buttonStyle(AccentButtonStyle(color: AppVibrantTheme.green))
                     
                     Button("Orange Action") {}
-                        .buttonStyle(AccentButtonStyle4(color: AppThemeVibrant4.orange))
+                        .buttonStyle(AccentButtonStyle(color: AppVibrantTheme.orange))
                     
                     Button("Purple Action") {}
-                        .buttonStyle(AccentButtonStyle4(color: AppThemeVibrant4.purple))
+                        .buttonStyle(AccentButtonStyle(color: AppVibrantTheme.purple))
                 }
                 
                 // Card example
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(AppThemeVibrant4.cardBackground)
+                    .fill(AppVibrantTheme.cardBackground)
                     .overlay(
                         VStack {
                             Text("Sample Card")
                                 .font(.headline)
-                                .foregroundColor(AppThemeVibrant4.textPrimary)
-                            Text("Clean white background with subtle shadows")
+                                .foregroundColor(AppVibrantTheme.textPrimary)
+                            Text("Clean iOS system background with subtle shadows")
                                 .font(.caption)
-                                .foregroundColor(AppThemeVibrant4.textSecondary)
+                                .foregroundColor(AppVibrantTheme.textSecondary)
                         }
                         .padding()
                     )
@@ -115,10 +115,10 @@ struct AppThemeVibrant4 {
         }
         .padding()
     }
-    .background(AppThemeVibrant4.backgroundPrimary)
+    .background(AppVibrantTheme.backgroundPrimary)
 }
 
-struct AccentColorCard4: View {
+struct AccentColorCard: View {
     let color: Color
     let name: String
     let lightColor: Color
@@ -135,23 +135,21 @@ struct AccentColorCard4: View {
             
             Text(name)
                 .font(.caption.bold())
-                .foregroundColor(AppThemeVibrant4.textPrimary)
+                .foregroundColor(AppVibrantTheme.textPrimary)
         }
     }
 }
 
-struct AccentButtonStyle4: ButtonStyle {
+struct AccentButtonStyle: ButtonStyle {
     let color: Color
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.subheadline.bold())
-            .foregroundColor(AppThemeVibrant4.textOnColor)
+            .foregroundColor(AppVibrantTheme.textOnColor)
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
             .background(color.opacity(configuration.isPressed ? 0.8 : 1.0))
             .cornerRadius(8)
     }
 }
-
-

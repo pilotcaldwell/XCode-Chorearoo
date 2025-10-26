@@ -1,5 +1,4 @@
 import SwiftUI
-import SwiftUI
 import CoreData
 
 enum UserRole {
@@ -32,13 +31,13 @@ struct LoginView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                KidTheme.mainGradient // Fun, vibrant background for whole screen
+                AppVibrantTheme.mainGradient // Fun, vibrant background for whole screen
                 
                 VStack(spacing: 30) {
                     VStack(spacing: 10) {
                         Image(systemName: "star.fill")
                             .font(.system(size: 60))
-                            .foregroundColor(KidTheme.purple) // KidTheme purple for icon pop
+                            .foregroundColor(AppVibrantTheme.purple) // KidTheme purple for icon pop
                         Text("Chorearoo")
                             .font(.largeTitle)
                             .fontWeight(.bold)
@@ -67,7 +66,7 @@ struct LoginView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(KidTheme.purple) // KidTheme purple for Parent button
+                            .background(AppVibrantTheme.purple) // KidTheme purple for Parent button
                             .foregroundColor(.white)
                             .cornerRadius(20) // Larger, rounder corners
                             .font(.headline) // Larger font for playful look
@@ -89,11 +88,15 @@ struct LoginView: View {
                                             )
                                         Text(child.name ?? "Unknown")
                                             .fontWeight(.semibold)
-                                            .foregroundColor(.white) // Text in white on gradient card
+                                            .foregroundColor(AppVibrantTheme.textPrimary) // Use dark text for visibility
                                         Spacer()
                                     }
                                     .padding()
-                                    .background(KidTheme.cardGradient) // KidTheme card gradient for child cards
+                                    .background(AppVibrantTheme.cardGradient) // KidTheme card gradient for child cards
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .stroke(AppVibrantTheme.purple, lineWidth: 1.5) // Purple border for visibility
+                                    )
                                     .cornerRadius(20) // Larger, rounder corners for cards
                                 }
                             }

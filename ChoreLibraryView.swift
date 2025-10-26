@@ -15,7 +15,7 @@ struct ChoreLibraryView: View {
     
     var body: some View {
         ZStack {
-            KidTheme.mainGradient // Background for the whole screen - playful gradient
+            AppThemeVibrant.mainGradient // Background for the whole screen - playful gradient
             
             NavigationView {
                 List {
@@ -50,7 +50,7 @@ struct ChoreLibraryView: View {
                         .padding(.vertical, 8)
                         .padding(.horizontal)
                         .background(
-                            KidTheme.cardGradient
+                            AppThemeVibrant.cardGradient
                         ) // Card background with playful glassy gradient
                         .cornerRadius(12)
                         .opacity(chore.isActive ? 1.0 : 0.5)
